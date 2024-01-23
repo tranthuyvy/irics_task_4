@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import HttpStatus from 'http-status-codes'
 import { validateRegistration } from '../validations/validation'
 import { addUser } from '../models/user'
+import { generateKey, encryptWithRSA } from '../utils/rsa'
 
 const registerUser = async (req, res) => {
   try {
@@ -18,13 +19,22 @@ const registerUser = async (req, res) => {
       })
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    // generateKey RSA
+    const { publicKey, privateKey } = generateKey(password)
+
+    // Mã hóa bằng RSA
+    const encryptedPassword = encryptWithRSA(publicKey, password)
+
+    // Bcrypt băm pass đã mã hóa RSA
+    const hashedPassword = await bcrypt.hash(encryptedPassword, 10)
 
     const newUser = {
       name,
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      rsaPublicKey: publicKey,
+      rsaPrivateKey: privateKey
     }
 
     addUser(newUser)
