@@ -2,7 +2,8 @@ import bcrypt from 'bcrypt'
 import HttpStatus from 'http-status-codes'
 import { validateRegistration } from '../validations/validation'
 import { addUser } from '../models/user'
-import { generateKey, encryptWithRSA } from '../utils/rsa'
+import { findUserByUsernameOrEmail } from '../models/user'
+import { generateKey, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
 
 const registerUser = async (req, res) => {
   try {
@@ -19,20 +20,20 @@ const registerUser = async (req, res) => {
       })
     }
 
+    // Bcrypt băm pass
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     // generateKey RSA
-    const { publicKey, privateKey } = generateKey(password)
+    const { publicKey, privateKey } = generateKey(hashedPassword)
 
     // Mã hóa bằng RSA
-    const encryptedPassword = encryptWithRSA(publicKey, password)
-
-    // Bcrypt băm pass đã mã hóa RSA
-    const hashedPassword = await bcrypt.hash(encryptedPassword, 10)
+    const encryptedPassword = encryptWithRSA(publicKey, hashedPassword)
 
     const newUser = {
       name,
       username,
       email,
-      password: hashedPassword,
+      password: encryptedPassword,
       rsaPublicKey: publicKey,
       rsaPrivateKey: privateKey
     }
@@ -46,4 +47,32 @@ const registerUser = async (req, res) => {
   }
 }
 
-export { registerUser }
+const loginUser = async (req, res) => {
+  try {
+    const { usernameoremail, password } = req.body
+
+    const user = findUserByUsernameOrEmail(usernameoremail)
+    console.log('user:', user)
+
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
+    }
+
+    // Bcrypt băm pass
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    // Mã hóa bằng RSA
+    const encryptedPassword = encryptWithRSA(user.rsaPublicKey, hashedPassword)
+
+    if (encryptedPassword !== user.password) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Invalid password', success: false })
+    }
+
+    return res.status(HttpStatus.OK).json({ message: 'Login successful', success: true })
+  } catch (error) {
+    console.error(error)
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' })
+  }
+}
+
+export { registerUser, loginUser }

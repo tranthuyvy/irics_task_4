@@ -1,5 +1,4 @@
 import express from 'express'
-
 import bodyParserMiddleware from './middlewares/bodyParser'
 import authRoutes from './routes/v1/auth'
 

@@ -1,5 +1,5 @@
 import validator from 'validator'
-import { findUserByUsername, findUserByEmail } from '../models/user'
+import { findUserByUsernameOrEmail } from '../models/user'
 
 export const validateRegistration = async ({ name, username, email, password }) => {
   const errors = []
@@ -20,7 +20,7 @@ export const validateRegistration = async ({ name, username, email, password }) 
   } else if (!usernameRegex.test(username)) {
     errors.push({ field: 'username', message: 'Username can only contain letters and numbers, and cannot contain special characters or spaces' })
   } else {
-    const existingUserByUsername = await findUserByUsername(username)
+    const existingUserByUsername = await findUserByUsernameOrEmail(username)
     if (existingUserByUsername) {
       errors.push({ field: 'username', message: 'Username already exists' })
     }
@@ -31,7 +31,7 @@ export const validateRegistration = async ({ name, username, email, password }) 
   } else if (!validator.isEmail(email)) {
     errors.push({ field: 'email', message: 'Invalid email address' })
   } else {
-    const existingUserByEmail = await findUserByEmail(email)
+    const existingUserByEmail = await findUserByUsernameOrEmail(email)
     if (existingUserByEmail) {
       errors.push({ field: 'email', message: 'Email already exists' })
     }

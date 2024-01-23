@@ -8,14 +8,19 @@ const addUser = (user) => {
   dataService.writeData(data)
 }
 
-const findUserByUsername = (username) => {
+// const findUserByUsername = (username) => {
+//   const data = dataService.readData()
+//   return data.users.find(user => user.username === username)
+// }
+
+// const findUserByEmail = (email) => {
+//   const data = dataService.readData()
+//   return data.users.find(user => user.email === email)
+// }
+
+const findUserByUsernameOrEmail = (usernameoremail) => {
   const data = dataService.readData()
-  return data.users.find(user => user.username === username)
+  return data.users.find(user => user.username === usernameoremail || user.email === usernameoremail)
 }
 
-const findUserByEmail = (email) => {
-  const data = dataService.readData()
-  return data.users.find(user => user.email === email)
-}
-
-export { addUser, findUserByUsername, findUserByEmail }
+export { addUser, findUserByUsernameOrEmail }
