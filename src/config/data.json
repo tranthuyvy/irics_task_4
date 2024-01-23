@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "c85f59dc-7990-4330-9cc8-f75d10566ffd",
+      "name": "ttvtest",
+      "username": "ttvtest",
+      "email": "ttvtest@gmail.com",
+      "password": "$2b$10$z4loS4DaB96EErHzi1g5WOwT/RscNMPuYVTs4LeYZIO3WFSkpsCce"
+    },
+    {
+      "id": "f3154115-3544-48f8-b26c-7e5da5304696",
+      "name": "ttvtest1",
+      "username": "ttvtest1",
+      "email": "ttvtest1@gmail.com",
+      "password": "$2b$10$Unea0PQtarCVAA4SekrLAORED2P.PewsojQTK6PMyqVK77x3hh/4y"
+    }
+  ]
+}
