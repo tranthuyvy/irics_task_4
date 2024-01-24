@@ -108,17 +108,21 @@ const loginUser = async (req, res) => {
     }
 
     const token = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30m' })
+    const tokenExpiration = JWT.decode(token).exp
 
     const token_chat = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30d' })
+    const tokenChatExpiration = JWT.decode(token_chat).exp
 
     const userDisplay = { ...user, rsaPrivateKey: undefined, rsaPublicKey: undefined }
 
     return res.status(HttpStatus.OK).json({
       message: 'Login successful',
       success: true,
-      user: userDisplay,
       token,
-      token_chat
+      expired_at_token : tokenExpiration,
+      token_chat,
+      expired_at_token_chat: tokenChatExpiration,
+      user: userDisplay
     })
 
   } catch (error) {
