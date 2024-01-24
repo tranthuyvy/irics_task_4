@@ -4,7 +4,7 @@ import { validateRegistration } from '../validations/validation'
 import { addUser } from '../models/user'
 import { findUserByUsernameOrEmail } from '../models/user'
 import { generateKeyPair, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
-// import JWT from 'jsonwebtoken'
+import JWT from 'jsonwebtoken'
 
 const registerUser = async (req, res) => {
   try {
@@ -31,10 +31,13 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     const newUser = {
+      avatar: 'https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg',
       name,
       username,
       email,
       password: hashedPassword,
+      createdAt: new Date().getTime(),
+      background_img: 'https://test3.stechvn.org/api/file/3504639c8-8a24-11ee-9529-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.svg',
       rsaPublicKey: publicKey,
       rsaPrivateKey: privateKey
     }
@@ -58,7 +61,26 @@ const getPublicKey = (req, res) => {
       return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
     }
 
-    return res.status(HttpStatus.OK).json({ message: `publicKey: ${user.rsaPublicKey}`, success: true })
+    return res.status(HttpStatus.OK).json({ publicKey: `${user.rsaPublicKey}`, success: true })
+  } catch (error) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' })
+  }
+}
+
+const getPasswordLogin = (req, res) => {
+  try {
+    const { usernameoremail, text } = req.body
+
+    const user = findUserByUsernameOrEmail(usernameoremail)
+
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
+    }
+
+    const encryptedPassword = encryptWithRSA(user.rsaPublicKey, text)
+    console.log(encryptedPassword)
+
+    return res.status(HttpStatus.OK).json({ password: `${encryptedPassword}`, success: true })
   } catch (error) {
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' })
   }
@@ -85,15 +107,18 @@ const loginUser = async (req, res) => {
       return res.status(HttpStatus.CONFLICT).json({ message: 'Wrong password', success: false })
     }
 
-    // const token = JWT.sign({ userId: user.id }, '', { expiresIn: '30m' })
+    const token = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30m' })
 
-    // const token_chat = JWT.sign({ userId: user.id }, '', { expiresIn: '30d' })
+    const token_chat = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30d' })
+
+    const userDisplay = { ...user, rsaPrivateKey: undefined, rsaPublicKey: undefined }
 
     return res.status(HttpStatus.OK).json({
       message: 'Login successful',
-      success: true
-      // token,
-      // token_chat
+      success: true,
+      user: userDisplay,
+      token,
+      token_chat
     })
 
   } catch (error) {
@@ -102,4 +127,4 @@ const loginUser = async (req, res) => {
   }
 }
 
-export { registerUser, loginUser, getPublicKey }
+export { registerUser, loginUser, getPublicKey, getPasswordLogin }
