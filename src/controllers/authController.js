@@ -3,7 +3,7 @@ import HttpStatus from 'http-status-codes'
 import { validateRegistration } from '../validations/validation'
 import { addUser } from '../models/user'
 import { findUserByUsernameOrEmail } from '../models/user'
-import { generateKey, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
+import { generateKeyPair, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
 
 const registerUser = async (req, res) => {
   try {
@@ -20,20 +20,21 @@ const registerUser = async (req, res) => {
       })
     }
 
+    //generateKey
+    const { publicKey, privateKey, username: generatedUsername } = await generateKeyPair(username)
+    console.log('Generated Public Key:', publicKey)
+    console.log('Generated Private Key:', privateKey)
+    console.log('Username:', generatedUsername)
+    // const { publicKey, privateKey } = generateKeyPair(username)
+
     // Bcrypt băm pass
     const hashedPassword = await bcrypt.hash(password, 10)
-
-    // generateKey RSA
-    const { publicKey, privateKey } = generateKey(hashedPassword)
-
-    // Mã hóa bằng RSA
-    const encryptedPassword = encryptWithRSA(publicKey, hashedPassword)
 
     const newUser = {
       name,
       username,
       email,
-      password: encryptedPassword,
+      password: hashedPassword,
       rsaPublicKey: publicKey,
       rsaPrivateKey: privateKey
     }
@@ -47,25 +48,30 @@ const registerUser = async (req, res) => {
   }
 }
 
-const loginUser = async (req, res) => {
+const getPublicKey = (req, res) => {
   try {
-    const { usernameoremail, password } = req.body
+    const { usernameoremail } = req.body
 
     const user = findUserByUsernameOrEmail(usernameoremail)
-    console.log('user:', user)
 
     if (!user) {
       return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
     }
 
-    // Bcrypt băm pass
-    const hashedPassword = await bcrypt.hash(password, 10)
+    return res.status(HttpStatus.OK).json({ message: `publicKey: ${user.rsaPublicKey}`, success: true })
+  } catch (error) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' })
+  }
+}
 
-    // Mã hóa bằng RSA
-    const encryptedPassword = encryptWithRSA(user.rsaPublicKey, hashedPassword)
+const loginUser = async (req, res) => {
+  try {
+    const { usernameoremail, password } = req.body
 
-    if (encryptedPassword !== user.password) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Invalid password', success: false })
+    const user = findUserByUsernameOrEmail(usernameoremail)
+
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
     }
 
     return res.status(HttpStatus.OK).json({ message: 'Login successful', success: true })
@@ -75,4 +81,4 @@ const loginUser = async (req, res) => {
   }
 }
 
-export { registerUser, loginUser }
+export { registerUser, loginUser, getPublicKey }

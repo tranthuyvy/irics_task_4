@@ -1,20 +1,27 @@
 import crypto from 'crypto'
 
-const generateKey = (password) => {
-  try {
-    const passphrase = crypto.createHash('sha256').update(password).digest('hex')
-
-    const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
+const generateKeyPair = (username) => {
+  return new Promise((resolve, reject) => {
+    crypto.generateKeyPair('rsa', {
       modulusLength: 2048,
-      publicKeyEncoding: { type: 'spki', format: 'pem' },
-      privateKeyEncoding: { type: 'pkcs8', format: 'pem', cipher: 'aes-256-cbc', passphrase }
-    })
+      publicKeyEncoding: {
+        type: 'pkcs1',
+        format: 'pem'
+      },
+      privateKeyEncoding: {
+        type: 'pkcs1',
+        format: 'pem'
+      },
+    }, (err, publicKey, privateKey) => {
+      if (err) {
+        console.error('Error generating key pair:', err)
+        return reject(err)
+      }
 
-    return { publicKey, privateKey }
-  } catch (error) {
-    console.error('Error generating key:', error.message)
-    throw error
-  }
+      const keyPair = { publicKey, privateKey, username }
+      return resolve(keyPair)
+    })
+  })
 }
 
 const encryptWithRSA = (publicKey, plaintext) => {
@@ -43,4 +50,4 @@ const decryptWithRSA = (privateKey, encryptedPassword) => {
   }
 }
 
-export { generateKey, encryptWithRSA, decryptWithRSA }
+export { generateKeyPair, encryptWithRSA, decryptWithRSA }
