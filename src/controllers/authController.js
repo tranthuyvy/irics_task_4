@@ -4,6 +4,7 @@ import { validateRegistration } from '../validations/validation'
 import { addUser } from '../models/user'
 import { findUserByUsernameOrEmail } from '../models/user'
 import { generateKeyPair, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
+// import JWT from 'jsonwebtoken'
 
 const registerUser = async (req, res) => {
   try {
@@ -21,10 +22,9 @@ const registerUser = async (req, res) => {
     }
 
     //generateKey
-    const { publicKey, privateKey, username: generatedUsername } = await generateKeyPair(username)
+    const { publicKey, privateKey } = generateKeyPair()
     console.log('Generated Public Key:', publicKey)
     console.log('Generated Private Key:', privateKey)
-    console.log('Username:', generatedUsername)
     // const { publicKey, privateKey } = generateKeyPair(username)
 
     // Bcrypt băm pass
@@ -74,7 +74,28 @@ const loginUser = async (req, res) => {
       return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
     }
 
-    return res.status(HttpStatus.OK).json({ message: 'Login successful', success: true })
+    // const encryptedPassword = encryptWithRSA(user.rsaPublicKey, password)
+    // console.log(encryptedPassword)
+
+    const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, password)
+
+    const result = bcrypt.compare(decryptedPassword, user.password)
+
+    if (!result) {
+      return res.status(HttpStatus.CONFLICT).json({ message: 'Wrong password', success: false })
+    }
+
+    // const token = JWT.sign({ userId: user.id }, '', { expiresIn: '30m' })
+
+    // const token_chat = JWT.sign({ userId: user.id }, '', { expiresIn: '30d' })
+
+    return res.status(HttpStatus.OK).json({
+      message: 'Login successful',
+      success: true
+      // token,
+      // token_chat
+    })
+
   } catch (error) {
     console.error(error)
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' })
