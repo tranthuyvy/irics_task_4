@@ -23,9 +23,6 @@ const registerUser = async (req, res) => {
 
     //generateKey
     const { publicKey, privateKey } = generateKeyPair()
-    console.log('Generated Public Key:', publicKey)
-    console.log('Generated Private Key:', privateKey)
-    // const { publicKey, privateKey } = generateKeyPair(username)
 
     // Bcrypt băm pass
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -87,6 +84,7 @@ const getPasswordLogin = (req, res) => {
 }
 
 const loginUser = async (req, res) => {
+  const secretKey = process.env.JWT_SECRET_KEY
   try {
     const { usernameoremail, password } = req.body
 
@@ -107,16 +105,16 @@ const loginUser = async (req, res) => {
       return res.status(HttpStatus.CONFLICT).json({ message: 'Wrong password', success: false })
     }
 
-    const token = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30m' })
+    const token = JWT.sign({ userId: user.id }, secretKey, { expiresIn: '30m' })
     const tokenExpiration = JWT.decode(token).exp
 
-    const token_chat = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30d' })
+    const token_chat = JWT.sign({ userId: user.id }, secretKey, { expiresIn: '30d' })
     const tokenChatExpiration = JWT.decode(token_chat).exp
 
     const userDisplay = { ...user, rsaPrivateKey: undefined, rsaPublicKey: undefined }
 
     return res.status(HttpStatus.OK).json({
-      message: 'Login successful',
+      message: 'Successful',
       success: true,
       token,
       expired_at_token : tokenExpiration,
