@@ -7,3 +7,8 @@ export const CreateGroupChatModel = async (conversation) => {
   data.Conversation.push(ConversationID)
   dataService.writeData(data)
 }
+
+export const UpdateNameGroupChatModel = async (conversationID) => {
+  const data = dataService.readData()
+  console.log(data)
+}
