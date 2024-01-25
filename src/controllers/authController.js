@@ -43,7 +43,6 @@ const registerUser = async (req, res) => {
 
     return res.status(HttpStatus.CREATED).json({ message: 'Success!', success: true })
   } catch (error) {
-    console.error(error)
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' })
   }
 }
@@ -75,7 +74,6 @@ const getPasswordLogin = (req, res) => {
     }
 
     const encryptedPassword = encryptWithRSA(user.rsaPublicKey, text)
-    console.log(encryptedPassword)
 
     return res.status(HttpStatus.OK).json({ password: `${encryptedPassword}`, success: true })
   } catch (error) {
@@ -113,6 +111,9 @@ const loginUser = async (req, res) => {
     const refreshToken = JWT.sign({ userId: user.id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
     const refreshTokenExpiration = JWT.decode(refreshToken).exp
 
+    const csrfToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    res.cookie('csrfToken', csrfToken)
+
     res.cookie('JWT', refreshToken, {
       httpOnly: true,
       sameSite: 'None', secure: true,
@@ -130,6 +131,7 @@ const loginUser = async (req, res) => {
       expired_at_token_chat: tokenChatExpiration,
       refreshToken,
       refresh_token_expired_at: refreshTokenExpiration,
+      xsrf_token: csrfToken,
       user: userDisplay
     })
 
