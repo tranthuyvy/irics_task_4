@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const app = express()
-const hostname = 'localhost'
+const hostname = process.env.HOST_NAME || 'localhost'
 const port = process.env.PORT || 8080
 
 app.use((req, res, next) => {
