@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParserMiddleware from './middlewares/bodyParser'
 import authRoutes from './routes/v1/auth'
 import dotenv from 'dotenv'
+import cookieparser from 'cookie-parser'
 
 dotenv.config()
 
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
   next()
 })
 
+app.use(cookieparser())
 app.use(bodyParserMiddleware)
 app.use('/api/auth', authRoutes)
 
