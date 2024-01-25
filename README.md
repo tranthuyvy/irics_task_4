@@ -1,5 +1,5 @@
 # Install library
-<h4>yarn || npm install</h4>
+<h3>yarn || npm install</h3>
 
 # Based on the .env.example file to create the corresponding .env file
 JWT_SECRET_KEY=''
@@ -10,4 +10,4 @@ HOST_NAME=''
 PORT=''
 
 # Run
-<h4>yarn dev || npm run dev</h4>
+<h3>yarn dev || npm run dev</h3>
