@@ -104,7 +104,9 @@ const loginUser = async (req, res) => {
       return res.status(HttpStatus.CONFLICT).json({ message: 'Wrong password', success: false })
     }
 
-    const token = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
+    // const token = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
+    const token = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30m' })
+    JWT.decode()
     const tokenExpiration = JWT.decode(token).exp
 
     const token_chat = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30d' })

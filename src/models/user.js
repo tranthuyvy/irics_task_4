@@ -13,4 +13,9 @@ const findUserByUsernameOrEmail = (usernameoremail) => {
   return data.users.find(user => user.username === usernameoremail || user.email === usernameoremail)
 }
 
-export { addUser, findUserByUsernameOrEmail }
+const findUserByID = async (id) => {
+  const data = await dataService.readData()
+  return await data.users.find(user => user.id === id )
+}
+
+export { addUser, findUserByUsernameOrEmail, findUserByID}
