@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParserMiddleware from './middlewares/bodyParser'
 import authRoutes from './routes/v1/auth'
-
+import initAPIRoute from './routes/v1/router'
 const app = express()
 const hostname = 'localhost'
 const port = 8080
@@ -15,6 +15,9 @@ app.use((req, res, next) => {
 
 app.use(bodyParserMiddleware)
 app.use('/api/auth', authRoutes)
+
+// init api routes
+initAPIRoute(app)
 
 app.get('/', (req, res) => {
   res.end('<h1>Hello TTV</h1><hr>')

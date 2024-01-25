@@ -108,6 +108,7 @@ const loginUser = async (req, res) => {
     }
 
     const token = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30m' })
+    JWT.decode()
     const tokenExpiration = JWT.decode(token).exp
 
     const token_chat = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30d' })
