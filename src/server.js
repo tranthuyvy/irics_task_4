@@ -1,16 +1,28 @@
 import express from 'express'
+import bodyParserMiddleware from './middlewares/bodyParser'
+import authRoutes from './routes/v1/auth'
+import dotenv from 'dotenv'
+import cookieparser from 'cookie-parser'
+
+dotenv.config()
 
 const app = express()
+const hostname = process.env.HOST_NAME || 'localhost'
+const port = process.env.PORT || 8080
 
-const hostname = 'localhost'
-const port = 8080
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  next()
+})
+
+app.use(cookieparser())
+app.use(bodyParserMiddleware)
+app.use('/api/auth', authRoutes)
 
 app.get('/', (req, res) => {
   res.end('<h1>Hello TTV</h1><hr>')
-})
-
-app.get('/test', (req, res) => {
-  res.status(200).send('test ne')
 })
 
 app.listen(port, hostname, () => {
