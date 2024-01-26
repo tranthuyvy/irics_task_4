@@ -3,7 +3,7 @@ import { RouterConversation } from './Conversation.Route'
 let router = express.Router()
 
 const initAPIRoute = async (app) => {
-    RouterConversation(router)
-    return app.use('/', router)
+  RouterConversation(router)
+  return app.use('/', router)
 }
 export default initAPIRoute

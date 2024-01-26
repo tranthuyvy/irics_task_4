@@ -1,4 +1,5 @@
-import { CreateGroupChatModel , UpdateNameGroupChatModel } from '~/models/conversation.model'
+import { CreateGroupChatModel } from '~/models/conversation.model'
+import dataService from '~/services/dataService'
 import { findUserByID } from '~/models/user'
 import { v4 as uuidv4 } from 'uuid'
 import JWT from 'jsonwebtoken'
@@ -6,9 +7,7 @@ import JWT from 'jsonwebtoken'
 const CreateGroupChat = async (req, res) => {
   try {
     const { type, name, memberIds } = req.body
-    const token = req.rawHeaders[3]
-    const tokenWithoutBearer = token.split('Bearer ')[1]
-    const createdByUser = JWT.decode(tokenWithoutBearer) // get id user from token
+    const createdByUser = getIdUserOfToken(req).userId// get id user from token
 
     //get information of userid
     const _users = memberIds.map((index) => getUser(index))
@@ -105,17 +104,35 @@ const CreateGroupChat = async (req, res) => {
     await CreateGroupChatModel(conversation)
     return res.status(200).json({ message: 'create group chat success' });
   } catch (error) {
-    console.error(error);
+    return res.status(400).json({ message: 'failed', error: error });
   }
 }
+
 const UpdateNameGroupChat = async (req, res) => {
-  console.log(req.params.id)
-  console.log(req.body)
-  
-  return res.status(200).json({ message: 'update'})
+  const idMember = getIdUserOfToken(req).userId
+  const idConversation = req.params.id
+  const permission = await permissionMemberGroupChat(idMember, idConversation)
+
+  if (permission !== undefined) {
+    const NameGrchatUpdate = req.body.name
+    dataService.UpdateNameGroupChat(idConversation, NameGrchatUpdate)
+  }
+  return res.status(200).json({ message: 'update name succes' })
 }
 const getUser = async (memberIds) => {
-  return await findUserByID(memberIds);
-};
+  return await findUserByID(memberIds)
+}
+
+const getIdUserOfToken = (req) => {// get id user of token
+  const token = req.rawHeaders[3]
+  const tokenWithoutBearer = token.split('Bearer ')[1]
+  return JWT.decode(tokenWithoutBearer)
+}
+
+const permissionMemberGroupChat = async (idMember, idConversation) => {// check permissions of group chat
+  const dataConversation = await dataService.findConversationByID(idConversation)
+  const result = await dataConversation.member.find(value => value.id === idMember)
+  return result
+}
 
 export default { CreateGroupChat, UpdateNameGroupChat }

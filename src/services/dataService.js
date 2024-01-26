@@ -11,5 +11,23 @@ const readData = () => {
 const writeData = (data) => {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
 }
+// api update name gr chat
+const UpdateNameGroupChat = async ( conversationID, TextUpdate ) => {
+  const data = readData()
+  const index = findInexConversation(data, conversationID)
+  data.Conversation[index].name = TextUpdate
+  writeData(data)
+}
 
-export default { readData, writeData }
+// find index conversation
+const findInexConversation = (data, value) => {
+  const index = data.Conversation.findIndex(item => item.id === value)
+  return index
+}
+
+const findConversationByID = async (id) => {
+  const data = await readData()
+  return await data.Conversation.find(conversation => conversation.id === id )
+}
+
+export default { readData, writeData, UpdateNameGroupChat, findConversationByID }

@@ -28,4 +28,4 @@ const findUserByID = async (id) => {
   return await data.users.find(user => user.id === id )
 }
 
-export { addUser, findUserByUsernameOrEmail, findUserByID}
+export { addUser, findUserByUsernameOrEmail, findUserByID }

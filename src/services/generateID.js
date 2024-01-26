@@ -6,4 +6,4 @@ const generateID = () => {
   }
   return id
 }
-export default {generateID}
+export default { generateID }
