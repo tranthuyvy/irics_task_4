@@ -26,8 +26,8 @@ const CreateGroupChat = async (req, res) => {
       })
     }
     //get information of Createduser
-    const user123 = createdByUser?.userId
-    const createUser = await getUser(user123)
+    const userinfo = createdByUser?.userId
+    const createUser = await getUser(userinfo)
     let objCreatedbyUser = {
       id: createUser.id,
       username: createUser.username,
@@ -102,15 +102,16 @@ const CreateGroupChat = async (req, res) => {
       votePinned: []
     }
     //add data to database
-    CreateGroupChatModel(conversation)
+    await CreateGroupChatModel(conversation)
     return res.status(200).json({ message: 'create group chat success' });
   } catch (error) {
     console.error(error);
   }
 }
 const UpdateNameGroupChat = async (req, res) => {
-  console.log(req.params)
-  // console.log(UpdateNameGroupChatModel(req.params.)
+  console.log(req.params.id)
+  console.log(req.body)
+  
   return res.status(200).json({ message: 'update'})
 }
 const getUser = async (memberIds) => {

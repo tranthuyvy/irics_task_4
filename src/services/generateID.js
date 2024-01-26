@@ -1,4 +1,4 @@
-export const generateID = () => {
+const generateID = () => {
   const characters = '0123456789abcdef'
   let id = ''
   for (let i = 0; i < 24; i++) {
@@ -6,3 +6,4 @@ export const generateID = () => {
   }
   return id
 }
+export default {generateID}

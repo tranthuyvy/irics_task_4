@@ -1,6 +1,6 @@
-import CreateGroupChat from '~/controllers/DAK_API/GroupChatController'
+import GroupChat from '~/controllers/DAK_API/GroupChatController'
 export const RouterConversation = (router) =>
     router
-        .get('/conversations/:id/', CreateGroupChat.CreateGroupChat)// create group chat router
-        .post('/conversations', CreateGroupChat.CreateGroupChat)// create group chat router
-        .patch('/conversations/:id', CreateGroupChat.UpdateNameGroupChat)// get group chat router
+        .get('/conversations/:id/', GroupChat.CreateGroupChat)// create group chat router
+        .post('/conversations', GroupChat.CreateGroupChat)// create group chat router
+        .patch('/conversations/:id', GroupChat.UpdateNameGroupChat)// get group chat router
