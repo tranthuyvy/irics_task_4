@@ -1,9 +1,9 @@
-import { CreateGroupChatModel } from '~/models/conversation.model'
+import { CreateGroupChatModel , UpdateNameGroupChatModel } from '~/models/conversation.model'
 import { findUserByID } from '~/models/user'
 import { v4 as uuidv4 } from 'uuid'
 import JWT from 'jsonwebtoken'
 // create conversation type = 2
-export const CreateGroupChat = async (req, res) => {
+const CreateGroupChat = async (req, res) => {
   try {
     const { type, name, memberIds } = req.body
     const token = req.rawHeaders[3]
@@ -26,8 +26,8 @@ export const CreateGroupChat = async (req, res) => {
       })
     }
     //get information of Createduser
-    const user123 = createdByUser?.userId
-    const createUser = await getUser(user123)
+    const userinfo = createdByUser?.userId
+    const createUser = await getUser(userinfo)
     let objCreatedbyUser = {
       id: createUser.id,
       username: createUser.username,
@@ -42,7 +42,7 @@ export const CreateGroupChat = async (req, res) => {
       createdAt: '2024-01 - 13T06: 34: 44.343Z',
       updatedAt: '2024-01 - 13T06: 34: 44.343Z'
     }
-
+    // craete inviteID 
     const inviteId = uuidv4().replace(/-/g, '')
 
     //create data to import database
@@ -94,20 +94,28 @@ export const CreateGroupChat = async (req, res) => {
           value: []
         }
       ],
-      userOffStatusMsg:[],
+      userOffStatusMsg: [],
       inviteId: inviteId,//generated ID invited,
-      messagePinCount:0,
-      isPinned : false ,
-      notePinned :[],
-      votePinned : []
+      messagePinCount: 0,
+      isPinned: false,
+      notePinned: [],
+      votePinned: []
     }
     //add data to database
-    CreateGroupChatModel(conversation)
+    await CreateGroupChatModel(conversation)
     return res.status(200).json({ message: 'create group chat success' });
   } catch (error) {
     console.error(error);
   }
-};
+}
+const UpdateNameGroupChat = async (req, res) => {
+  console.log(req.params.id)
+  console.log(req.body)
+  
+  return res.status(200).json({ message: 'update'})
+}
 const getUser = async (memberIds) => {
   return await findUserByID(memberIds);
 };
+
+export default { CreateGroupChat, UpdateNameGroupChat }

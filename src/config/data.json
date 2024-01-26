@@ -39,14 +39,15 @@
   ],
   "Conversation": [
     {
+      "id": "f20cd91d8b83291449274b9a",
       "satus": 2,
       "avartar": "https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png",
       "createdBy": {
         "userId": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
-        "iat": 1706161853,
-        "exp": 1706163653
+        "iat": 1706242234,
+        "exp": 1706244034
       },
-      "name": "test123",
+      "name": "Gr chat 2 delete",
       "lastMessageCreated": "2024-01-20T07:39:49.440Z",
       "isDeleted": false,
       "createdAt": "2024-01-20T10:09:42.213Z",
@@ -70,17 +71,17 @@
       "member": [
         {
           "type": 1,
-          "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+          "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
           "ownerAccepted": true,
-          "username": "duyvottt",
+          "username": "ttvtest1",
           "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
           "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
         },
         {
           "type": 1,
-          "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
+          "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
           "ownerAccepted": true,
-          "username": "ttvtest1",
+          "username": "duyvottt",
           "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
           "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
         }
@@ -121,7 +122,7 @@
         }
       ],
       "userOffStatusMsg": [],
-      "inviteId": "62f502bd71a348bea54619a108978ab6",
+      "inviteId": "fda193c407f14c98ad5701044f85e6e8",
       "messagePinCount": 0,
       "isPinned": false,
       "notePinned": [],
