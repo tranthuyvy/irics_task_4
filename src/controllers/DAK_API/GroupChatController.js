@@ -119,6 +119,21 @@ const UpdateNameGroupChat = async (req, res) => {
   }
   return res.status(200).json({ message: 'update name succes' })
 }
+
+const GetConversationBelongUser = async (req, res) => {
+  const {offset,limit,search,status} = req.query
+  return res.status(200).json({ message: 'update name succes' })
+}
+
+const GetConversationDetail = async (req, res) => {
+  const ConversationID = req.params.id
+  const data = await dataService.findConversationByID(ConversationID)
+  if (data !== undefined) {
+    return res.status(200).json({ message: 'succes', data })
+  }
+  else return res.status(404).json({ message: 'no conversation'})
+}
+
 const getUser = async (memberIds) => {
   return await findUserByID(memberIds)
 }
@@ -135,4 +150,4 @@ const permissionMemberGroupChat = async (idMember, idConversation) => {// check 
   return result
 }
 
-export default { CreateGroupChat, UpdateNameGroupChat }
+export default { CreateGroupChat, UpdateNameGroupChat, GetConversationBelongUser, GetConversationDetail }
