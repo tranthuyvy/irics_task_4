@@ -166,4 +166,19 @@ const refreshToken = (req, res) => {
   }
 }
 
-export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken }
+const logoutUser = (req, res) => {
+  try {
+    if (req.cookies && (req.cookies.JWT || req.cookies.csrfToken)) {
+      res.clearCookie('JWT')
+      res.clearCookie('csrfToken')
+
+      res.status(HttpStatus.OK).json({ message: 'Logout successful', success: true })
+    } else {
+      res.status(HttpStatus.OK).json({ message: 'Logout successful', success: true })
+    }
+  } catch (error) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error_code: 'Internal Server Error', success: false })
+  }
+}
+
+export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser }
