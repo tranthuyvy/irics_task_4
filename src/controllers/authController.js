@@ -98,7 +98,7 @@ const loginUser = async (req, res) => {
 
     const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, password)
 
-    const result = bcrypt.compare(decryptedPassword, user.password)
+    const result = await bcrypt.compare(decryptedPassword, user.password)
 
     if (!result) {
       return res.status(HttpStatus.CONFLICT).json({ message: 'Wrong password', success: false })
@@ -136,6 +136,7 @@ const loginUser = async (req, res) => {
     })
 
   } catch (error) {
+    console.error(error);
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' })
   }
 }
