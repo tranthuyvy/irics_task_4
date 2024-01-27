@@ -8,9 +8,24 @@ const addUser = (user) => {
   dataService.writeData(data)
 }
 
-const findUserByUsernameOrEmail = (usernameoremail) => {
+const findUserByUsernameOrEmailOrId = (usernameoremailoruserid) => {
   const data = dataService.readData()
-  return data.users.find(user => user.username === usernameoremail || user.email === usernameoremail)
+  return data.users.find(user => user.username === usernameoremailoruserid || user.email === usernameoremailoruserid || user.id === usernameoremailoruserid)
 }
 
-export { addUser, findUserByUsernameOrEmail }
+const updatePassword = (userId, newPassword) => {
+  try {
+    const data = dataService.readData()
+
+    const user = data.users.find(user => user.id === userId)
+
+    user.password = newPassword
+
+    dataService.writeData(data)
+    
+  } catch (error) {
+    console.error('Error updated', error.message)
+  }
+}
+
+export { addUser, findUserByUsernameOrEmailOrId, updatePassword }

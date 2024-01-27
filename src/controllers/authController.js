@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt'
 import HttpStatus from 'http-status-codes'
-import { validateRegistration } from '../validations/validation'
-import { addUser } from '../models/user'
-import { findUserByUsernameOrEmail } from '../models/user'
-import { generateKeyPair, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
 import JWT from 'jsonwebtoken'
+import { validateRegistration } from '../validations/validation'
+import { addUser, findUserByUsernameOrEmailOrId, updatePassword } from '../models/user'
+import { generateKeyPair, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
+
 
 const registerUser = async (req, res) => {
   try {
@@ -23,6 +23,9 @@ const registerUser = async (req, res) => {
 
     //generateKey
     const { publicKey, privateKey } = generateKeyPair()
+    console.log('Generated Public Key:', publicKey)
+    console.log('Generated Private Key:', privateKey)
+    // const { publicKey, privateKey } = generateKeyPair(username)
 
     // Bcrypt băm pass
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -43,6 +46,7 @@ const registerUser = async (req, res) => {
 
     return res.status(HttpStatus.CREATED).json({ message: 'Success!', success: true })
   } catch (error) {
+    console.error(error)
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' })
   }
 }
@@ -51,7 +55,7 @@ const getPublicKey = (req, res) => {
   try {
     const { usernameoremail } = req.body
 
-    const user = findUserByUsernameOrEmail(usernameoremail)
+    const user = findUserByUsernameOrEmailOrId(usernameoremail)
 
     if (!user) {
       return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
@@ -67,7 +71,7 @@ const getPasswordLogin = (req, res) => {
   try {
     const { usernameoremail, text } = req.body
 
-    const user = findUserByUsernameOrEmail(usernameoremail)
+    const user = findUserByUsernameOrEmailOrId(usernameoremail)
 
     if (!user) {
       return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
@@ -85,16 +89,15 @@ const loginUser = async (req, res) => {
   try {
     const { usernameoremail, password } = req.body
 
-    const user = findUserByUsernameOrEmail(usernameoremail)
+    const user = findUserByUsernameOrEmailOrId(usernameoremail)
 
     if (!user) {
       return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
     }
 
-    // const encryptedPassword = encryptWithRSA(user.rsaPublicKey, password)
-    // console.log(encryptedPassword)
+    const encryptedPassword = encryptWithRSA(user.rsaPublicKey, password)
 
-    const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, password)
+    const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, encryptedPassword)
 
     const result = bcrypt.compare(decryptedPassword, user.password)
 
@@ -181,4 +184,29 @@ const logoutUser = (req, res) => {
   }
 }
 
-export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser }
+const changePassword = async (req, res) => {
+  try {
+    const { newPassword } = req.body
+
+    const userId = req.user.userId
+
+    const user = findUserByUsernameOrEmailOrId(userId)
+    console.log(user)
+
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
+    }
+
+    const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, newPassword)
+
+    const hashedPassword = await bcrypt.hash(decryptedPassword, 10)
+
+    updatePassword(userId, hashedPassword)
+
+    return res.status(HttpStatus.OK).json({ message: 'Success', success: true })
+  } catch (error) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error_code: 'Internal Server Error', success: false })
+  }
+}
+
+export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser, changePassword }
