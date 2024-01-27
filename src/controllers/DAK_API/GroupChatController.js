@@ -171,4 +171,91 @@ const permissionMemberGroupChat = async (idMember, idConversation) => {// check 
   return result
 }
 
-export default { CreateGroupChat, UpdateNameGroupChat, GetConversationBelongUser, GetConversationDetail }
+// add member to group chat
+const AddMemberToGroupChat = async (req, res) => {
+  const conversationId = req.params.conversationId
+  const memberID = req.body.ids
+  // check Id exist
+  let arrInfoMember = []
+  let _checkId = true
+  let _checkExistMember = false
+  await Promise.all(memberID.map(async (idMember) => {
+    _checkId = await checkMember(idMember)
+  }))
+
+  // check exist member in conversation
+  const dataConversation = await dataService.findConversationByID(conversationId)
+  await Promise.all(memberID.map(async (idMember) => {
+    _checkExistMember = await dataConversation.member.find(value => value.id === idMember) ? true : false
+  })
+  )
+
+  // create information member
+  if (_checkId == true && _checkExistMember == false) {
+    await Promise.all(memberID.map(async idMember => {
+
+      let infoMember = await getUser(idMember)
+
+      arrInfoMember.push({
+        type: 4,
+        id: idMember,
+        ownerAccepted: true,
+        username: infoMember.username,
+        avatar: infoMember.avatar,
+        lastLogin: infoMember.lastLogin
+      })
+
+    }))
+
+    // update member to data
+    await Promise.all(arrInfoMember.map(async data =>
+      await dataService.UpdateMemberGroupChat(conversationId, data)
+    ))
+
+    return res.status(200).json({ message: 'succes' })
+  }
+  else {
+    if (_checkExistMember == true) return res.status(404).json({ error: 'member already in conversation' })
+    return res.status(404).json({ error: 'error' })
+  }
+}
+
+const RemoveMemberToGroupChat = async ( req, res ) => {
+  const conversationId = req.params.conversationId
+  const memberID = req.body.ids
+
+  const UserId = getIdUserOfToken(req).userId
+
+  const _check = await PermissionDelMember(UserId, conversationId)
+  if (_check == true) {
+    dataService.deleteMemberChat(memberID,conversationId)
+    return res.status(200).json({ message: 'succes' })
+  }
+  else
+    return res.status(200).json({ message: 'not have permission' })
+
+}
+
+// permission to delete gr chat
+const PermissionDelMember = async (idMember, idConversation) => {// check permissions of group chat
+  const dataConversation = await dataService.findConversationByID(idConversation)
+
+  const result = await dataConversation.member.find(value => value.id == idMember)// check conversation
+
+  const checkPermission = result.type == 1 || result.type == 2 ? true : false// check type
+  // const result = await dataConversation.member.find(value => value.type == 1 || value.type == 2 ? true : false)
+  return checkPermission
+}
+
+// check member have exist
+const checkMember = async (memberID) => {
+  return await findUserByID(memberID) ? true : false
+}
+
+export default 
+{ CreateGroupChat, 
+  UpdateNameGroupChat, 
+  GetConversationBelongUser, 
+  GetConversationDetail, 
+  AddMemberToGroupChat,
+  RemoveMemberToGroupChat }
