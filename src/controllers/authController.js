@@ -4,7 +4,15 @@ import JWT from 'jsonwebtoken'
 import { validateRegistration } from '../validations/validation'
 import { addUser, findUserByUsernameOrEmailOrId, updatePassword } from '../models/user'
 import { generateKeyPair, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
+import nodemailer from 'nodemailer'
 
+const transporter = nodemailer.createTransport({
+  service: process.env.EMAIL_SERVICE,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+})
 
 const registerUser = async (req, res) => {
   try {
@@ -223,4 +231,12 @@ const changePassword = async (req, res) => {
   }
 }
 
-export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser, changePassword }
+const forgotPassword = async (req, res) => {
+
+}
+
+const resetPassword = async (req, res) => {
+  
+}
+
+export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser, changePassword, forgotPassword, resetPassword }
