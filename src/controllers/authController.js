@@ -188,10 +188,23 @@ const changePassword = async (req, res) => {
   try {
     const { newPassword } = req.body
 
-    const userId = req.user.userId
+    const refreshToken = req.cookies?.JWT
+
+    if (!refreshToken) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Unauthorized', success: false })
+    }
+
+    const decodedRefreshToken = JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+
+    const userId = decodedRefreshToken.userId
+
+    const csrfTokenHeader = req.headers['csrftoken']
+
+    if (!csrfTokenHeader || csrfTokenHeader !== req.cookies.csrfToken) {
+      return res.status(HttpStatus.FORBIDDEN).json({ message: 'CSRF Token mismatch - Unauthorized', success: false })
+    }
 
     const user = findUserByUsernameOrEmailOrId(userId)
-    console.log(user)
 
     if (!user) {
       return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
@@ -204,6 +217,7 @@ const changePassword = async (req, res) => {
     updatePassword(userId, hashedPassword)
 
     return res.status(HttpStatus.OK).json({ message: 'Success', success: true })
+
   } catch (error) {
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error_code: 'Internal Server Error', success: false })
   }

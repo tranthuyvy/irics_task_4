@@ -10,6 +10,6 @@ router.get('/publicKey', getPublicKey)
 router.get('/passwordLogin', getPasswordLogin)
 router.post('/refresh', refreshToken)
 router.post('/logout', logoutUser)
-router.post('/change-password', authenticateToken, changePassword)
+router.post('/change-password', changePassword)
 
 export default router
