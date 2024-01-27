@@ -9,6 +9,8 @@ const CreateGroupChat = async (req, res) => {
     const { type, name, memberIds } = req.body
     const createdByUser = getIdUserOfToken(req).userId// get id user from token
 
+    const timeCreated = new Date().getTime()
+
     //get information of userid
     const _users = memberIds.map((index) => getUser(index))
     const user = await Promise.all(_users)
@@ -25,8 +27,8 @@ const CreateGroupChat = async (req, res) => {
       })
     }
     //get information of Createduser
-    const userinfo = createdByUser?.userId
-    const createUser = await getUser(userinfo)
+    const createUser = await getUser(createdByUser)
+
     let objCreatedbyUser = {
       id: createUser.id,
       username: createUser.username,
@@ -37,10 +39,11 @@ const CreateGroupChat = async (req, res) => {
       isActiveMember: false,
       isBlockStranger: false,
       blockUserIds: [],
-      lastLogin: '2024-01 - 13T06: 34: 44.341Z',
-      createdAt: '2024-01 - 13T06: 34: 44.343Z',
-      updatedAt: '2024-01 - 13T06: 34: 44.343Z'
+      lastLogin: timeCreated,
+      createdAt: timeCreated,
+      updatedAt: timeCreated
     }
+
     // craete inviteID 
     const inviteId = uuidv4().replace(/-/g, '')
 
@@ -100,11 +103,23 @@ const CreateGroupChat = async (req, res) => {
       notePinned: [],
       votePinned: []
     }
+    const result = await CreateGroupChatModel(conversation)
+
+    const returnData = {
+      type,
+      avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
+      createdBy: createdByUser,
+      name: name,
+      lastMessageCreated: new Date().getTime(),
+      isDeleted: false,
+      _id: result.id,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt
+    }
     //add data to database
-    await CreateGroupChatModel(conversation)
-    return res.status(200).json({ message: 'create group chat success' });
+    return res.status(200).json({ message: 'create group chat success', data: returnData })
   } catch (error) {
-    return res.status(400).json({ message: 'failed', error: error });
+    return res.status(400).json({ message: 'failed', error: error })
   }
 }
 
@@ -121,8 +136,14 @@ const UpdateNameGroupChat = async (req, res) => {
 }
 
 const GetConversationBelongUser = async (req, res) => {
-  const {offset,limit,search,status} = req.query
-  return res.status(200).json({ message: 'update name succes' })
+  const { offset, limit, search, status } = req.query
+  if (search == '') {
+
+    return res.status(200).json({ message: 'update name succes' })
+  }
+  else {
+    return res.status(200).json({ message: 'update name succes' })
+  }
 }
 
 const GetConversationDetail = async (req, res) => {
@@ -131,7 +152,7 @@ const GetConversationDetail = async (req, res) => {
   if (data !== undefined) {
     return res.status(200).json({ message: 'succes', data })
   }
-  else return res.status(404).json({ message: 'no conversation'})
+  else return res.status(404).json({ message: 'no conversation' })
 }
 
 const getUser = async (memberIds) => {

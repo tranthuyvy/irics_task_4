@@ -115,6 +115,178 @@
       "isPinned": false,
       "notePinned": [],
       "votePinned": []
+    },
+    {
+      "id": "8060a56d5472af93093ba2a6",
+      "satus": 2,
+      "avartar": "https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png",
+      "createdBy": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+      "name": "Gr da bong",
+      "lastMessageCreated": "2024-01-20T07:39:49.440Z",
+      "isDeleted": false,
+      "createdAt": "2024-01-20T10:09:42.213Z",
+      "updatedAt": "2024-01-21T09:45:50.515Z",
+      "latestMessage": [],
+      "createdByUser": {
+        "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+        "username": "duyvottt",
+        "email": "duyvo3002@gmail.com",
+        "background_img": "https://test3.stechvn.org/api/file/3504639c8-8a24-11ee-9529-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.svg",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "status": 0,
+        "isActiveMember": false,
+        "isBlockStranger": false,
+        "blockUserIds": [],
+        "lastLogin": 1706338068733,
+        "createdAt": 1706338068733,
+        "updatedAt": 1706338068733
+      },
+      "unSeenMessageTotal": 0,
+      "member": [
+        {
+          "type": 1,
+          "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
+          "ownerAccepted": true,
+          "username": "ttvtest1",
+          "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+        },
+        {
+          "type": 1,
+          "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+          "ownerAccepted": true,
+          "username": "duyvottt",
+          "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+        }
+      ],
+      "messagePin": [],
+      "conversationSetting": [
+        {
+          "type": 3,
+          "value": true
+        },
+        {
+          "type": 4,
+          "value": true
+        },
+        {
+          "type": 7,
+          "value": true
+        },
+        {
+          "type": 6,
+          "value": true
+        },
+        {
+          "type": 5,
+          "value": true
+        },
+        {
+          "type": 9,
+          "value": true
+        },
+        {
+          "type": 1,
+          "value": 1700656327650
+        },
+        {
+          "type": 8,
+          "value": []
+        }
+      ],
+      "userOffStatusMsg": [],
+      "inviteId": "9512e8220af3491cb775fc5c3c65295f",
+      "messagePinCount": 0,
+      "isPinned": false,
+      "notePinned": [],
+      "votePinned": []
+    },
+    {
+      "id": "3f71ecaa16f74d30e513697e",
+      "satus": 2,
+      "avartar": "https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png",
+      "createdBy": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+      "name": "Gr da bong",
+      "lastMessageCreated": "2024-01-20T07:39:49.440Z",
+      "isDeleted": false,
+      "createdAt": "2024-01-20T10:09:42.213Z",
+      "updatedAt": "2024-01-21T09:45:50.515Z",
+      "latestMessage": [],
+      "createdByUser": {
+        "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+        "username": "duyvottt",
+        "email": "duyvo3002@gmail.com",
+        "background_img": "https://test3.stechvn.org/api/file/3504639c8-8a24-11ee-9529-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.svg",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "status": 0,
+        "isActiveMember": false,
+        "isBlockStranger": false,
+        "blockUserIds": [],
+        "lastLogin": 1706338107498,
+        "createdAt": 1706338107498,
+        "updatedAt": 1706338107498
+      },
+      "unSeenMessageTotal": 0,
+      "member": [
+        {
+          "type": 1,
+          "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
+          "ownerAccepted": true,
+          "username": "ttvtest1",
+          "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+        },
+        {
+          "type": 1,
+          "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+          "ownerAccepted": true,
+          "username": "duyvottt",
+          "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+        }
+      ],
+      "messagePin": [],
+      "conversationSetting": [
+        {
+          "type": 3,
+          "value": true
+        },
+        {
+          "type": 4,
+          "value": true
+        },
+        {
+          "type": 7,
+          "value": true
+        },
+        {
+          "type": 6,
+          "value": true
+        },
+        {
+          "type": 5,
+          "value": true
+        },
+        {
+          "type": 9,
+          "value": true
+        },
+        {
+          "type": 1,
+          "value": 1700656327650
+        },
+        {
+          "type": 8,
+          "value": []
+        }
+      ],
+      "userOffStatusMsg": [],
+      "inviteId": "1cb2bacaf3814c56830abc09b7837e11",
+      "messagePinCount": 0,
+      "isPinned": false,
+      "notePinned": [],
+      "votePinned": []
     }
   ]
 }

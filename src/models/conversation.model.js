@@ -7,6 +7,12 @@ export const CreateGroupChatModel = async (conversation) => {
   const ConversationID = { id: await GenerateIDconversation, ...conversation }
   data.Conversation.push(ConversationID)
   dataService.writeData(data)
+  return checkImportDataSuccess(GenerateIDconversation)
+}
+
+// check success import data
+const checkImportDataSuccess = (GenerateIDconversation) => {
+  return dataService.findConversationByID(GenerateIDconversation)
 }
 
 

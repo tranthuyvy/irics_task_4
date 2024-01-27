@@ -9,7 +9,11 @@ const readData = () => {
 }
 
 const writeData = (data) => {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
+  } catch (error) {
+    console.error({message:'failed to import data', error })
+  }
 }
 // api update name gr chat
 const UpdateNameGroupChat = async ( conversationID, TextUpdate ) => {
