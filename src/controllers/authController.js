@@ -290,4 +290,25 @@ const resetPassword = async (req, res) => {
   console.log(req.params)
 }
 
-export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser, changePassword, forgotPassword, resetPassword }
+const userProfile = (req, res) => {
+  try {
+    if (req.cookies?.JWT) {
+      const token = req.cookies.JWT
+      const decodedToken = JWT.verify(token, process.env.REFRESH_TOKEN_SECRET)
+      const userId = decodedToken.userId
+      const userProfile = findUserByUsernameOrEmailOrId(userId)
+
+      if (!userProfile) {
+        return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
+      }
+      const userDisplay = { ...userProfile, rsaPrivateKey: undefined, rsaPublicKey: undefined }
+      return res.status(HttpStatus.OK).json({ message: 'Success', success: true, user: userDisplay })
+    }
+    return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Unauthorized', success: false })
+
+  } catch (error) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error_code: 'Internal Server Error', success: false })
+  }
+}
+
+export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser, changePassword, forgotPassword, resetPassword, userProfile }

@@ -1,5 +1,5 @@
 import express from 'express'
-import { loginUser, registerUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser, changePassword, forgotPassword, resetPassword } from '../../controllers/authController'
+import { loginUser, registerUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser, changePassword, forgotPassword, resetPassword, userProfile } from '../../controllers/authController'
 import authenticateToken from '../../middlewares/authenticateToken'
 
 const router = express.Router()
@@ -7,6 +7,7 @@ const router = express.Router()
 router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.get('/publicKey', getPublicKey)
+router.get('/profile', userProfile)
 router.get('/passwordLogin', getPasswordLogin)
 router.post('/refresh', refreshToken)
 router.post('/logout', logoutUser)
