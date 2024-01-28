@@ -27,7 +27,6 @@ const createNewNote = async (req, res) => {
                 lastLogin: '2024-01 - 13T06: 34: 44.341Z',
               }
             const note = { conversationId, isPinned, content, createdByUser: objCreatedbyUser };
-            console.log(note);
             await createNote(note);
             return res.status(200).json({ message: 'create note success' });
         }

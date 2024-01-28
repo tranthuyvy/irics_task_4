@@ -15,3 +15,13 @@ export const findConversationById = async (conversationId) => {
     return await data.Conversation.find(conversation => conversation.id === conversationId)
 
 }
+
+
+export const createVote = async (vote) => {
+    const data = dataService.readData()
+    const generateVoteId = await generateService.generateID()
+
+    const newVote = { id: generateVoteId, ...vote}
+    data.votes.push(newVote)
+    dataService.writeData(data)
+}

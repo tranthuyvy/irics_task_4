@@ -242,5 +242,54 @@
         "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
       }
     }
+  ],
+  "votes": [
+    {
+      "id": "c96155351686b5e82b5d8edd",
+      "conversationId": "2fcfdbeb8f2e402318c6448a",
+      "isPinned": false,
+      "question": "test api question",
+      "options": [
+        "solution 1",
+        "solution 2"
+      ],
+      "allowMultipleAnswers": true,
+      "allowAddOption": true,
+      "hideResultBeforeAnswers": true,
+      "hideMemberAnswers": false,
+      "allowChangeAnswers": true,
+      "createdByUser": {
+        "type": 1,
+        "id": "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919",
+        "ownerAccepted": true,
+        "username": "huy269",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+      }
+    },
+    {
+      "id": "95f7fc6831df34c67efa0ab3",
+      "conversationId": "2fcfdbeb8f2e402318c6448a",
+      "isPinned": false,
+      "question": "test api question",
+      "options": [
+        "solution 1",
+        "solution 2",
+        "solution 3"
+      ],
+      "allowMultipleAnswers": true,
+      "allowAddOption": true,
+      "hideResultBeforeAnswers": true,
+      "hideMemberAnswers": false,
+      "allowChangeAnswers": true,
+      "createdByUser": {
+        "type": 1,
+        "id": "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919",
+        "ownerAccepted": true,
+        "username": "huy269",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+      }
+    }
   ]
 }
