@@ -23,9 +23,6 @@ const registerUser = async (req, res) => {
 
     //generateKey
     const { publicKey, privateKey } = generateKeyPair()
-    console.log('Generated Public Key:', publicKey)
-    console.log('Generated Private Key:', privateKey)
-    // const { publicKey, privateKey } = generateKeyPair(username)
 
     // Bcrypt băm pass
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -101,35 +98,73 @@ const loginUser = async (req, res) => {
 
     const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, password)
 
-    const result = bcrypt.compare(decryptedPassword, user.password)
+    const result = await bcrypt.compare(decryptedPassword, user.password)
 
     if (!result) {
       return res.status(HttpStatus.CONFLICT).json({ message: 'Wrong password', success: false })
     }
 
+    // const token = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
     const token = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30m' })
     JWT.decode()
     const tokenExpiration = JWT.decode(token).exp
 
-    const token_chat = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30d' })
+    const token_chat = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30d' })
     const tokenChatExpiration = JWT.decode(token_chat).exp
+
+    const refreshToken = JWT.sign({ userId: user.id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
+    const refreshTokenExpiration = JWT.decode(refreshToken).exp
+
+    res.cookie('JWT', refreshToken, {
+      httpOnly: true,
+      sameSite: 'None', secure: true,
+      maxAge: 24 * 60 * 60 * 1000
+    })
 
     const userDisplay = { ...user, rsaPrivateKey: undefined, rsaPublicKey: undefined }
 
     return res.status(HttpStatus.OK).json({
-      message: 'Login successful',
+      message: 'Successful',
       success: true,
       token,
       expired_at_token : tokenExpiration,
       token_chat,
       expired_at_token_chat: tokenChatExpiration,
+      refreshToken,
+      refresh_token_expired_at: refreshTokenExpiration,
       user: userDisplay
     })
 
   } catch (error) {
-    console.error(error)
+    console.error(error);
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' })
   }
 }
 
-export { registerUser, loginUser, getPublicKey, getPasswordLogin }
+const refreshToken = (req, res) => {
+  try {
+    if (req.cookies?.JWT) {
+      const refreshToken = req.cookies.JWT
+
+      JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,
+        (err, decoded) => {
+          if (err) {
+            return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Unauthorized', success: false })
+          } else {
+            const userId = decoded.userId
+            const token = JWT.sign({
+              userId: userId
+            }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
+
+            return res.json({ token: token, success: true })
+          }
+        })
+    } else {
+      return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Unauthorized', success: false })
+    }
+  } catch (error) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error_code: 'Internal Server Error', success: false })
+  }
+}
+
+export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken }
