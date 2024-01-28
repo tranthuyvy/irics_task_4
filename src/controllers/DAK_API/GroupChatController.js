@@ -47,7 +47,7 @@ const CreateGroupChat = async (req, res) => {
 
     // craete inviteID 
     const inviteId = uuidv4().replace(/-/g, '')
-
+    const typeConversation = type == 2 ? 'member' : 'directUser'
     //create data to import database
     const conversation = {
       satus: type,
@@ -61,7 +61,7 @@ const CreateGroupChat = async (req, res) => {
       latestMessage: [],
       createdByUser: objCreatedbyUser,
       unSeenMessageTotal: 0,
-      member: userarr,// get user from member ID
+      [typeConversation]: userarr,// get user from member ID
       messagePin: [],
       conversationSetting: [
         {
@@ -234,7 +234,7 @@ const RemoveMemberToGroupChat = async (req, res) => {
 
 }
 
-// permission to delete gr chat
+// permission to delete member
 const PermissionDelMember = async (idMember, idConversation) => {// check permissions of group chat
   const dataConversation = await dataService.findConversationByID(idConversation)
 
@@ -250,6 +250,16 @@ const checkMember = async (memberID) => {
   return await findUserByID(memberID) ? true : false
 }
 
+// delete DeleteConversation 
+const DeleteConversation = async ( req, res ) => {
+  const idConversation = req.params.id
+  PermissionDelConversation
+}
+
+//check permissions to delete conversation
+const PermissionDelConversation = async () => { 
+  return 
+}
 export default
   {
     CreateGroupChat,
@@ -257,5 +267,6 @@ export default
     GetConversationBelongUser,
     GetConversationDetail,
     AddMemberToGroupChat,
-    RemoveMemberToGroupChat
+    RemoveMemberToGroupChat,
+    DeleteConversation
   }
