@@ -6,3 +6,4 @@ export const RouterSettingConversation = (router) =>
         .put('/conversations/setting/group/pin/:conversationId/:type', authenticateToken, Setting.PinNoteVoteMsg)
         .put('/conversations/setting/group/vote/:conversationId/:type', authenticateToken, Setting.AllowVote)
         .put('/conversations/setting/group/note/:conversationId/:type', authenticateToken, Setting.AllowNote)
+        .put('/conversations/setting/group/send-msg/:conversationId/:type', authenticateToken, Setting.AllowSendMsg)
