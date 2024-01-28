@@ -20,6 +20,8 @@ const PinNoteVoteMsg = (req, res) => {
       return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid type', success: false })
     }
 
+    dataService.writeData(data)
+
     return res.status(StatusCodes.OK).json({ message: 'Success', success: true, conversation: conversation })
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error', success: false })
@@ -45,6 +47,35 @@ const AllowVote = (req, res) => {
       return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid type', success: false })
     }
 
+    dataService.writeData(data)
+
+    return res.status(StatusCodes.OK).json({ message: 'Success', success: true, conversation: conversation })
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error', success: false })
+  }
+}
+
+const AllowNote = (req, res) => {
+  try {
+    const { conversationId, type } = req.params
+
+    const data = dataService.readData()
+    const conversation = data.Conversation.find(conv => conv.id === conversationId)
+
+    if (!conversation) {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: 'Conversation not found', success: false })
+    }
+
+    if (type === 'on') {
+      updateSettingValue(conversation.conversationSetting, 5, true)
+    } else if (type === 'off') {
+      updateSettingValue(conversation.conversationSetting, 5, false)
+    } else {
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid type', success: false })
+    }
+
+    dataService.writeData(data)
+
     return res.status(StatusCodes.OK).json({ message: 'Success', success: true, conversation: conversation })
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error', success: false })
@@ -57,8 +88,9 @@ const updateSettingValue = (conversationSettings, targetType, newValue) => {
   if (settingIndex !== -1) {
     conversationSettings[settingIndex].value = newValue
   } else {
+    // eslint-disable-next-line no-console
     console.log('Invalid Type')
   }
 }
 
-export default { PinNoteVoteMsg, AllowVote }
+export default { PinNoteVoteMsg, AllowVote, AllowNote }
