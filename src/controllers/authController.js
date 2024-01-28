@@ -1,18 +1,11 @@
 import bcrypt from 'bcrypt'
+import crypto from 'crypto'
 import HttpStatus from 'http-status-codes'
 import JWT from 'jsonwebtoken'
 import { validateRegistration } from '../validations/validation'
-import { addUser, findUserByUsernameOrEmailOrId, updatePassword } from '../models/user'
+import { addUser, findUserByUsernameOrEmailOrId, updatePassword, addUserData } from '../models/user'
 import { generateKeyPair, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
 import nodemailer from 'nodemailer'
-
-const transporter = nodemailer.createTransport({
-  service: process.env.EMAIL_SERVICE,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-})
 
 const registerUser = async (req, res) => {
   try {
@@ -231,12 +224,70 @@ const changePassword = async (req, res) => {
   }
 }
 
-const forgotPassword = async (req, res) => {
+const transporter = nodemailer.createTransport({
+  host:'smtp.forwardemail.net',
+  port:587,
+  secure:false,
+  // service: process.env.EMAIL_SERVICE,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+})
 
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body
+
+    const user = findUserByUsernameOrEmailOrId(email)
+
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).json({ message: 'Email not found', success: false })
+    }
+
+    const token = JWT.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET_KEY, { expiresIn: '5m' })
+    // user.passwordResetToken = token
+    // user.passwordResetExpires = Date.now() + //
+    // addUserData(user.id, token, token)
+
+    const resetCodes = {}
+    const resetCode = crypto.randomBytes(3).toString('hex').toUpperCase()
+    resetCodes[email] = resetCode
+
+    const resetUrl = `http://${process.env.HOST_NAME}:${process.env.PORT}/reset-password/${resetCode}?token=${token}`
+
+    console.log('URL: ', resetUrl)
+    console.log('resetCode: ', resetCode)
+    console.log('resetCodeEmail: ', resetCodes)
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Password Reset Request',
+      html: `
+      <p>You requested a password reset. Click the link below to reset your password:</p>
+      <a href="${resetUrl}">${resetUrl}</a>
+      <h1>${resetCode}</h1>
+    `
+    }
+    try {
+      await transporter.sendMail(mailOptions)
+      return res.status(HttpStatus.OK).json({ message: 'Email sent', success: true })
+    } catch (err) {
+      console.log('error sent email', err)
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Failed to send password reset email', success: false })
+    }
+  } catch (error) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error_code: 'Internal Server Error', success: false })
+  }
 }
 
 const resetPassword = async (req, res) => {
-  
+  const { code, token } = req.params
+  console.log(req.params)
 }
 
 export { registerUser, loginUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser, changePassword, forgotPassword, resetPassword }

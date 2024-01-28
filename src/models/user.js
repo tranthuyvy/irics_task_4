@@ -22,10 +22,23 @@ const updatePassword = (userId, newPassword) => {
     user.password = newPassword
 
     dataService.writeData(data)
-    
+
   } catch (error) {
     console.error('Error updated', error.message)
   }
 }
 
-export { addUser, findUserByUsernameOrEmailOrId, updatePassword }
+const addUserData = (userId, fieldName, fieldValue) => {
+  try {
+    const data = dataService.readData()
+    const user = data.users.find(user => user.id === userId)
+
+    user[fieldName] = fieldValue
+
+    dataService.writeData(data)
+  } catch (error) {
+    console.error('Error adding user data field', error.message)
+  }
+}
+
+export { addUser, findUserByUsernameOrEmailOrId, updatePassword, addUserData }
