@@ -6,6 +6,7 @@ import cookieparser from 'cookie-parser'
 
 dotenv.config()
 
+import initAPIRoute from './routes/v1/router'
 const app = express()
 const hostname = process.env.HOST_NAME || 'localhost'
 const port = process.env.PORT || 8080
@@ -20,6 +21,9 @@ app.use((req, res, next) => {
 app.use(cookieparser())
 app.use(bodyParserMiddleware)
 app.use('/api/auth', authRoutes)
+
+// init api routes
+initAPIRoute(app)
 
 app.get('/', (req, res) => {
   res.end('<h1>Hello TTV</h1><hr>')

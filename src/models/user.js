@@ -41,4 +41,11 @@ const addUserData = (userId, fieldName, fieldValue) => {
   }
 }
 
-export { addUser, findUserByUsernameOrEmailOrId, updatePassword, addUserData }
+
+const findUserByID = async (id) => {
+  const data = await dataService.readData()
+  return await data.users.find(user => user.id === id )
+}
+
+export { addUser, findUserByUsernameOrEmailOrId, updatePassword, addUserData, findUserByID }
+
