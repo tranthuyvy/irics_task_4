@@ -68,7 +68,7 @@
         "updatedAt": "2024-01 - 13T06: 34: 44.343Z"
       },
       "unSeenMessageTotal": 0,
-      "member": [
+      "members": [
         {
           "type": 1,
           "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
@@ -158,7 +158,7 @@
         "updatedAt": "2024-01 - 13T06: 34: 44.343Z"
       },
       "unSeenMessageTotal": 0,
-      "member": [
+      "members": [
         {
           "type": 1,
           "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
@@ -251,7 +251,10 @@
       "question": "test api question",
       "options": [
         "solution 1",
-        "solution 2"
+        "solution 2",
+        [
+          "Add new vote 1, add new vote 2"
+        ]
       ],
       "allowMultipleAnswers": true,
       "allowAddOption": true,
@@ -275,7 +278,12 @@
       "options": [
         "solution 1",
         "solution 2",
-        "solution 3"
+        "solution 3",
+        "Add new vote 1",
+        "Add new vote 2",
+        "Add new vote 3",
+        "Add new vote 4",
+        "Add new vote 5"
       ],
       "allowMultipleAnswers": true,
       "allowAddOption": true,

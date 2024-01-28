@@ -5,3 +5,4 @@ export const RouterChat = (router) =>
     router
         .post('/conversations/note/:conversationId', verifyToken, Note.createNewNote)
         .post('/conversations/vote/:conversationId', verifyToken, Vote.createNewVote)
+        .put('/conversations/vote/:voteId/:action', verifyToken, Vote.updateVote)

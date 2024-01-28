@@ -58,7 +58,7 @@ const CreateGroupChat = async (req, res) => {
       latestMessage: [],
       createdByUser: objCreatedbyUser,
       unSeenMessageTotal: 0,
-      member: userarr,// get user from member ID
+      members: userarr,// get user from member ID
       messagePin: [],
       conversationSetting: [
         {
