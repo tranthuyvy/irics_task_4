@@ -51,10 +51,42 @@ const deleteMemberChat = (MemberID, conversationID) => {
   }
 }
 
+//get conversation belong to user
+const getConversationofUser = async (UserID, limit, conversationID, status) => {
+  if (conversationID) {
+    return await findConversationByID(conversationID)
+  }
+  else {
+    const data = readData()
+    let arrConver = []
+    let result = []
+
+    const datatest = data.Conversation.map(value => {// create array of conversation
+      return {
+        member: value.member.map(index => index.id == UserID ? true : false),
+        id: value.id,
+        type: value.satus
+      }
+    })
+
+    datatest.map(value => {// check condition of query
+      value.member.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
+    })
+
+    for (let index = 0; index < limit - 1; index++) {
+      if (arrConver[index] !== undefined) {
+        let dataresult = await findConversationByID(arrConver[index])
+        result.push(dataresult)
+      }
+    }
+    return result
+  }
+}
+
 // find index conversation
-const findInexConversation = (data, value) => {
+const findInexConversation = async (data, value) => {
   const index = data.Conversation.findIndex(item => item.id === value)
-  return index
+  return await index
 }
 
 // find conversation by idconversation
@@ -74,5 +106,6 @@ export default
     UpdateNameGroupChat,
     findConversationByID,
     UpdateMemberGroupChat,
-    deleteMemberChat
+    deleteMemberChat,
+    getConversationofUser
   }

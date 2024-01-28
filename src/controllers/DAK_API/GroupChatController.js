@@ -7,7 +7,8 @@ import JWT from 'jsonwebtoken'
 const CreateGroupChat = async (req, res) => {
   try {
     const { type, name, memberIds } = req.body
-    const createdByUser = getIdUserOfToken(req).userId// get id user from token
+    const tokenUser = req.headers.authorization
+    const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
 
     const timeCreated = new Date().getTime()
 
@@ -137,13 +138,11 @@ const UpdateNameGroupChat = async (req, res) => {
 
 const GetConversationBelongUser = async (req, res) => {
   const { offset, limit, search, status } = req.query
-  if (search == '') {
-
-    return res.status(200).json({ message: 'update name succes' })
-  }
-  else {
-    return res.status(200).json({ message: 'update name succes' })
-  }
+  const tokenUser = req.headers.authorization
+  const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
+  let result = await dataService.getConversationofUser(createdByUser, limit, search, status)
+  console.log(result)
+  return res.status(200).json({ message: 'update name succes', data: result })
 }
 
 const GetConversationDetail = async (req, res) => {
@@ -159,8 +158,7 @@ const getUser = async (memberIds) => {
   return await findUserByID(memberIds)
 }
 
-const getIdUserOfToken = (req) => {// get id user of token
-  const token = req.rawHeaders[3]
+const getIdUserOfToken = (token) => {// get id user of token
   const tokenWithoutBearer = token.split('Bearer ')[1]
   return JWT.decode(tokenWithoutBearer)
 }
@@ -220,7 +218,7 @@ const AddMemberToGroupChat = async (req, res) => {
   }
 }
 
-const RemoveMemberToGroupChat = async ( req, res ) => {
+const RemoveMemberToGroupChat = async (req, res) => {
   const conversationId = req.params.conversationId
   const memberID = req.body.ids
 
@@ -228,7 +226,7 @@ const RemoveMemberToGroupChat = async ( req, res ) => {
 
   const _check = await PermissionDelMember(UserId, conversationId)
   if (_check == true) {
-    dataService.deleteMemberChat(memberID,conversationId)
+    dataService.deleteMemberChat(memberID, conversationId)
     return res.status(200).json({ message: 'succes' })
   }
   else
@@ -252,10 +250,12 @@ const checkMember = async (memberID) => {
   return await findUserByID(memberID) ? true : false
 }
 
-export default 
-{ CreateGroupChat, 
-  UpdateNameGroupChat, 
-  GetConversationBelongUser, 
-  GetConversationDetail, 
-  AddMemberToGroupChat,
-  RemoveMemberToGroupChat }
+export default
+  {
+    CreateGroupChat,
+    UpdateNameGroupChat,
+    GetConversationBelongUser,
+    GetConversationDetail,
+    AddMemberToGroupChat,
+    RemoveMemberToGroupChat
+  }
