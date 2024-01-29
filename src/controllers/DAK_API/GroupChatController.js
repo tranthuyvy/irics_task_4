@@ -144,7 +144,7 @@ const GetConversationBelongUser = async (req, res) => {
   const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
   let result = await dataService.getConversationofUser(createdByUser, limit, search, status)
 
-  return res.status(200).json({ message: 'update name succes', data: result })
+  return res.status(200).json({ message: 'Success', data: result })
 }
 
 const GetConversationDetail = async (req, res) => {
@@ -252,7 +252,7 @@ const checkMember = async (memberID) => {
   return await findUserByID(memberID) ? true : false
 }
 
-// delete DeleteConversation 
+// delete DeleteConversation
 const DeleteConversation = async (req, res) => {
   const idConversation = req.params.id
   const tokenUser = req.headers.authorization
