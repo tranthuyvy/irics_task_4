@@ -253,12 +253,28 @@ const checkMember = async (memberID) => {
 // delete DeleteConversation 
 const DeleteConversation = async ( req, res ) => {
   const idConversation = req.params.id
-  PermissionDelConversation
+  const tokenUser = req.headers.authorization
+  
+  //check type = 1 or 2 of conversation
+
+  // check permissions of gr chat 
+  const checkPermission = await PermissionDelConversation(tokenUser, idConversation)
+  console.log(await  dataService.deleteConversation(idConversation))
+  // if (checkPermission != 1 ){
+  //   data
+  // }
+  return res.status(200).json({ message: 'succes' })
 }
 
 //check permissions to delete conversation
-const PermissionDelConversation = async () => { 
-  return 
+const PermissionDelConversation = async (tokenUser,idConversation) => {
+  const createdByUser = getIdUserOfToken(tokenUser).userId
+  const dataConversation = await dataService.findConversationByID(idConversation)
+
+  const result = await dataConversation.member.find(value => value.id == createdByUser)// check conversation
+
+  const checkPermission = result.type == 1 ? true : false
+  return checkPermission
 }
 export default
   {

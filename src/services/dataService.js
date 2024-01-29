@@ -99,6 +99,12 @@ const findConversationByID = async (id) => {
   }
 }
 
+const deleteConversation = async (Idmember, Idconversation) => {
+  const data = readData()
+  const checkdata = await data.Conversation.delete(conversation => conversation.id ===Idconversation)
+  console.log(checkdata)
+}
+
 export default
   {
     readData,
@@ -107,5 +113,6 @@ export default
     findConversationByID,
     UpdateMemberGroupChat,
     deleteMemberChat,
-    getConversationofUser
+    getConversationofUser,
+    deleteConversation
   }
