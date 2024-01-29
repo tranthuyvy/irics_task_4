@@ -119,8 +119,8 @@ const deleteConversation = async (Idconversation) => {// update  field isdelete 
 const addHideConversationfiled = async (idConversation, pin) => {
   const data = readData()
   const index = await findInexConversation(data, idConversation)
-
-  await data.Conversation[index].push(pin)
+  data.Conversation[index].isConversationHidden = {pin}
+  console.log(data.Conversation[index])
   writeData(data)
 }
 

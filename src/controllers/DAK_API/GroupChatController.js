@@ -305,15 +305,13 @@ const PermissionDelConversation = async (tokenUser, idConversation) => {
 //hide hide conversation 
 const HideConversation = async (req, res) => {
   const { conversationId, pin } = req.body
-  const ConversationHidden = { pin }
-  dataService.hideConversation(conversationId, ConversationHidden)
+  await dataService.addHideConversationfiled(conversationId, pin)
   return res.status(200).json({ message: 'succes' })
 }
 //hide hide conversation 
 const UnHideConversation = async (req, res) => {
   const {conversationId} = req.body
   return res.status(200).json({ message: 'succes' })
-  
 }
 
 const PinConversation = async (req, res) => {
