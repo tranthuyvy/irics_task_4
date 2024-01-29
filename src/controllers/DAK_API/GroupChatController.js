@@ -9,24 +9,45 @@ const CreateGroupChat = async (req, res) => {
     const { type, name, memberIds } = req.body
     const tokenUser = req.headers.authorization
     const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
-
+    const typeConversation = type == 2 ? 'member' : 'directUser'// type of conversation
     const timeCreated = new Date().getTime()
 
     //get information of userid
     const _users = memberIds.map((index) => getUser(index))
     const user = await Promise.all(_users)
     let userarr = []
-    //
-    for (let i = 0; i < user.length; i++) {
-      userarr.push({
-        type: 1,
-        id: user[i]?.id,
-        ownerAccepted: true,
-        username: user[i]?.username,
-        avatar: user[i]?.avatar,
-        lastLogin: '2024-01 - 13T06: 34: 44.341Z',
-      })
+    if (type == 2) {
+      for (let i = 0; i < user.length; i++) {
+        userarr.push({
+          type: 1,
+          id: user[i]?.id,
+          ownerAccepted: true,
+          username: user[i]?.username,
+          avatar: user[i]?.avatar,
+          lastLogin: '2024-01 - 13T06: 34: 44.341Z',
+        })
+      }
     }
+    else {
+      for (let i = 0; i < user.length; i++) {
+        userarr.push({
+          type: 1,
+          id: user[i]?.id,
+          ownerAccepted: true,
+          username: user[i]?.username,
+          avatar: user[i]?.avatar,
+          background_img : user[i]?.background_img,
+          status: 0,
+          isActiveMember: false,
+          isBlockStranger: false,
+          blockUserIds: [],
+          lastLogin: '2024-01-21T08:33:08.391Z',
+          createdAt: '2024-01-21T08:33:08.394Z',
+          updatedAt: '2024-01-21T08:33:08.394Z'
+        })
+      }
+    }
+    //
     //get information of Createduser
     const createUser = await getUser(createdByUser)
 
@@ -47,7 +68,7 @@ const CreateGroupChat = async (req, res) => {
 
     // craete inviteID 
     const inviteId = uuidv4().replace(/-/g, '')
-    const typeConversation = type == 2 ? 'member' : 'directUser'
+
     //create data to import database
     const conversation = {
       status: +type,
@@ -280,6 +301,25 @@ const PermissionDelConversation = async (tokenUser, idConversation) => {
   const checkPermission = result.type == 1 ? true : false
   return checkPermission
 }
+
+//hide hide conversation 
+const HideConversation = async (req, res) => {
+  const { conversationId, pin } = req.body
+  const ConversationHidden = { pin }
+  dataService.hideConversation(conversationId, ConversationHidden)
+  return res.status(200).json({ message: 'succes' })
+}
+//hide hide conversation 
+const UnHideConversation = async (req, res) => {
+  const {conversationId} = req.body
+  return res.status(200).json({ message: 'succes' })
+  
+}
+
+const PinConversation = async (req, res) => {
+
+}
+
 export default
   {
     CreateGroupChat,
@@ -288,5 +328,8 @@ export default
     GetConversationDetail,
     AddMemberToGroupChat,
     RemoveMemberToGroupChat,
-    DeleteConversation
+    DeleteConversation,
+    HideConversation,
+    UnHideConversation,
+    PinConversation
   }
