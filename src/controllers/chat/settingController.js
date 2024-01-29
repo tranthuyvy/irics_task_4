@@ -1,5 +1,6 @@
 import dataService from '../../services/dataService'
 import { StatusCodes } from 'http-status-codes'
+import JWT from 'jsonwebtoken'
 
 const PinNoteVoteMsg = (req, res) => {
   try {
@@ -10,6 +11,20 @@ const PinNoteVoteMsg = (req, res) => {
 
     if (!conversation) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'Conversation not found', success: false })
+    }
+
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]
+    const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
+    const userId = decodedToken.userId
+
+    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userOwned = conversation.createdBy
+
+    if (userInDirectUser) {
+      if (userInDirectUser.type !== 1 && userInDirectUser.type !== 2)
+        return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
+    } else if (userId !== userOwned) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
     }
 
     if (type === 'on') {
@@ -39,6 +54,20 @@ const AllowVote = (req, res) => {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'Conversation not found', success: false })
     }
 
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]
+    const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
+    const userId = decodedToken.userId
+
+    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userOwned = conversation.createdBy
+
+    if (userInDirectUser) {
+      if (userInDirectUser.type !== 1 && userInDirectUser.type !== 2)
+        return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
+    } else if (userId !== userOwned) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
+    }
+
     if (type === 'on') {
       updateSettingValue(conversation.conversationSetting, 4, true)
     } else if (type === 'off') {
@@ -64,6 +93,20 @@ const AllowNote = (req, res) => {
 
     if (!conversation) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'Conversation not found', success: false })
+    }
+
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]
+    const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
+    const userId = decodedToken.userId
+
+    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userOwned = conversation.createdBy
+
+    if (userInDirectUser) {
+      if (userInDirectUser.type !== 1 && userInDirectUser.type !== 2)
+        return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
+    } else if (userId !== userOwned) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
     }
 
     if (type === 'on') {
@@ -93,6 +136,20 @@ const AllowSendMsg = (req, res) => {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'Conversation not found', success: false })
     }
 
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]
+    const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
+    const userId = decodedToken.userId
+
+    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userOwned = conversation.createdBy
+
+    if (userInDirectUser) {
+      if (userInDirectUser.type !== 1 && userInDirectUser.type !== 2)
+        return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
+    } else if (userId !== userOwned) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
+    }
+
     if (type === 'on') {
       updateSettingValue(conversation.conversationSetting, 6, true)
     } else if (type === 'off') {
@@ -120,6 +177,20 @@ const AllowReviewMember = (req, res) => {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'Conversation not found', success: false })
     }
 
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]
+    const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
+    const userId = decodedToken.userId
+
+    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userOwned = conversation.createdBy
+
+    if (userInDirectUser) {
+      if (userInDirectUser.type !== 1 && userInDirectUser.type !== 2)
+        return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
+    } else if (userId !== userOwned) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
+    }
+
     if (type === 'on') {
       updateSettingValue(conversation.conversationSetting, 7, true)
     } else if (type === 'off') {
@@ -141,10 +212,25 @@ const AllowJoinLinkInvite = (req, res) => {
     const { conversationId, type } = req.params
 
     const data = dataService.readData()
+
     const conversation = data.Conversation.find(conv => conv.id === conversationId)
 
     if (!conversation) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'Conversation not found', success: false })
+    }
+
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]
+    const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
+    const userId = decodedToken.userId
+
+    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userOwned = conversation.createdBy
+
+    if (userInDirectUser) {
+      if (userInDirectUser.type !== 1 && userInDirectUser.type !== 2)
+        return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
+    } else if (userId !== userOwned) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Permission Denied', success: false })
     }
 
     if (type === 'on') {

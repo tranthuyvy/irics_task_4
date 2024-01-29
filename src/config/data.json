@@ -437,7 +437,7 @@
       "unSeenMessageTotal": 0,
       "directUser": [
         {
-          "type": 1,
+          "type": 2,
           "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
           "ownerAccepted": true,
           "username": "duyvottt",
@@ -445,7 +445,7 @@
           "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
         },
         {
-          "type": 1,
+          "type": 3,
           "id": "de92b51d-050f-4a60-91cf-6970a5a317d4",
           "ownerAccepted": true,
           "username": "KhanhNguyen312",
