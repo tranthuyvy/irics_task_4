@@ -64,16 +64,15 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
     const data = readData()
     let arrConver = []
     let result = []
-    
+
     const datatest = data?.Conversation?.map(value => {// create array of conversation
-      console.log(value.id)
       return {
         members: value?.members?.map(index => index.id == UserID ? true : false),
         id: value.id,
         type: value.status
       }
     })
-    console.log(datatest)
+
     datatest.map(value => {// check condition of query
       value.members.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
     })
