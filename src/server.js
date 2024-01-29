@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParserMiddleware from './middlewares/bodyParser'
 import authRoutes from './routes/v1/auth'
-import dotenv from 'dotenv'
+const dotenv = require('dotenv')
 import cookieparser from 'cookie-parser'
 
 dotenv.config()
@@ -10,7 +10,6 @@ import initAPIRoute from './routes/v1/router'
 const app = express()
 const hostname = process.env.HOST_NAME || 'localhost'
 const port = process.env.PORT || 8080
-
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')

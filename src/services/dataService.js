@@ -17,21 +17,25 @@ const writeData = (data) => {
 }
 
 // api update name gr chat
-const UpdateNameGroupChat = (conversationID, TextUpdate) => {
-  const data = readData()
-  const index = findInexConversation(data, conversationID)
-  data.Conversation[index].member.push(TextUpdate)
-  writeData(data)
+const UpdateNameGroupChat = async (conversationID, TextUpdate) => {
+  try {
+    const data = readData()
+    const index = await findInexConversation(data, conversationID)
+    data.Conversation[index].name = TextUpdate
+    writeData(data)
+  } catch (error) {
+    return { message: error }
+  }
 }
 
 // update member in conversation
-const UpdateMemberGroupChat = (conversationID, informationMember) => {
+const UpdateMemberGroupChat = async (conversationID, informationMember) => {
   try {
 
     const data = readData()
-    const index = findInexConversation(data, conversationID)
+    const index = await findInexConversation(data, conversationID)
 
-    data.Conversation[index].member.push(informationMember)
+    await data.Conversation[index].members.push(informationMember)
     writeData(data)
 
     return { message: 'success' }
@@ -45,8 +49,8 @@ const deleteMemberChat = (MemberID, conversationID) => {
   try {
     const data = readData()
     const index = findInexConversation(data, conversationID)
-    data.Conversation[index].member = data.Conversation[index].member.filter(item => item.id != MemberID)
-    writeData(data)
+    data.Conversation[index].member = data.Conversation[index].members.filter(item => item.id != MemberID)
+    // writeData(data)
   } catch (error) {
     return { message: error }
   }
@@ -62,16 +66,16 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
     let arrConver = []
     let result = []
 
-    const datatest = data.Conversation.map(value => {// create array of conversation
+    const datatest = data?.Conversation?.map(value => {// create array of conversation
       return {
-        member: value.member.map(index => index.id == UserID ? true : false),
+        members: value?.members?.map(index => index.id == UserID ? true : false),
         id: value.id,
-        type: value.satus
+        type: value.status
       }
     })
 
     datatest.map(value => {// check condition of query
-      value.member.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
+      value.members.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
     })
 
     for (let index = 0; index < limit - 1; index++) {
@@ -85,9 +89,9 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
 }
 
 // find index conversation
-const findInexConversation = async (data, value) => {
-  const index = data.Conversation.findIndex(item => item.id === value)
-  return await index
+const findInexConversation = async (data, Idconversation) => {
+  const index = await data.Conversation.findIndex(item => item.id === Idconversation)
+  return index
 }
 
 // find conversation by idconversation
@@ -100,6 +104,18 @@ const findConversationByID = async (id) => {
   }
 }
 
+const deleteConversation = async (Idconversation) => {// update  field isdelete : true  
+  try {
+    const data = readData()
+    const index = await findInexConversation(data, Idconversation)
+    data.Conversation[index].isDeleted = true
+    writeData(data)
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
 export default
   {
     readData,
@@ -108,5 +124,6 @@ export default
     findConversationByID,
     UpdateMemberGroupChat,
     deleteMemberChat,
-    getConversationofUser
+    getConversationofUser,
+    deleteConversation
   }

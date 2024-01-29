@@ -105,9 +105,9 @@ const loginUser = async (req, res) => {
     if (!result) {
       return res.status(HttpStatus.CONFLICT).json({ message: 'Wrong password', success: false })
     }
-
+   
     // const token = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
-    const token = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30m' })
+    const token = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
     JWT.decode()
     const tokenExpiration = JWT.decode(token).exp
 
