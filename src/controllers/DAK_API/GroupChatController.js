@@ -36,7 +36,7 @@ const CreateGroupChat = async (req, res) => {
           ownerAccepted: true,
           username: user[i]?.username,
           avatar: user[i]?.avatar,
-          background_img : user[i]?.background_img,
+          background_img: user[i]?.background_img,
           status: 0,
           isActiveMember: false,
           isBlockStranger: false,
@@ -196,49 +196,50 @@ const permissionMemberGroupChat = async (idMember, idConversation) => {// check 
 const AddMemberToGroupChat = async (req, res) => {
   const conversationId = req.params.conversationId
   const memberID = req.body.ids
-  // check Id exist
+
   let arrInfoMember = []
-  let _checkId = true
-  let _checkExistMember = false
-  await Promise.all(memberID.map(async (idMember) => {
-    _checkId = await checkMember(idMember)
-  }))
+
+  // check Id
+  let _checkId = await memberID.map(idMember => checkMember(idMember))
 
   // check exist member in conversation
   const dataConversation = await dataService.findConversationByID(conversationId)
-  await Promise.all(memberID.map(async (idMember) => {
-    _checkExistMember = await dataConversation.member.find(value => value.id === idMember) ? true : false
-  })
-  )
+
+  let _checkExistMember = await memberID.map(idMember => dataConversation.members.find(value => value.id == idMember) ? true : false)
+
+  console.log(_checkId, _checkExistMember)
 
   // create information member
-  if (_checkId == true && _checkExistMember == false) {
-    await Promise.all(memberID.map(async idMember => {
+  for (let i = 0; i < _checkExistMember.length; i++) {
+    if (_checkId[i] == true) {
+      if (_checkExistMember[i] == true) { // check is already in conversation
+        return res.status(200).json({ message: 'member already in conversation' })
+      }
+      await CrObjFunc(memberID, arrInfoMember)// update member to obj
 
-      let infoMember = await getUser(idMember)
-
-      arrInfoMember.push({
-        type: 4,
-        id: idMember,
-        ownerAccepted: true,
-        username: infoMember.username,
-        avatar: infoMember.avatar,
-        lastLogin: infoMember.lastLogin
-      })
-
-    }))
-
-    // update member to data
-    await Promise.all(arrInfoMember.map(async data =>
-      await dataService.UpdateMemberGroupChat(conversationId, data)
-    ))
-
-    return res.status(200).json({ message: 'succes' })
+      await Promise.all(arrInfoMember.map(async data => // update member to data
+        await dataService.UpdateMemberGroupChat(conversationId, data)
+      ))
+      return res.status(200).json({ message: 'succes' })
+    }
+    else {
+      return res.status(404).json({ error: 'error member' })
+    }
   }
-  else {
-    if (_checkExistMember == true) return res.status(404).json({ error: 'member already in conversation' })
-    return res.status(404).json({ error: 'error' })
-  }
+}
+
+const CrObjFunc = async (memberID, arrInfoMember) => {
+  await Promise.all(memberID.map(async idMember => {
+    let infoMember = await getUser(idMember)
+    arrInfoMember.push({
+      type: 4,
+      id: idMember,
+      ownerAccepted: true,
+      username: infoMember.username,
+      avatar: infoMember.avatar,
+      lastLogin: infoMember?.lastLogin
+    })
+  }))
 }
 
 const RemoveMemberToGroupChat = async (req, res) => {
@@ -269,8 +270,8 @@ const PermissionDelMember = async (idMember, idConversation) => {// check permis
 }
 
 // check member have exist
-const checkMember = async (memberID) => {
-  return await findUserByID(memberID) ? true : false
+const checkMember = (memberID) => {
+  return findUserByID(memberID) ? true : false
 }
 
 // delete DeleteConversation 
@@ -302,21 +303,55 @@ const PermissionDelConversation = async (tokenUser, idConversation) => {
   return checkPermission
 }
 
-//hide hide conversation 
+//hidden conversation
 const HideConversation = async (req, res) => {
   const { conversationId, pin } = req.body
-  await dataService.addHideConversationfiled(conversationId, pin)
-  return res.status(200).json({ message: 'succes' })
+  const tokenUser = req.headers.authorization
+  const IdUser = getIdUserOfToken(tokenUser).userId
+  const result = await dataService.addHideConversationfiled(conversationId, pin, IdUser)
+  return res.status(200).json({ message: result.message })
 }
-//hide hide conversation 
+//hide  conversation
 const UnHideConversation = async (req, res) => {
-  const {conversationId} = req.body
-  return res.status(200).json({ message: 'succes' })
+  const { conversationId } = req.body
+  const tokenUser = req.headers.authorization
+  const IdUser = getIdUserOfToken(tokenUser).userId
+  const result = await dataService.UnHiddenConversation(conversationId, IdUser)
+  return res.status(200).json({ message: result.message })
 }
 
 const PinConversation = async (req, res) => {
+  const { action, conversationId } = req.params
 
+  if (action == 'pin') {
+    const result = await dataService.PinConversationfunc(conversationId)
+    return res.status(200).json({ message: result.message })
+  }
+  else return res.status(404).json({ error: 'error' })
 }
+
+const GrantMember = async (req, res) => {
+  const { conversationId } = req.params
+  const { user_id, role } = req.body
+  const tokenUser = req.headers.authorization
+  const idOwnerCheck = getIdUserOfToken(tokenUser).userId
+  // check type of user id in conversation
+  const checkData = await dataService.checkTypeofUserConversation(conversationId, idOwnerCheck)
+  if (checkData == true) {
+    const data = await dataService.checkUserInConversation(conversationId, user_id)
+    if (data == true) {
+      await dataService.UpdateRoleMember(conversationId, role, user_id)
+      return res.status(200).json({ message: 'oke' })
+    }
+    return res.status(200).json({ message: 'oke' })
+  }
+  return res.status(200).json({ message: 'No permission' })
+}
+const DisBandGroup = async (req, res) => { }
+const GetGroupByInvited = async (req, res) => { }
+const JoinGroupByInvited = async (req, res) => { }
+const PreventJoin = async (req, res) => { }
+const UnPreventJoin = async (req, res) => { }
 
 export default
   {
@@ -329,5 +364,11 @@ export default
     DeleteConversation,
     HideConversation,
     UnHideConversation,
-    PinConversation
+    PinConversation,
+    GrantMember,
+    GetGroupByInvited,
+    JoinGroupByInvited,
+    PreventJoin,
+    UnPreventJoin,
+    DisBandGroup
   }

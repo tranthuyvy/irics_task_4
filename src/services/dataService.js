@@ -20,8 +20,8 @@ const writeData = (data) => {
 const UpdateNameGroupChat = async (conversationID, TextUpdate) => {
   try {
     const data = readData()
-    const index = await findInexConversation(data, conversationID)
-    data.Conversation[index].name = TextUpdate
+    const index = await findIndexConversation(data, conversationID)
+    data.Conversation[index].isPinned = TextUpdate
     writeData(data)
   } catch (error) {
     return { message: error }
@@ -33,7 +33,7 @@ const UpdateMemberGroupChat = async (conversationID, informationMember) => {
   try {
 
     const data = readData()
-    const index = await findInexConversation(data, conversationID)
+    const index = await findIndexConversation(data, conversationID)
 
     await data.Conversation[index].members.push(informationMember)
     writeData(data)
@@ -48,8 +48,8 @@ const UpdateMemberGroupChat = async (conversationID, informationMember) => {
 const deleteMemberChat = (MemberID, conversationID) => {
   try {
     const data = readData()
-    const index = findInexConversation(data, conversationID)
-    data.Conversation[index].member = data.Conversation[index].members.filter(item => item.id != MemberID)
+    const index = findIndexConversation(data, conversationID)
+    data.Conversation[index].members = data.Conversation[index].members.filter(item => item.id != MemberID)
     // writeData(data)
   } catch (error) {
     return { message: error }
@@ -89,8 +89,14 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
 }
 
 // find index conversation
-const findInexConversation = async (data, Idconversation) => {
+const findIndexConversation = async (data, Idconversation) => {
   const index = await data.Conversation.findIndex(item => item.id === Idconversation)
+  return index
+}
+
+//find index of user in Users
+const findIndexUser = async (data, IdUser) => {
+  const index = await data.users.findIndex(item => item.id === IdUser)
   return index
 }
 
@@ -104,10 +110,20 @@ const findConversationByID = async (id) => {
   }
 }
 
+//find user by ID 
+const findUserByID = async (id) => {
+  const data = await readData()
+  try {
+    return await data.users.find(user => user.id === id)
+  } catch (error) {
+    return { message: error.message }
+  }
+}
+
 const deleteConversation = async (Idconversation) => {// update  field isdelete : true  
   try {
     const data = readData()
-    const index = await findInexConversation(data, Idconversation)
+    const index = await findIndexConversation(data, Idconversation)
     data.Conversation[index].isDeleted = true
     writeData(data)
   } catch (error) {
@@ -116,12 +132,68 @@ const deleteConversation = async (Idconversation) => {// update  field isdelete 
 
 }
 
-const addHideConversationfiled = async (idConversation, pin) => {
+const addHideConversationfiled = async (idConversation, pin, IdUser) => {
   const data = readData()
-  const index = await findInexConversation(data, idConversation)
-  data.Conversation[index].isConversationHidden = {pin}
-  console.log(data.Conversation[index])
+
+  const checkExistIsHidden = await checkConversationIsHidden(IdUser, idConversation)
+  if (checkExistIsHidden) {
+    return { message : 'conversation alredy hidden' }
+  }
+  const index = await findIndexUser(data, IdUser)
+  data.users[index].isConversationHidden.push({
+    conversationId: idConversation,
+    pin
+  })
   writeData(data)
+  return { message : 'conversation is Hidden' }
+}
+
+const checkConversationIsHidden = async (IdUser, idConversation) => {
+  const data = readData()
+  const index = await findIndexUser(data, IdUser)
+  const dataConversHidden = await data.users[index].isConversationHidden
+  return await dataConversHidden.find(conversation => conversation.conversationId == idConversation )
+}
+
+const UnHiddenConversation = async ( idConversation, IdUser ) => {
+  const data = readData()
+  const index = await findIndexUser(data, IdUser)
+  data.users[index].isConversationHidden = data.users[index].isConversationHidden.filter(item => item.conversationId !== idConversation)
+  writeData(data)
+  return { message : 'conversation is Unhidden' }
+}
+
+const PinConversationfunc = async (idConversation) => {
+  const data = readData()
+  const index = await findIndexConversation(data,idConversation)
+  data.Conversation[index].isPinned = true
+  writeData(data)
+  return { message : 'conversation is pinned' }
+}
+
+const checkTypeofUserConversation = async (idConversation, userId) => {
+  const dataType = await findConversationByID(idConversation)
+  const check = await dataType.members.find(member => member.id == userId)
+  return check ? true : false
+}
+
+const checkUserInConversation = async (idConversation, userId) => {
+  const datacheck = await findConversationByID(idConversation)
+  const result = await datacheck.members.find(member => member.id == userId)
+  return await result ? true : false
+}
+
+const UpdateRoleMember = async (idConversation, role, userId) => {
+  const data = readData()
+  const indexConversation = await findIndexConversation(data, idConversation)
+  const indexUser = await findIndexUserInConversation(data, userId, indexConversation)
+  data.Conversation[indexConversation].members[indexUser].type = role
+  writeData(data)
+}
+
+const findIndexUserInConversation = async (data, userId, indexConversation) => {
+  const index = await data.Conversation[indexConversation].members.findIndex(item => item.id == userId)
+  return index
 }
 
 export default
@@ -134,5 +206,10 @@ export default
     deleteMemberChat,
     getConversationofUser,
     deleteConversation,
-    addHideConversationfiled
+    addHideConversationfiled,
+    UnHiddenConversation,
+    PinConversationfunc,
+    checkTypeofUserConversation,
+    checkUserInConversation,
+    UpdateRoleMember
   }

@@ -39,6 +39,7 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       createdAt: new Date().getTime(),
       background_img: 'https://test3.stechvn.org/api/file/3504639c8-8a24-11ee-9529-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.svg',
+      isConversationHidden:[],
       rsaPublicKey: publicKey,
       rsaPrivateKey: privateKey
     }
