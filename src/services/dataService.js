@@ -34,7 +34,7 @@ const UpdateMemberGroupChat = async (conversationID, informationMember) => {
     const data = readData()
     const index = await findInexConversation(data, conversationID)
 
-    await data.Conversation[index].member.push(informationMember)
+    await data.Conversation[index].members.push(informationMember)
     writeData(data)
 
     return { message: 'success' }
@@ -48,7 +48,7 @@ const deleteMemberChat = (MemberID, conversationID) => {
   try {
     const data = readData()
     const index = findInexConversation(data, conversationID)
-    data.Conversation[index].member = data.Conversation[index].member.filter(item => item.id != MemberID)
+    data.Conversation[index].member = data.Conversation[index].members.filter(item => item.id != MemberID)
     // writeData(data)
   } catch (error) {
     return { message: error }
@@ -64,17 +64,18 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
     const data = readData()
     let arrConver = []
     let result = []
-
-    const datatest = data.Conversation.map(value => {// create array of conversation
+    
+    const datatest = data?.Conversation?.map(value => {// create array of conversation
+      console.log(value.id)
       return {
-        member: value.member.map(index => index.id == UserID ? true : false),
+        members: value?.members?.map(index => index.id == UserID ? true : false),
         id: value.id,
         type: value.status
       }
     })
-
+    console.log(datatest)
     datatest.map(value => {// check condition of query
-      value.member.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
+      value.members.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
     })
 
     for (let index = 0; index < limit - 1; index++) {
