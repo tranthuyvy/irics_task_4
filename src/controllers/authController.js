@@ -95,16 +95,16 @@ const loginUser = async (req, res) => {
 
     const encryptedPassword = encryptWithRSA(user.rsaPublicKey, password)
 
-    const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, password)
+    const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, encryptedPassword)
 
     const result = await bcrypt.compare(decryptedPassword, user.password)
 
     if (!result) {
       return res.status(HttpStatus.CONFLICT).json({ message: 'Wrong password', success: false })
     }
-
+   
     // const token = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
-    const token = JWT.sign({ userId: user.id }, 'ttv', { expiresIn: '30m' })
+    const token = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
     JWT.decode()
     const tokenExpiration = JWT.decode(token).exp
 
