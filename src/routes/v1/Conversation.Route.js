@@ -6,5 +6,8 @@ export const RouterConversation = (router) =>
         .post('/conversations', GroupChat.CreateGroupChat)
         .post('/conversations/:conversationId/add', GroupChat.AddMemberToGroupChat)
         .post('/conversations/:conversationId/remove', GroupChat.RemoveMemberToGroupChat)
+        .post('/conversations/hidden', GroupChat.HideConversation)
+        .post('/conversations/unhidden', GroupChat.UnHideConversation)
+        .put('conversations/:action/:conversationId', GroupChat.PinConversation)
         .patch('/conversations/:id', GroupChat.UpdateNameGroupChat)
         .delete('/conversations/:id', GroupChat.DeleteConversation)

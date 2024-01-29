@@ -116,6 +116,14 @@ const deleteConversation = async (Idconversation) => {// update  field isdelete 
 
 }
 
+const addHideConversationfiled = async (idConversation, pin) => {
+  const data = readData()
+  const index = await findInexConversation(data, idConversation)
+
+  await data.Conversation[index].push(pin)
+  writeData(data)
+}
+
 export default
   {
     readData,
@@ -125,5 +133,6 @@ export default
     UpdateMemberGroupChat,
     deleteMemberChat,
     getConversationofUser,
-    deleteConversation
+    deleteConversation,
+    addHideConversationfiled
   }
