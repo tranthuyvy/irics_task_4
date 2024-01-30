@@ -277,13 +277,13 @@ const JoinGroupByInviteld = async (req, res) => {
     if (!userInProgram) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'User not found', success: false })
     }
-    const userInMember = dataConversation.member.find(user => user.id === userId)
+    const userInMember = dataConversation.members.find(user => user.id === userId)
 
     if (userInMember){
       return res.status(StatusCodes.CONFLICT).json({ message: 'User already exists in conversation', success: false })
     }
 
-    dataConversation.member.push({
+    dataConversation.members.push({
       type: 1,
       id: userId,
       ownerAccepted: true,
