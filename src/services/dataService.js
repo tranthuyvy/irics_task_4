@@ -133,18 +133,6 @@ const addHideConversationfiled = async (idConversation, pin) => {
   writeData(data)
 }
 
-const addMemberToGroupChat = (conversation, newMember) => {
-  const existingMemberIndex = conversation.member.findIndex(member => member.id === newMember.id)
-
-  if (existingMemberIndex === -1) {
-
-    conversation.member.push(newMember)
-    return { success: true, message: 'added successfully' }
-  } else {
-    return { success: false, message: 'Member already exists in conversation' }
-  }
-}
-
 export default
   {
     readData,
@@ -156,6 +144,5 @@ export default
     getConversationofUser,
     deleteConversation,
     addHideConversationfiled,
-    findConversationByInvitedId,
-    addMemberToGroupChat
+    findConversationByInvitedId
   }
