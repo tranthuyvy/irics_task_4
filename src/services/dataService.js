@@ -35,7 +35,7 @@ const UpdateMemberGroupChat = async (conversationID, informationMember) => {
     const data = readData()
     const index = await findInexConversation(data, conversationID)
 
-    await data.Conversation[index].members.push(informationMember)
+    await data.Conversation[index].member.push(informationMember)
     writeData(data)
 
     return { message: 'success' }
@@ -93,6 +93,15 @@ const findInexConversation = async (data, Idconversation) => {
   const index = await data.Conversation.findIndex(item => item.id === Idconversation)
   return index
 }
+//find conversation by invitedId
+const findConversationByInvitedId = async (invitedId) => {
+  const data = await readData()
+  try {
+    return await data.Conversation.find(conversation => conversation.inviteId === invitedId)
+  } catch (error) {
+    return { message: error.message }
+  }
+}
 
 // find conversation by idconversation
 const findConversationByID = async (id) => {
@@ -124,6 +133,18 @@ const addHideConversationfiled = async (idConversation, pin) => {
   writeData(data)
 }
 
+const addMemberToGroupChat = (conversation, newMember) => {
+  const existingMemberIndex = conversation.member.findIndex(member => member.id === newMember.id)
+
+  if (existingMemberIndex === -1) {
+
+    conversation.member.push(newMember)
+    return { success: true, message: 'added successfully' }
+  } else {
+    return { success: false, message: 'Member already exists in conversation' }
+  }
+}
+
 export default
   {
     readData,
@@ -134,5 +155,7 @@ export default
     deleteMemberChat,
     getConversationofUser,
     deleteConversation,
-    addHideConversationfiled
+    addHideConversationfiled,
+    findConversationByInvitedId,
+    addMemberToGroupChat
   }
