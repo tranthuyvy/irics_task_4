@@ -455,20 +455,41 @@
         "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
       },
       "content": "note test"
+    },
+    {
+      "id": "689be29c84c8e610ca4d589b",
+      "conversationId": "2fcfdbeb8f2e402318c6448a",
+      "isPinned": false,
+      "content": "note test 2 api task 4",
+      "createdByUser": {
+        "type": 1,
+        "id": "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919",
+        "ownerAccepted": true,
+        "username": "huy269",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+      }
     }
   ],
   "votes": [
     {
-      "id": "c96155351686b5e82b5d8edd",
+      "id": "18d9654cab032ce488869cc7",
       "conversationId": "2fcfdbeb8f2e402318c6448a",
-      "isPinned": true,
+      "isPinned": false,
       "question": "test api question",
       "options": [
-        "solution 1",
-        "solution 2",
-        [
-          "Add new vote 1, add new vote 2"
-        ]
+        {
+          "id": "b4b2a96a2aa8134862316299",
+          "value": "solution 5"
+        },
+        {
+          "id": "b4b2a96a2aa8134862316299",
+          "value": "solution 6"
+        },
+        {
+          "id": "b4b2a96a2aa8134862316299",
+          "value": "solution 7, solution 8"
+        }
       ],
       "allowMultipleAnswers": true,
       "allowAddOption": true,
@@ -483,22 +504,30 @@
         "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
         "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
       },
-      "isClosed": true
+      "isClosed": false
     },
     {
-      "id": "95f7fc6831df34c67efa0ab3",
+      "id": "0d1c71facea7b293eeca4acc",
       "conversationId": "2fcfdbeb8f2e402318c6448a",
-      "isPinned": true,
-      "question": "test api question",
+      "isPinned": false,
+      "question": "test api 2 question",
       "options": [
-        "solution 1",
-        "solution 2",
-        "solution 3",
-        "Add new vote 1",
-        "Add new vote 2",
-        "Add new vote 3",
-        "Add new vote 4",
-        "Add new vote 5"
+        {
+          "id": "93396ff3581f2e7cbef9f848",
+          "value": "solution 1"
+        },
+        {
+          "id": "93396ff3581f2e7cbef9f848",
+          "value": "solution 2"
+        },
+        {
+          "id": "93396ff3581f2e7cbef9f848",
+          "value": "solution 3"
+        },
+        {
+          "id": "93396ff3581f2e7cbef9f848",
+          "value": "solution 4"
+        }
       ],
       "allowMultipleAnswers": true,
       "allowAddOption": true,

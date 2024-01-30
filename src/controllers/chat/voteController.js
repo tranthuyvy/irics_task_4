@@ -1,6 +1,13 @@
-import { createVote, findConversationById, findVoteByConversationId, findVoteById, updateVoteById } from '~/models/chat';
+import {
+    createVote,
+    findConversationById,
+    findVoteByConversationId,
+    findVoteById,
+    updateVoteById,
+} from '~/models/chat';
 import { updateConversationById } from '~/models/conversation.model';
 import { findUserByID } from '~/models/user';
+import generateService from '~/services/generateID';
 
 const createNewVote = async (req, res) => {
     try {
@@ -36,11 +43,17 @@ const createNewVote = async (req, res) => {
                         avatar: userNote?.avatar,
                         lastLogin: '2024-01 - 13T06: 34: 44.341Z',
                     };
+                    // Tạo mảng options với mỗi option chứa id và giá trị
+                    const generateOptionId = await generateService.generateID();
+                    const optionsWithId = options.map((option) => ({
+                        id: generateOptionId,
+                        value: option,
+                    }));
                     const vote = {
                         conversationId,
                         isPinned,
                         question,
-                        options,
+                        options: optionsWithId,
                         allowMultipleAnswers,
                         allowAddOption,
                         hideResultBeforeAnswers,
@@ -50,7 +63,7 @@ const createNewVote = async (req, res) => {
                         isClosed: false,
                     };
                     await createVote(vote);
-                    return res.status(200).json({ message: 'create vote success' });
+                    return res.status(200).json({ data: vote, message: 'create vote success' });
                 }
             }
         }
@@ -166,7 +179,43 @@ const getListVote = async (req, res) => {
     }
 };
 
-export default { createNewVote, updateVote, getListVote };
+const answerVote = async (req, res) => {
+    try {
+        const { userId } = req.user;
+        const { voteId } = req.params;
+        const { answer } = req.body;
+
+        // Kiểm tra xem vote có tồn tại không
+        const vote = await findVoteById(voteId);
+        if (!vote) {
+            return res.status(404).json({ message: 'Vote not found' });
+        }
+
+        // Kiểm tra xem cuộc trò chuyện có cho phép thay đổi câu trả lời không
+        const allowChangeAnswers = vote.allowChangeAnswers || false;
+        const createdByUserId = vote.createdByUser?.id;
+        if (!allowChangeAnswers && userId !== createdByUserId) {
+            return res.status(403).json({ message: 'You are not allowed to change your answer for this vote' });
+        }
+
+        // Kiểm tra xem câu trả lời có hợp lệ không
+        const isValidAnswer = vote.options.some((option) => option === answer);
+        if (!isValidAnswer) {
+            return res.status(400).json({ message: 'Invalid answer' });
+        }
+
+        // Cập nhật câu trả lời cho vote
+        const updatedVote = { ...vote, answer };
+        await updateVoteById(voteId, updatedVote);
+
+        return res.status(200).json({ message: 'Answer vote success' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export default { createNewVote, updateVote, getListVote, answerVote };
 
 function validateOptions(options) {
     if (!Array.isArray(options)) {

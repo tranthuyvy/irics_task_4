@@ -25,7 +25,7 @@ const createNewNote = async (req, res) => {
                 };
                 const note = { conversationId, isPinned, content, createdByUser: objCreatedbyUser };
                 await createNote(note);
-                return res.status(200).json({ message: 'create note success' });
+                return res.status(200).json({ data: note, message: 'create note success' });
             }
         }
     } catch (error) {
