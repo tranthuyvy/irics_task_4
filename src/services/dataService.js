@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { v4 as uuidv4 } from 'uuid'
 
 const filePath = path.join(__dirname, '../config/data.json')
 
@@ -137,7 +138,7 @@ const addHideConversationfiled = async (idConversation, pin, IdUser) => {
 
   const checkExistIsHidden = await checkConversationIsHidden(IdUser, idConversation)
   if (checkExistIsHidden) {
-    return { message : 'conversation alredy hidden' }
+    return { message: 'conversation alredy hidden' }
   }
   const index = await findIndexUser(data, IdUser)
   data.users[index].isConversationHidden.push({
@@ -145,30 +146,30 @@ const addHideConversationfiled = async (idConversation, pin, IdUser) => {
     pin
   })
   writeData(data)
-  return { message : 'conversation is Hidden' }
+  return { message: 'conversation is Hidden' }
 }
 
 const checkConversationIsHidden = async (IdUser, idConversation) => {
   const data = readData()
   const index = await findIndexUser(data, IdUser)
   const dataConversHidden = await data.users[index].isConversationHidden
-  return await dataConversHidden.find(conversation => conversation.conversationId == idConversation )
+  return await dataConversHidden.find(conversation => conversation.conversationId == idConversation)
 }
 
-const UnHiddenConversation = async ( idConversation, IdUser ) => {
+const UnHiddenConversation = async (idConversation, IdUser) => {
   const data = readData()
   const index = await findIndexUser(data, IdUser)
   data.users[index].isConversationHidden = data.users[index].isConversationHidden.filter(item => item.conversationId !== idConversation)
   writeData(data)
-  return { message : 'conversation is Unhidden' }
+  return { message: 'conversation is Unhidden' }
 }
 
 const PinConversationfunc = async (idConversation) => {
   const data = readData()
-  const index = await findIndexConversation(data,idConversation)
+  const index = await findIndexConversation(data, idConversation)
   data.Conversation[index].isPinned = true
   writeData(data)
-  return { message : 'conversation is pinned' }
+  return { message: 'conversation is pinned' }
 }
 
 const checkTypeofUserConversation = async (idConversation, userId) => {
@@ -196,6 +197,41 @@ const findIndexUserInConversation = async (data, userId, indexConversation) => {
   return index
 }
 
+const PreventJoinMember = async (idConversation, UserID) => {
+  const data = readData()
+  const index = await findIndexConversation(data, idConversation)
+  const idPrevent = uuidv4().replace(/-/g, '')
+
+  if (!data.Conversation[index].IsPrevent) {
+    data.Conversation[index].IsPrevent = []
+  }
+  data.Conversation[index].IsPrevent.push({
+    preventId: idPrevent,
+    idUser: UserID
+  })
+  writeData(data)
+}
+
+const UnPeventJoinMember = async (idConversation, IDprevent) => {
+  const data = readData()
+  const index = await findIndexConversation(data, idConversation)
+
+  if (!data.Conversation[index].IsPrevent) {
+    data.Conversation[index].IsPrevent = []
+  }
+  data.Conversation[index].IsPrevent = data.Conversation[index].IsPrevent.filter(item => item.preventId !== IDprevent)
+  writeData(data)
+}
+
+const disbandGroupfunc = async (idConversation) =>{
+  const data = readData()
+  data.Conversation = data.Conversation.filter(item => item.id != idConversation)
+  writeData(data)
+}
+const checkPermissionDel = async () => { }
+const checkPreventJoinMember = async () => { }
+const checkUnPreventJoinMember = async () => { }
+
 export default
   {
     readData,
@@ -211,5 +247,8 @@ export default
     PinConversationfunc,
     checkTypeofUserConversation,
     checkUserInConversation,
-    UpdateRoleMember
+    UpdateRoleMember,
+    PreventJoinMember,
+    UnPeventJoinMember,
+    disbandGroupfunc
   }

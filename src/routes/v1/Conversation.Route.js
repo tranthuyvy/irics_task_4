@@ -12,3 +12,6 @@ export const RouterConversation = (router) =>
         .patch('/conversations/:id', GroupChat.UpdateNameGroupChat)
         .delete('/conversations/:id', GroupChat.DeleteConversation)
         .put('/conversations/group/grant/:conversationId', GroupChat.GrantMember)
+        .put('/conversations/setting/group/prevent-join/:conversationId', GroupChat.PreventJoin)
+        .put('/conversations/setting/group/unprevent-join/:conversationId', GroupChat.UnPreventJoin)
+        .delete('/conversations/group/disband/:conversationId', GroupChat.DisBandGroup)

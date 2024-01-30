@@ -347,11 +347,28 @@ const GrantMember = async (req, res) => {
   }
   return res.status(200).json({ message: 'No permission' })
 }
-const DisBandGroup = async (req, res) => { }
+
+const DisBandGroup = async (req, res) => {
+  const { conversationId } = req.params
+  dataService.disbandGroupfunc(conversationId)
+}
+
 const GetGroupByInvited = async (req, res) => { }
 const JoinGroupByInvited = async (req, res) => { }
-const PreventJoin = async (req, res) => { }
-const UnPreventJoin = async (req, res) => { }
+
+const PreventJoin = async (req, res) => {
+  const { conversationId } = req.params
+  const { userId } = req.body
+  await dataService.PreventJoinMember(conversationId, userId)
+  return res.status(200).json({ message: 'oke' })
+}
+
+const UnPreventJoin = async (req, res) => {
+  const { preventId } = req.body
+  const { conversationId } = req.params
+  await dataService.UnPeventJoinMember(conversationId, preventId)
+  return res.status(200).json({ message: 'oke' })
+ }
 
 export default
   {
