@@ -96,9 +96,12 @@ const findIndexConversation = async (data, Idconversation) => {
 }
 //find conversation by invitedId
 const findConversationByInviteldId = async (invitedId) => {
-  const data = await readData()
+  console.log(invitedId)
+  const data = readData()
   try {
-    return await data.Conversation.find(conversation => conversation.inviteId === invitedId)
+    const test = data.Conversation.find(conversation => conversation.inviteId == invitedId)
+    console.log(await test)
+    return test
   } catch (error) {
     return { message: error.message }
   }

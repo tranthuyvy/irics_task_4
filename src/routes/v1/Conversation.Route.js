@@ -17,5 +17,5 @@ export const RouterConversation = (router) =>
         .put('/conversations/setting/group/prevent-join/:conversationId', authenticateToken, GroupChat.PreventJoin)
         .put('/conversations/setting/group/unprevent-join/:conversationId', authenticateToken, GroupChat.UnPreventJoin)
         .delete('/conversations/group/disband/:conversationId', authenticateToken, GroupChat.DisBandGroup)
-        .get('/conversations/group/invite/:inviteld', authenticateToken, GroupChat.GetGroupByInviteld)
-        .post('/conversations/group/invite/:inviteld', authenticateToken, GroupChat.JoinGroupByInviteld)
+        .get('/conversations/group/invite/:inviteId', authenticateToken, GroupChat.GetGroupByInviteld)
+        .post('/conversations/group/invite/:inviteId', authenticateToken, GroupChat.JoinGroupByInviteld)
