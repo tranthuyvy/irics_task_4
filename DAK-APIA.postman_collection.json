@@ -1,0 +1,967 @@
+{
+	"info": {
+		"_postman_id": "99e8ad35-7b46-448f-a632-bcb721f4fda2",
+		"name": "DAK-APIA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14046839",
+		"_collection_link": "https://duyvo3001.postman.co/workspace/testapi~46fdbe1a-1998-444f-b8c2-b6afd2cd19b0/collection/14046839-99e8ad35-7b46-448f-a632-bcb721f4fda2?action=share&source=collection_link&creator=14046839"
+	},
+	"item": [
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "group chat",
+					"item": [
+						{
+							"name": "Grant role permission",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_id\":\"7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc\",\r\n    \"role\" : 3 //1 : owner , 2: admin , 3: member\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_URL}}conversations/group/grant/:conversaitonId",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"group",
+										"grant",
+										":conversaitonId"
+									],
+									"variable": [
+										{
+											"key": "conversaitonId",
+											"value": "f20cd91d8b83291449274b9a"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Conversation",
+					"item": [
+						{
+							"name": "New Folder",
+							"item": []
+						},
+						{
+							"name": "list conversation belong to user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGI4ZjU2YS05OWEwLTQ3ZjQtOTAyMi1hZDAzYzQ1NmViZWUiLCJpYXQiOjE3MDY0MTUwOTAsImV4cCI6MTcwNjQxNjg5MH0.o7de3L51ztGi4kD1gDonLhzced6auGZt5YWdKMvAV5s",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}conversations?offset=1&limit=10&search=3f71ecaa16f74d30e513697e&status=2",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "search",
+											"value": "3f71ecaa16f74d30e513697e"
+										},
+										{
+											"key": "status",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "conversation detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlZGI4ZjU2YS05OWEwLTQ3ZjQtOTAyMi1hZDAzYzQ1NmViZWUiLCJpYXQiOjE3MDYyNTMzMzQsImV4cCI6MTcwNjI1NTEzNH0.tpNIQyma2klgp3CPW08qqPhFtGUK6XpvAwWTB2CY_cw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}conversations/f20cd91d8b83291449274b9a",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"f20cd91d8b83291449274b9a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get total unseen message by user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}conversations/unseen",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"unseen"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Conversation get messages",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}/conversations/65ab9be6171f84c088e31b07/messages?sort=desc",
+									"host": [
+										"{{Base_URL}}"
+									],
+									"path": [
+										"conversations",
+										"65ab9be6171f84c088e31b07",
+										"messages"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "desc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Conversation get media",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}conversations/65ab9be6171f84c088e31b07/medias?sort=desc",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"65ab9be6171f84c088e31b07",
+										"medias"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "desc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Conversation delete message",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}conversations/delete-message/6377d2f8290089426d73e41e",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"delete-message",
+										"6377d2f8290089426d73e41e"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a conversation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ToKentest}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}conversations/1aedd4179b9b24dbb08b6bef",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"1aedd4179b9b24dbb08b6bef"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a group chat",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ToKentest}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"type\": 2,\r\n    \"name\": \"Gr da bong 123\",\r\n    \"memberIds\": [\"7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc\",\"edb8f56a-99a0-47f4-9022-ad03c456ebee\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_URL}}conversations",
+									"host": [
+										"{{Base_URL}}conversations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add member to group chat",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ids\": [\"d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919\" ,\"7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc\"] \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_URL}}conversations/f20cd91d8b83291449274b9a/add",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"f20cd91d8b83291449274b9a",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove member to group chat",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ids\": [\"de92b51d-050f-4a60-91cf-6970a5a317d4\"] \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_URL}}conversations/f20cd91d8b83291449274b9a/remove",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"f20cd91d8b83291449274b9a",
+										"remove"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update conversation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ToKentest}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"gr123 chat test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_URL}}conversations/f20cd91d8b83291449274b9a/add",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"f20cd91d8b83291449274b9a",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Decide conversation request",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}conversations/:conversation_id/decide/:status",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										":conversation_id",
+										"decide",
+										":status"
+									],
+									"variable": [
+										{
+											"key": "conversation_id",
+											"value": ""
+										},
+										{
+											"key": "status",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "search for chat",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}/users?page=1&limit=2&keyword=d",
+									"host": [
+										"{{Base_URL}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										},
+										{
+											"key": "keyword",
+											"value": "d"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user detail",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}/users/detail",
+									"host": [
+										"{{Base_URL}}"
+									],
+									"path": [
+										"users",
+										"detail"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "hide conversation by pin code",
+					"item": [
+						{
+							"name": "hide conversation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ToKentest}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"conversationId\": \"8060a56d5472af93093ba2a6\",\r\n    \"pin\": \"$2y$10$6ezsVBqpXaEo33gAgXE4mO/bD3NDsR8UXd8d2gkH94phQRrO0/kX.\" // 88888888\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_URL}}conversations/hidden",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"hidden"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "un hidden conversation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"conversationId\" : \"f20cd91d8b83291449274b9a\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_URL}}conversations/unhidden",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										"unhidden"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Pin conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ToKentest}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{Base_URL}}conversations/:action/:conversationId",
+							"host": [
+								"{{Base_URL}}conversations"
+							],
+							"path": [
+								":action",
+								":conversationId"
+							],
+							"variable": [
+								{
+									"key": "action",
+									"value": "pin"
+								},
+								{
+									"key": "conversationId",
+									"value": "f20cd91d8b83291449274b9a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Setting",
+			"item": [
+				{
+					"name": "Grant role  member group",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\" :\"\",\r\n    \"role\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_URL}}conversations/group/grant/:conversationId",
+							"host": [
+								"{{Base_URL}}conversations"
+							],
+							"path": [
+								"group",
+								"grant",
+								":conversationId"
+							],
+							"variable": [
+								{
+									"key": "conversationId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "prevent join group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ToKentest}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"edb8f56a-99a0-47f4-9022-ad03c456ebee\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_URL}}conversations/setting/group/prevent-join/:conversationId",
+							"host": [
+								"{{Base_URL}}conversations"
+							],
+							"path": [
+								"setting",
+								"group",
+								"prevent-join",
+								":conversationId"
+							],
+							"variable": [
+								{
+									"key": "conversationId",
+									"value": "f20cd91d8b83291449274b9a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "un prevent join group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ToKentest}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"preventId\" : \"bc57e2e578304fa798f910fbce51dffd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_URL}}conversations/setting/group/unprevent-join/:conversationId",
+							"host": [
+								"{{Base_URL}}conversations"
+							],
+							"path": [
+								"setting",
+								"group",
+								"unprevent-join",
+								":conversationId"
+							],
+							"variable": [
+								{
+									"key": "conversationId",
+									"value": "f20cd91d8b83291449274b9a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "disband group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ToKentest}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base_URL}}conversations/group/disband/:conversationId",
+							"host": [
+								"{{Base_URL}}conversations"
+							],
+							"path": [
+								"group",
+								"disband",
+								":conversationId"
+							],
+							"variable": [
+								{
+									"key": "conversationId",
+									"value": "f20cd91d8b83291449274b9a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Join group by link inviite",
+			"item": [
+				{
+					"name": "Get group info by invitield",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ToKentest}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Base_URL}}conversations/group/invite/:inviteId",
+							"host": [
+								"{{Base_URL}}conversations"
+							],
+							"path": [
+								"group",
+								"invite",
+								":inviteId"
+							],
+							"variable": [
+								{
+									"key": "inviteId",
+									"value": "fda193c407f14c98ad5701044f85e6e8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join group by inviteld",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{Base_URL}}conversations/group/invite/:inviteId",
+							"host": [
+								"{{Base_URL}}conversations"
+							],
+							"path": [
+								"group",
+								"invite",
+								":inviteId"
+							],
+							"variable": [
+								{
+									"key": "inviteId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "create",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "login test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"usernameoremail\": \"duyvottt\",\r\n    \"password\": \"Minh3001!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get public key",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usernameoremail\" : \"duyvottt\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_URL}}api/auth/publicKey",
+					"host": [
+						"{{Base_URL}}api"
+					],
+					"path": [
+						"auth",
+						"publicKey"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"KhanhNguyen\",\r\n    \"username\": \"KhanhNguyen312\",\r\n    \"email\": \"khanh123@gmail.com\",\r\n    \"password\": \"Minhduy123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Base_URL}}api/auth/register?locale=en",
+					"host": [
+						"{{Base_URL}}api"
+					],
+					"path": [
+						"auth",
+						"register"
+					],
+					"query": [
+						{
+							"key": "locale",
+							"value": "en"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Base_URL",
+			"value": "http://localhost:8080/",
+			"type": "string"
+		},
+		{
+			"key": "ToKentest",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

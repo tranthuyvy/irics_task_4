@@ -66,8 +66,8 @@ const CreateGroupChat = async (req, res) => {
       updatedAt: timeCreated
     }
 
-    // craete inviteID 
-    const inviteId = uuidv4().replace(/-/g, '')
+    // craete inviteld 
+    const inviteld = uuidv4().replace(/-/g, '')
 
     //create data to import database
     const conversation = {
@@ -119,7 +119,7 @@ const CreateGroupChat = async (req, res) => {
         }
       ],
       userOffStatusMsg: [],
-      inviteId: inviteId,//generated ID invited,
+      inviteld: inviteld,//generated ID invited,
       messagePinCount: 0,
       isPinned: false,
       notePinned: [],
@@ -350,11 +350,23 @@ const GrantMember = async (req, res) => {
 
 const DisBandGroup = async (req, res) => {
   const { conversationId } = req.params
-  dataService.disbandGroupfunc(conversationId)
+  await dataService.disbandGroupfunc(conversationId)
 }
 
-const GetGroupByInvited = async (req, res) => { }
-const JoinGroupByInvited = async (req, res) => { }
+const GetGroupByInviteld = async (req, res) => { 
+  const {inviteld} = req.params
+  const data =await dataService.getConversationByInviteld(inviteld)
+  const obj = {
+    avartar : data.avartar,
+    name : data.name,
+    reviewMember : true
+  }
+  return res.status(200).json({ message: 'oke' , data : obj })
+}
+const JoinGroupByInviteld = async (req, res) => { 
+  const {inviteld} = req.params
+
+}
 
 const PreventJoin = async (req, res) => {
   const { conversationId } = req.params
@@ -383,8 +395,8 @@ export default
     UnHideConversation,
     PinConversation,
     GrantMember,
-    GetGroupByInvited,
-    JoinGroupByInvited,
+    GetGroupByInviteld,
+    JoinGroupByInviteld,
     PreventJoin,
     UnPreventJoin,
     DisBandGroup
