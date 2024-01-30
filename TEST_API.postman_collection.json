@@ -1,0 +1,980 @@
+{
+	"info": {
+		"_postman_id": "9fdbec21-1452-462f-a9c8-4ec3feaa6db1",
+		"name": "TASk4-IRICS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28562036"
+	},
+	"item": [
+		{
+			"name": "TEST Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ttvtest2\",\r\n    \"username\": \"ttvtest2\",\r\n    \"email\": \"ttvtest2@gmail.com\",\r\n    \"password\": \"Aa@152441\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST join group by invitedId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMjUwYzg5ZC0zMjFlLTRhMDYtYTU4MC1jYzNlNzYyYmJkMGIiLCJpYXQiOjE3MDY1ODI5OTUsImV4cCI6MTcwOTE3NDk5NX0.LySQBCJ3oS-dZnFIPCKBPXceQVnsKEM22GI0OnkNnSc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/conversations/group/invite/:inviteId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"conversations",
+						"group",
+						"invite",
+						":inviteId"
+					],
+					"variable": [
+						{
+							"key": "inviteId",
+							"value": "136c9a09832a4a5ba147b04281f63c67"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST type 3 pin note, vote, msg",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY0NTI5NTAsImV4cCI6MTcwOTA0NDk1MH0.OwOP6crHHt_TH9dskZnByqy5NS-ySfmNRsMvihx70Ww",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/conversations/setting/group/pin/:conversationId/:type",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"conversations",
+						"setting",
+						"group",
+						"pin",
+						":conversationId",
+						":type"
+					],
+					"variable": [
+						{
+							"key": "conversationId",
+							"value": "6e7d9119e4ca842dd84660ab"
+						},
+						{
+							"key": "type",
+							"value": "on",
+							"description": "\"off\" là tắt, \"on\" là bật"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST type 4 off/on vote",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY0NTI5NTAsImV4cCI6MTcwOTA0NDk1MH0.OwOP6crHHt_TH9dskZnByqy5NS-ySfmNRsMvihx70Ww",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/conversations/setting/group/vote/:conversationId/:type",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"conversations",
+						"setting",
+						"group",
+						"vote",
+						":conversationId",
+						":type"
+					],
+					"variable": [
+						{
+							"key": "conversationId",
+							"value": "6e7d9119e4ca842dd84660ab"
+						},
+						{
+							"key": "type",
+							"value": "on",
+							"description": "\"off\" là tắt, \"on\" là bật"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST type 5 on/off note group",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY0NTI5NTAsImV4cCI6MTcwOTA0NDk1MH0.OwOP6crHHt_TH9dskZnByqy5NS-ySfmNRsMvihx70Ww",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/conversations/setting/group/note/:conversationId/:type",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"conversations",
+						"setting",
+						"group",
+						"note",
+						":conversationId",
+						":type"
+					],
+					"variable": [
+						{
+							"key": "conversationId",
+							"value": "6e7d9119e4ca842dd84660ab"
+						},
+						{
+							"key": "type",
+							"value": "on",
+							"description": "\"off\" là tắt, \"on\" là bật"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST type 6 on/off send msg group",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY0NTI5NTAsImV4cCI6MTcwOTA0NDk1MH0.OwOP6crHHt_TH9dskZnByqy5NS-ySfmNRsMvihx70Ww",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/conversations/setting/group/send-msg/:conversationId/:type",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"conversations",
+						"setting",
+						"group",
+						"send-msg",
+						":conversationId",
+						":type"
+					],
+					"variable": [
+						{
+							"key": "conversationId",
+							"value": "6e7d9119e4ca842dd84660ab"
+						},
+						{
+							"key": "type",
+							"value": "on",
+							"description": "\"off\" là tắt, \"on\" là bật"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST type 7 review member",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY0NTI5NTAsImV4cCI6MTcwOTA0NDk1MH0.OwOP6crHHt_TH9dskZnByqy5NS-ySfmNRsMvihx70Ww",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/conversations/setting/group/review-member/:conversationId/:type",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"conversations",
+						"setting",
+						"group",
+						"review-member",
+						":conversationId",
+						":type"
+					],
+					"variable": [
+						{
+							"key": "conversationId",
+							"value": "6e7d9119e4ca842dd84660ab"
+						},
+						{
+							"key": "type",
+							"value": "on",
+							"description": "\"off\" là tắt, \"on\" là bật"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST type 9 join group by link",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY0NTI5NTAsImV4cCI6MTcwOTA0NDk1MH0.OwOP6crHHt_TH9dskZnByqy5NS-ySfmNRsMvihx70Ww",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/conversations/setting/group/join-link-invite/:conversationId/:type",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"conversations",
+						"setting",
+						"group",
+						"join-link-invite",
+						":conversationId",
+						":type"
+					],
+					"variable": [
+						{
+							"key": "conversationId",
+							"value": "6e7d9119e4ca842dd84660ab"
+						},
+						{
+							"key": "type",
+							"value": "on",
+							"description": "\"off\" là tắt, \"on\" là bật"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[TEST] refresh token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Fixed syntax and added response status code check",
+							"pm.test(\"Response status code is 401\", function () {",
+							"  pm.response.to.have.status(401);",
+							"});",
+							"",
+							"postman.setEnvironmentVariable(\"token\", pm.response.json().token);",
+							"postman.setEnvironmentVariable(\"refresh_token\", pm.response.json().refresh_token);",
+							"postman.setEnvironmentVariable(\"xsrf_token\", pm.response.json().xsrf_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Refresh-Token",
+						"value": "{{refresh_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Xsrf-Token",
+						"value": "{{xsrf_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Device",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"rememberMe\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login/refresh?locale=vi",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login",
+						"refresh"
+					],
+					"query": [
+						{
+							"key": "locale",
+							"value": "vi"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST REGISTER",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"tranthuyvy\",\r\n    \"username\": \"tranthuyvy\",\r\n    \"email\": \"tranthuyvy686868@gmail.com\",\r\n    \"password\": \"Aa@152441\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST LOGIN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "a-26xTvwukf4pNz6Deb6b1X-",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usernameoremail\": \"tranthuyvy\",\r\n    \"password\": \"Aa@152441\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST getPublicKey",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usernameoremail\":\"ttvtest\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/publicKey",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"publicKey"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST getPasswordLogin",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usernameoremail\": \"ttvtest2\",\r\n    \"text\": \"tranthuyvy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/passwordLogin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"passwordLogin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST refreshToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST change-password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "csrfToken",
+						"value": "ql3vg7mxek3bpws9179t7",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"newPassword\": \"VmZeELc4VBWuzUmX/LOHCEdCltSLKtYGFTM+q1M0DUQuLII1syZx1Xd+Xyhi8H25JcsapjkEh/uU2y3XqT1EfDZiEoT6fL+cjzcyoh5e6iq/lywWP8EXVKvOczPZ+BF9Qdexkkgyo4/oaSYM1pZE5vAVVLJpzYs3CuvY9FOifyUTcdbioKLg8ZUEinMM8NTHI8Y4wIEmrP5wCZiK5kDiJ6o9DrPfHwMxTtyB9tDiui8HDf09CVal6u9MoIZfl3Ax/Xx10Ig5vA7y6awjOla7Ys+hZ37g44zOd79jTJo4Qjj9Yd9T+faKqVnSzPEPc7UChY7XSK61Qsv59xa4OTlQLcVVWtiTQzBhpHnN2e0cU7ssNYyA3H+YJeQQFyioOKjSmHoUKgSuz22SS+lMswtAc+35CPwmITL8kCuCZTO0193Rif4jqlKoSPn/BKTdvYRHepQTP/Hqc1YnS24BTDKqNEorjjCw7nRGdHGUtN45NitdcDLQCEveUiOtLHXdyOMnEVF7YlilZSW2Bj1MBJZa0SKAC4CUV2i8AxMhSt70OEvPB0C76Ke33LcYTFJNcEbsLfI5Ly5ryHNf8X7DiFI3JxSFFnm31YqYNWogGuOFRvMDuVInFKibQYibr9EXYDbUKyUPBU0YN0HtqxYWcelLlRvb2dWU69hVWk6x9ofW1Qg=\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/change-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST send email forgot password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 500\", function () {\r",
+							"  pm.expect(pm.response.code).to.equal(500);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required fields - error_code and success\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.error_code).to.exist;\r",
+							"    pm.expect(responseData.success).to.exist;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Error code should not be empty\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.error_code).to.exist.and.to.not.be.empty;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Success should be true\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData.success).to.equal(true);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Content-Type header is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"ttv.thuyvy.2112@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/forgot-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST userProfile",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/auth/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"auth",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST get conversation belong user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY1MTI3OTcsImV4cCI6MTcwNjUxNDU5N30.hH_0hfJwGwHAJmXBYMYAtONsouKyTJbsFAt0WGByXss",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/conversations??offset=0&limit=10&status=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"conversations"
+					],
+					"query": [
+						{
+							"key": "?offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "status",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST get conversation detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY1MTI3OTcsImV4cCI6MTcwNjUxNDU5N30.hH_0hfJwGwHAJmXBYMYAtONsouKyTJbsFAt0WGByXss",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/conversations/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"conversations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1aedd4179b9b24dbb08b6bef"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST create group chat",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMjUwYzg5ZC0zMjFlLTRhMDYtYTU4MC1jYzNlNzYyYmJkMGIiLCJpYXQiOjE3MDY1ODA5NTgsImV4cCI6MTcwNjU4Mjc1OH0.CE_I3wp6VoqcUPmS5WWPQ2rRxMSB4DpuJHwa3rcPv94",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": 2,\r\n    \"name\": \"test group\",\r\n    \"memberIds\": [\"edb8f56a-99a0-47f4-9022-ad03c456ebee\", \"de92b51d-050f-4a60-91cf-6970a5a317d4\", \"d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/conversations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"conversations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST add/remove member",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY1MTI3OTcsImV4cCI6MTcwNjUxNDU5N30.hH_0hfJwGwHAJmXBYMYAtONsouKyTJbsFAt0WGByXss",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ids\":\"7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/conversations/:conversationId/remove",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"conversations",
+						":conversationId",
+						"remove"
+					],
+					"variable": [
+						{
+							"key": "conversationId",
+							"value": "0d5fd67771576fc9107300e6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST update group name",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY1MTI3OTcsImV4cCI6MTcwNjUxNDU5N30.hH_0hfJwGwHAJmXBYMYAtONsouKyTJbsFAt0WGByXss",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"grouptest123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/conversations/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"conversations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "0d5fd67771576fc9107300e6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TEST delete conversation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDJhMGQ0MC04NWU4LTQzYmItOTQ2MS02YjY5YzZjMmMyZmMiLCJpYXQiOjE3MDY1MTI3OTcsImV4cCI6MTcwNjUxNDU5N30.hH_0hfJwGwHAJmXBYMYAtONsouKyTJbsFAt0WGByXss",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/conversations/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"conversations",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "0d5fd67771576fc9107300e6"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
