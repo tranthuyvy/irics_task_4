@@ -3,6 +3,7 @@ import dataService from '~/services/dataService'
 import { findUserByID } from '~/models/user'
 import { v4 as uuidv4 } from 'uuid'
 import JWT from 'jsonwebtoken'
+import { StatusCodes } from 'http-status-codes'
 // create conversation type = 2
 const CreateGroupChat = async (req, res) => {
   try {
@@ -248,6 +249,57 @@ const CrObjFunc = async (memberID, arrInfoMember) => {
   }))
 }
 
+const JoinGroupByInviteId = async (req, res) => {
+  try {
+    const inviteId = req.params.inviteId
+
+    const data = dataService.readData()
+
+    const dataConversation = await dataService.findConversationByInvitedId(inviteId)
+
+    if (!dataConversation) {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: 'Invalid InviteId', success: false })
+    }
+
+    //{ type: 9, value: true }
+    const allowJoin = dataConversation.conversationSetting.find(setting => setting.type === 9)
+
+    if (!allowJoin.value) {
+      return res.status(StatusCodes.METHOD_NOT_ALLOWED).json({ message: 'Not Allowed', success: false })
+    }
+
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]
+    const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
+    const userId = decodedToken.userId
+
+    const userInProgram = data.users.find(user => user.id === userId)
+
+    if (!userInProgram) {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: 'User not found', success: false })
+    }
+    const userInMember = dataConversation.member.find(user => user.id === userId)
+
+    if (userInMember){
+      return res.status(StatusCodes.CONFLICT).json({ message: 'User already exists in conversation', success: false })
+    }
+
+    dataConversation.member.push({
+      type: 1,
+      id: userId,
+      ownerAccepted: true,
+      username: userInProgram.username,
+      avatar: userInProgram.avatar,
+      lastLogin: userInProgram.lastLogin
+    })
+
+    dataService.writeData(data)
+
+    return res.status(StatusCodes.OK).json({ message: 'Success', success: true, conversation: dataConversation })
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error', success: false })
+  }
+}
+
 const RemoveMemberToGroupChat = async (req, res) => {
   try {
   const conversationId = req.params.conversationId
@@ -283,7 +335,7 @@ const checkMember = (memberID) => {
   return findUserByID(memberID) ? true : false
 }
 
-// delete DeleteConversation 
+// delete DeleteConversation
 const DeleteConversation = async (req, res) => {
   const idConversation = req.params.id
   const tokenUser = req.headers.authorization

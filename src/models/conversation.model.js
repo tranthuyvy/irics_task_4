@@ -14,5 +14,3 @@ export const CreateGroupChatModel = async (conversation) => {
 const checkImportDataSuccess = (GenerateIDconversation) => {
   return dataService.findConversationByID(GenerateIDconversation)
 }
-
-

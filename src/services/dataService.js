@@ -35,7 +35,7 @@ const UpdateMemberGroupChat = async (conversationID, informationMember) => {
     const data = readData()
     const index = await findIndexConversation(data, conversationID)
 
-    await data.Conversation[index].members.push(informationMember)
+    await data.Conversation[index].member.push(informationMember)
     writeData(data)
 
     return { message: 'success' }
@@ -94,11 +94,14 @@ const findIndexConversation = async (data, Idconversation) => {
   const index = await data.Conversation.findIndex(item => item.id === Idconversation)
   return index
 }
-
-//find index of user in Users
-const findIndexUser = async (data, IdUser) => {
-  const index = await data.users.findIndex(item => item.id === IdUser)
-  return index
+//find conversation by invitedId
+const findConversationByInvitedId = async (invitedId) => {
+  const data = await readData()
+  try {
+    return await data.Conversation.find(conversation => conversation.inviteId === invitedId)
+  } catch (error) {
+    return { message: error.message }
+  }
 }
 
 // find conversation by idconversation
