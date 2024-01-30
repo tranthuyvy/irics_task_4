@@ -473,22 +473,32 @@
   ],
   "votes": [
     {
-      "id": "18d9654cab032ce488869cc7",
+      "id": "01cb357c551ba10225b43125",
       "conversationId": "2fcfdbeb8f2e402318c6448a",
       "isPinned": false,
-      "question": "test api question",
+      "question": "test api 2 question",
       "options": [
         {
-          "id": "b4b2a96a2aa8134862316299",
-          "value": "solution 5"
+          "id": "2fcfdbeb8f2e402318c6448a_1",
+          "value": "solution 5",
+          "voters": [
+            "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919"
+          ]
         },
         {
-          "id": "b4b2a96a2aa8134862316299",
-          "value": "solution 6"
+          "id": "2fcfdbeb8f2e402318c6448a_2",
+          "value": "solution 6",
+          "voters": []
         },
         {
-          "id": "b4b2a96a2aa8134862316299",
-          "value": "solution 7, solution 8"
+          "id": "2fcfdbeb8f2e402318c6448a_3",
+          "value": "solution 7",
+          "voters": []
+        },
+        {
+          "id": "2fcfdbeb8f2e402318c6448a_4",
+          "value": "solution 8",
+          "voters": []
         }
       ],
       "allowMultipleAnswers": true,
@@ -507,26 +517,30 @@
       "isClosed": false
     },
     {
-      "id": "0d1c71facea7b293eeca4acc",
+      "id": "d9f18eb14c45b9ffa9b2efeb",
       "conversationId": "2fcfdbeb8f2e402318c6448a",
       "isPinned": false,
       "question": "test api 2 question",
       "options": [
         {
-          "id": "93396ff3581f2e7cbef9f848",
-          "value": "solution 1"
+          "id": "2fcfdbeb8f2e402318c6448a_1",
+          "value": "solution 1",
+          "voters": []
         },
         {
-          "id": "93396ff3581f2e7cbef9f848",
-          "value": "solution 2"
+          "id": "2fcfdbeb8f2e402318c6448a_2",
+          "value": "solution 2",
+          "voters": []
         },
         {
-          "id": "93396ff3581f2e7cbef9f848",
-          "value": "solution 3"
+          "id": "2fcfdbeb8f2e402318c6448a_3",
+          "value": "solution 3",
+          "voters": []
         },
         {
-          "id": "93396ff3581f2e7cbef9f848",
-          "value": "solution 4"
+          "id": "2fcfdbeb8f2e402318c6448a_4",
+          "value": "solution 4",
+          "voters": []
         }
       ],
       "allowMultipleAnswers": true,

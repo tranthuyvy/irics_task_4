@@ -17,7 +17,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY0MzA5NDUsImV4cCI6MTcwNjQzMjc0NX0.YWAfuLpgFxrUsImSej4f9ysMfofE_O5ExqKpG-ExgwA",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY2MjYzOTMsImV4cCI6MTcwOTIxODM5M30.eKVOLG6HBjiUroSj1Xhp-ehRf3AE2OBlspjZvp7ZOR4",
 									"type": "string"
 								}
 							]
@@ -26,7 +26,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"isPinned\" : false,\r\n    \"question\": \"test api question\",\r\n    \"options\": [\"solution 1\", \"solution 2\", \"solution 3\"]\r\n}",
+							"raw": "{\r\n    \"isPinned\" : false,\r\n    \"question\": \"test api 3 question\",\r\n    \"options\": [\"solution 1\", \"solution 2\", \"solution 3\", \"solution 4\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -198,6 +198,45 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Answer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY2MjYzOTMsImV4cCI6MTcwOTIxODM5M30.eKVOLG6HBjiUroSj1Xhp-ehRf3AE2OBlspjZvp7ZOR4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"voteOptionId\": \"2fcfdbeb8f2e402318c6448a_1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/conversations/answers-vote",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"conversations",
+								"answers-vote"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -212,7 +251,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDYzNTk4MzAsImV4cCI6MTcwNjM2MTYzMH0.YXSfRMVtvKB96U-ophrQ2k2X6GTYkXIWpFvnlHGQQpU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY2MjYzOTMsImV4cCI6MTcwOTIxODM5M30.eKVOLG6HBjiUroSj1Xhp-ehRf3AE2OBlspjZvp7ZOR4",
 									"type": "string"
 								}
 							]
@@ -221,7 +260,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"isPinned\": false,\r\n    \"content\": \"note test api task 4\"\r\n}",
+							"raw": "{\r\n    \"isPinned\": false,\r\n    \"content\": \"note test 2 api task 4\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
