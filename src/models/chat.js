@@ -10,6 +10,18 @@ export const createNote = async (note) => {
     dataService.writeData(data)
 }
 
+export const updateNoteById = async (noteId, updatedNote) => {
+    const data = dataService.readData()
+    // Tìm index của note trong mảng notes với id tương ứng
+    const index = data.notes.findIndex(note => note.id === noteId)
+    // Nếu không tìm thấy note, trả về lỗi 404
+    if (index === -1) {
+        throw new Error('Note not found');
+    }
+    data.notes[index] = { ...data.notes[index], ...updatedNote };
+    dataService.writeData(data)
+}
+
 export const findConversationById = async (conversationId) => {
     const data = dataService.readData()
     return await data.Conversation.find(conversation => conversation.id === conversationId)

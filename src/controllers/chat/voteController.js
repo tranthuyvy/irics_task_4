@@ -1,4 +1,5 @@
 import { createVote, findConversationById, findVoteById, updateVoteById } from '~/models/chat';
+import { updateConversationById } from '~/models/conversation.model';
 import { findUserByID } from '~/models/user';
 
 const createNewVote = async (req, res) => {
@@ -46,8 +47,8 @@ const createNewVote = async (req, res) => {
                         hideMemberAnswers,
                         allowChangeAnswers,
                         createdByUser: objCreatedbyUser,
+                        isClosed: false,
                     };
-                    console.log(vote);
                     await createVote(vote);
                     return res.status(200).json({ message: 'create vote success' });
                 }
@@ -77,12 +78,34 @@ const updateVote = async (req, res) => {
         }
         const actionType = parseInt(action);
         switch (actionType) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
+            case 1: //pin vote
+                //kiểm tra xem người dùng có phải là admin hay owner của cuộc trò chuyện không
+                if (isMember.type !== 1 && isMember.type !== 2) {
+                    return res.status(403).json({ message: 'You are not a admin or owner of this conversation' });
+                }
+                await updateVoteById(voteId, { isPinned: true });
+                await updateConversationById(vote.conversationId, { votePinned: [...conversation.votePinned, vote] });
+                return res.status(200).json({ message: 'pin vote success' });
+            case 2: //unpin vote
+                //kiểm tra xem người dùng có phải là admin hay owner của cuộc trò chuyện không
+                if (isMember.type !== 1 && isMember.type !== 2) {
+                    return res.status(403).json({ message: 'You are not a admin or owner of this conversation' });
+                }
+                await updateVoteById(voteId, { isPinned: false });
+                await updateConversationById(vote.conversationId, {
+                    votePinned: conversation.votePinned.filter((item) => item.id !== voteId),
+                });
+                return res.status(200).json({ message: 'unpin vote success' });
+            case 3: //close vote
+                //kiểm tra xem người dùng có phải là người tạo vote của cuộc trò chuyện không
+                if (vote.createdByUser.id !== userId) {
+                    return res.status(403).json({ message: 'You are not a owner of this vote' });
+                }
+                await updateVoteById(voteId, { isClosed: true });
+                await updateConversationById(vote.conversationId, {
+                    votePinned: conversation.votePinned.filter((item) => item.id !== voteId),
+                });
+                return res.status(200).json({ message: 'close vote success' });
             case 4: // Thêm option
                 // eslint-disable-next-line no-case-declarations
                 const { option } = req.body;

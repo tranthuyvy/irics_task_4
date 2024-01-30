@@ -93,7 +93,7 @@ const loginUser = async (req, res) => {
       return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
     }
 
-    const encryptedPassword = encryptWithRSA(user.rsaPublicKey, password)
+    // const encryptedPassword = encryptWithRSA(user.rsaPublicKey, password)
 
     const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, password)
 
