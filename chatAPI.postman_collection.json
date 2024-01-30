@@ -147,6 +147,57 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get vote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY2MjUwOTMsImV4cCI6MTcwNjYyNjg5M30.pBLstNdSO2UwTTaLtRiDSo6IRbjsofP1kNS1HfN9gKs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/conversations/vote/:conversationId?limit=10&sort=asc&offset=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"conversations",
+								"vote",
+								":conversationId"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "asc"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							],
+							"variable": [
+								{
+									"key": "conversationId",
+									"value": "2fcfdbeb8f2e402318c6448a"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -230,6 +281,84 @@
 								}
 							}
 						},
+						"url": {
+							"raw": "http://localhost:8080/conversations/note/:noteId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"conversations",
+								"note",
+								":noteId"
+							],
+							"variable": [
+								{
+									"key": "noteId",
+									"value": "aa4bb25b04c69c1c8fa092eb"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get note list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY2MjUwOTMsImV4cCI6MTcwNjYyNjg5M30.pBLstNdSO2UwTTaLtRiDSo6IRbjsofP1kNS1HfN9gKs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/conversations/note/:conversationId?limit=10&sort=asc&offset=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"conversations",
+								"note",
+								":conversationId"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "asc"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							],
+							"variable": [
+								{
+									"key": "conversationId",
+									"value": "2fcfdbeb8f2e402318c6448a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete note",
+					"request": {
+						"method": "DELETE",
+						"header": [],
 						"url": {
 							"raw": "http://localhost:8080/conversations/note/:noteId",
 							"protocol": "http",

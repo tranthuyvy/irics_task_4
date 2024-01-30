@@ -1,4 +1,4 @@
-import { createVote, findConversationById, findVoteById, updateVoteById } from '~/models/chat';
+import { createVote, findConversationById, findVoteByConversationId, findVoteById, updateVoteById } from '~/models/chat';
 import { updateConversationById } from '~/models/conversation.model';
 import { findUserByID } from '~/models/user';
 
@@ -127,7 +127,46 @@ const updateVote = async (req, res) => {
     }
 };
 
-export default { createNewVote, updateVote };
+const getListVote = async (req, res) => {
+    try {
+        const { conversationId } = req.params;
+        const { limit, offset, sort } = req.query;
+
+        const conversation = await findConversationById(conversationId);
+
+        if (!conversation) {
+            return res.status(404).json({ message: 'Conversation not found' });
+        }
+
+        let voteList = (await findVoteByConversationId(conversationId)) || [];
+
+        // Sắp xếp nếu có tham số sort
+        if (sort) {
+            voteList = voteList.sort((a, b) => {
+                if (sort === 'asc') {
+                    return a.createdAt - b.createdAt;
+                } else if (sort === 'desc') {
+                    return b.createdAt - a.createdAt;
+                }
+                return 0;
+            });
+        }
+
+        // Áp dụng limit và offset nếu có
+        if (limit && offset) {
+            voteList = voteList.slice(offset, offset + limit);
+        } else if (limit) {
+            voteList = voteList.slice(0, limit);
+        }
+
+        return res.status(200).json({ message: 'Get list vote success', data: voteList });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export default { createNewVote, updateVote, getListVote };
 
 function validateOptions(options) {
     if (!Array.isArray(options)) {

@@ -1,4 +1,4 @@
-import { findConversationById, createNote, updateNoteById } from '~/models/chat';
+import { findConversationById, createNote, updateNoteById, findNoteByConversationId, deleteNoteById } from '~/models/chat';
 import { findUserByID } from '~/models/user';
 
 const createNewNote = async (req, res) => {
@@ -43,4 +43,53 @@ const updateNote = async (req, res) => {
     }
 };
 
-export default { createNewNote, updateNote };
+const getListNote = async (req, res) => {
+    try {
+        const { conversationId } = req.params;
+        const { limit, offset, sort } = req.query;
+
+        const conversation = await findConversationById(conversationId);
+
+        if (!conversation) {
+            return res.status(404).json({ message: 'Conversation not found' });
+        }
+
+        let notes = (await findNoteByConversationId(conversationId)) || [];
+
+        // Sắp xếp nếu có tham số sort
+        if (sort) {
+            notes = notes.sort((a, b) => {
+                if (sort === 'asc') {
+                    return a.createdAt - b.createdAt;
+                } else if (sort === 'desc') {
+                    return b.createdAt - a.createdAt;
+                }
+                return 0;
+            });
+        }
+
+        // Áp dụng limit và offset nếu có
+        if (limit && offset) {
+            notes = notes.slice(offset, offset + limit);
+        } else if (limit) {
+            notes = notes.slice(0, limit);
+        }
+
+        return res.status(200).json({ message: 'Get list note success', data: notes });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+const deleteNote = async (req, res) => {
+    try {
+        const { noteId } = req.params;
+        await deleteNoteById(noteId);
+        return res.status(200).json({ message: 'delete note success' });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export default { createNewNote, updateNote, getListNote, deleteNote };
