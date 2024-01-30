@@ -249,13 +249,13 @@ const CrObjFunc = async (memberID, arrInfoMember) => {
   }))
 }
 
-const JoinGroupByInviteId = async (req, res) => {
+const JoinGroupByInviteld = async (req, res) => {
   try {
     const inviteId = req.params.inviteId
 
     const data = dataService.readData()
 
-    const dataConversation = await dataService.findConversationByInvitedId(inviteId)
+    const dataConversation = await dataService.findConversationByInviteldId(inviteId)
 
     if (!dataConversation) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'Invalid InviteId', success: false })
@@ -424,10 +424,6 @@ const GetGroupByInviteld = async (req, res) => {
     reviewMember: true
   }
   return res.status(200).json({ message: 'oke', data: obj })
-}
-const JoinGroupByInviteld = async (req, res) => {
-  const { inviteld } = req.params
-
 }
 
 const PreventJoin = async (req, res) => {

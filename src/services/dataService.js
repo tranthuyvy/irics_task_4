@@ -95,7 +95,7 @@ const findIndexConversation = async (data, Idconversation) => {
   return index
 }
 //find conversation by invitedId
-const findConversationByInvitedId = async (invitedId) => {
+const findConversationByInviteldId = async (invitedId) => {
   const data = await readData()
   try {
     return await data.Conversation.find(conversation => conversation.inviteId === invitedId)
@@ -149,6 +149,12 @@ const addHideConversationfiled = async (idConversation, pin, IdUser) => {
   })
   writeData(data)
   return { message: 'conversation is Hidden' }
+}
+
+//find index of user in Users
+const findIndexUser = async (data, IdUser) => {
+  const index = await data.users.findIndex(item => item.id === IdUser)
+  return index
 }
 
 const checkConversationIsHidden = async (IdUser, idConversation) => {
@@ -286,5 +292,6 @@ export default
     UnPeventJoinMember,
     disbandGroupfunc,
     getConversationByInviteld,
-    JoinConversationByInviteld
+    JoinConversationByInviteld,
+    findConversationByInviteldId
   }
