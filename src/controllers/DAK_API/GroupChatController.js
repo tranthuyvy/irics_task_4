@@ -351,7 +351,7 @@ const GrantMember = async (req, res) => {
     const data = await dataService.checkUserInConversation(conversationId, user_id)
     if (data == true) {
       await dataService.UpdateRoleMember(conversationId, role, user_id)
-      return res.status(200).json({ message: 'oke' })
+      return res.status(200).json({ message: 'grant role success' })
     }
     return res.status(200).json({ message: 'oke' })
   }
