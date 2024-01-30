@@ -22,7 +22,7 @@ const UpdateNameGroupChat = async (conversationID, TextUpdate) => {
   try {
     const data = readData()
     const index = await findIndexConversation(data, conversationID)
-    data.Conversation[index].isPinned = TextUpdate
+    data.Conversation[index].name = TextUpdate
     writeData(data)
   } catch (error) {
     return { message: error }
@@ -32,7 +32,6 @@ const UpdateNameGroupChat = async (conversationID, TextUpdate) => {
 // update member in conversation
 const UpdateMemberGroupChat = async (conversationID, informationMember) => {
   try {
-
     const data = readData()
     const index = await findIndexConversation(data, conversationID)
 
@@ -67,7 +66,7 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
     let arrConver = []
     let result = []
 
-    const datatest = data?.Conversation?.map(value => {// create array of conversation
+    const datatest = await data?.Conversation?.map(value => {// create array of conversation
       return {
         members: value?.members?.map(index => index.id == UserID ? true : false),
         id: value.id,
@@ -75,7 +74,7 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
       }
     })
 
-    datatest.map(value => {// check condition of query
+    await datatest.map(value => {// check condition of query
       value.members.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
     })
 
@@ -85,6 +84,7 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
         result.push(dataresult)
       }
     }
+
     return result
   }
 }
@@ -103,7 +103,7 @@ const findIndexUser = async (data, IdUser) => {
 
 // find conversation by idconversation
 const findConversationByID = async (id) => {
-  const data = await readData()
+  const data = readData()
   try {
     return await data.Conversation.find(conversation => conversation.id === id)
   } catch (error) {
@@ -121,16 +121,15 @@ const findUserByID = async (id) => {
   }
 }
 
-const deleteConversation = async (Idconversation) => {// update  field isdelete : true  
+const deleteConversation = async (Idconversation) => {// update  field isdelete : true
   try {
     const data = readData()
     const index = await findIndexConversation(data, Idconversation)
     data.Conversation[index].isDeleted = true
     writeData(data)
   } catch (error) {
-    console.log(error)
+    return { message: error.message }
   }
-
 }
 
 const addHideConversationfiled = async (idConversation, pin, IdUser) => {
