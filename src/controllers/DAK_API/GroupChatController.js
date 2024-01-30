@@ -10,7 +10,7 @@ const CreateGroupChat = async (req, res) => {
     const { type, name, memberIds } = req.body
     const tokenUser = req.headers.authorization
     const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
-    const typeConversation = type == 2 ? 'member' : 'directUser'// type of conversation
+    const typeConversation = type == 2 ? 'members' : 'directUser'// type of conversation
     const timeCreated = new Date().getTime()
 
     //get information of userid
@@ -32,12 +32,12 @@ const CreateGroupChat = async (req, res) => {
     else {
       for (let i = 0; i < user.length; i++) {
         userarr.push({
-          type: 1,
+          type: 3,
           id: user[i]?.id,
           ownerAccepted: true,
           username: user[i]?.username,
           avatar: user[i]?.avatar,
-          background_img : user[i]?.background_img,
+          background_img: user[i]?.background_img,
           status: 0,
           isActiveMember: false,
           isBlockStranger: false,
@@ -67,8 +67,8 @@ const CreateGroupChat = async (req, res) => {
       updatedAt: timeCreated
     }
 
-    // craete inviteID 
-    const inviteId = uuidv4().replace(/-/g, '')
+    // craete inviteld 
+    const inviteld = uuidv4().replace(/-/g, '')
 
     //create data to import database
     const conversation = {
@@ -76,10 +76,10 @@ const CreateGroupChat = async (req, res) => {
       avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
       createdBy: createdByUser,
       name,
-      lastMessageCreated: '2024-01-20T07:39:49.440Z',
+      lastMessageCreated: timeCreated,
       isDeleted: false,
-      createdAt: '2024-01-20T10:09:42.213Z',
-      updatedAt: '2024-01-21T09:45:50.515Z',
+      createdAt: timeCreated,
+      updatedAt: timeCreated,
       latestMessage: [],
       createdByUser: objCreatedbyUser,
       unSeenMessageTotal: 0,
@@ -120,7 +120,7 @@ const CreateGroupChat = async (req, res) => {
         }
       ],
       userOffStatusMsg: [],
-      inviteId: inviteId,//generated ID invited,
+      inviteld: inviteld,//generated ID invited,
       messagePinCount: 0,
       isPinned: false,
       notePinned: [],
@@ -147,26 +147,34 @@ const CreateGroupChat = async (req, res) => {
 }
 
 const UpdateNameGroupChat = async (req, res) => {
-  const tokenUser = req.headers.authorization
-  const idMember = getIdUserOfToken(tokenUser).userId
-  const idConversation = req.params.id
-  const permission = await permissionMemberGroupChat(idMember, idConversation)
-  // console.log(permission)
-  if (permission !== undefined) {
-    const NameGrchatUpdate = req.body.name
-    await dataService.UpdateNameGroupChat(idConversation, NameGrchatUpdate)
-  }
+  try {
+    const tokenUser = req.headers.authorization
+    const idMember = getIdUserOfToken(tokenUser).userId
 
-  return res.status(200).json({ message: 'update name succes' })
+    const idConversation = req.params.id
+    const permission = await permissionMemberGroupChat(idMember, idConversation)
+
+    if (permission !== undefined) {
+      const NameGrchatUpdate = req.body.name
+      await dataService.UpdateNameGroupChat(idConversation, NameGrchatUpdate)
+    }
+    return res.status(200).json({ message: 'update name succes' })
+  } catch (error) {
+    return res.status(400).json({ message: 'error' })
+  }
 }
 
 const GetConversationBelongUser = async (req, res) => {
-  const { offset, limit, search, status } = req.query
-  const tokenUser = req.headers.authorization
-  const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
-  let result = await dataService.getConversationofUser(createdByUser, limit, search, status)
+  try {
+    const { offset, limit, search, status } = req.query
+    const tokenUser = req.headers.authorization
+    const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
+    let result = await dataService.getConversationofUser(createdByUser, limit, search, status)
+    return res.status(200).json({ message: 'update name succes', data: result })
+  } catch (error) {
+    return res.status(400).json({ message: 'error' })
 
-  return res.status(200).json({ message: 'Success', data: result })
+  }
 }
 
 const GetConversationDetail = async (req, res) => {
@@ -197,58 +205,57 @@ const permissionMemberGroupChat = async (idMember, idConversation) => {// check 
 const AddMemberToGroupChat = async (req, res) => {
   const conversationId = req.params.conversationId
   const memberID = req.body.ids
-  // check Id exist
+
   let arrInfoMember = []
-  let _checkId = true
-  let _checkExistMember = false
-  await Promise.all(memberID.map(async (idMember) => {
-    _checkId = await checkMember(idMember)
-  }))
+
+  // check Id
+  let _checkId = await memberID.map(idMember => checkMember(idMember))
 
   // check exist member in conversation
   const dataConversation = await dataService.findConversationByID(conversationId)
-  await Promise.all(memberID.map(async (idMember) => {
-    _checkExistMember = await dataConversation.member.find(value => value.id === idMember) ? true : false
-  })
-  )
+
+  let _checkExistMember = await memberID.map(idMember => dataConversation.members.find(value => value.id == idMember) ? true : false)
 
   // create information member
-  if (_checkId == true && _checkExistMember == false) {
-    await Promise.all(memberID.map(async idMember => {
+  for (let i = 0; i < _checkExistMember.length; i++) {
+    if (_checkId[i] == true) {
+      if (_checkExistMember[i] == true) { // check is already in conversation
+        return res.status(200).json({ message: 'member already in conversation' })
+      }
+      await CrObjFunc(memberID, arrInfoMember)// update member to obj
 
-      let infoMember = await getUser(idMember)
-
-      arrInfoMember.push({
-        type: 4,
-        id: idMember,
-        ownerAccepted: true,
-        username: infoMember.username,
-        avatar: infoMember.avatar,
-        lastLogin: infoMember.lastLogin
-      })
-
-    }))
-
-    // update member to data
-    await Promise.all(arrInfoMember.map(async data =>
-      await dataService.UpdateMemberGroupChat(conversationId, data)
-    ))
-
-    return res.status(200).json({ message: 'success' })
-  }
-  else {
-    if (_checkExistMember == true) return res.status(404).json({ error: 'member already in conversation' })
-    return res.status(404).json({ error: 'error' })
+      await Promise.all(arrInfoMember.map(async data => // update member to data
+        await dataService.UpdateMemberGroupChat(conversationId, data)
+      ))
+      return res.status(200).json({ message: 'add member to group succes' })
+    }
+    else {
+      return res.status(404).json({ error: 'error member' })
+    }
   }
 }
 
-const JoinGroupByInviteId = async (req, res) => {
+const CrObjFunc = async (memberID, arrInfoMember) => {
+  await Promise.all(memberID.map(async idMember => {
+    let infoMember = await getUser(idMember)
+    arrInfoMember.push({
+      type: 4,
+      id: idMember,
+      ownerAccepted: true,
+      username: infoMember.username,
+      avatar: infoMember.avatar,
+      lastLogin: infoMember?.lastLogin
+    })
+  }))
+}
+
+const JoinGroupByInviteld = async (req, res) => {
   try {
     const inviteId = req.params.inviteId
 
     const data = dataService.readData()
 
-    const dataConversation = await dataService.findConversationByInvitedId(inviteId)
+    const dataConversation = await dataService.findConversationByInviteldId(inviteId)
 
     if (!dataConversation) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'Invalid InviteId', success: false })
@@ -294,26 +301,29 @@ const JoinGroupByInviteId = async (req, res) => {
 }
 
 const RemoveMemberToGroupChat = async (req, res) => {
+  try {
   const conversationId = req.params.conversationId
   const memberID = req.body.ids
-
-  const UserId = getIdUserOfToken(req).userId
+  const tokenUser = req.headers.authorization
+  const UserId = getIdUserOfToken(tokenUser).userId
 
   const _check = await PermissionDelMember(UserId, conversationId)
   if (_check == true) {
     dataService.deleteMemberChat(memberID, conversationId)
-    return res.status(200).json({ message: 'succes' })
+    return res.status(200).json({ message: 'remove member succes' })
   }
   else
-    return res.status(200).json({ message: 'not have permission' })
-
+    return res.status(200).json({ message: 'no permission' })
+  } catch (error) {
+    return res.status(200).json({ message: error })
+  }
 }
 
 // permission to delete member
 const PermissionDelMember = async (idMember, idConversation) => {// check permissions of group chat
   const dataConversation = await dataService.findConversationByID(idConversation)
 
-  const result = await dataConversation.member.find(value => value.id == idMember)// check conversation
+  const result = await dataConversation.members.find(value => value.id == idMember)// check conversation
 
   const checkPermission = result.type == 1 || result.type == 2 ? true : false// check type
   // const result = await dataConversation.member.find(value => value.type == 1 || value.type == 2 ? true : false)
@@ -321,8 +331,8 @@ const PermissionDelMember = async (idMember, idConversation) => {// check permis
 }
 
 // check member have exist
-const checkMember = async (memberID) => {
-  return await findUserByID(memberID) ? true : false
+const checkMember = (memberID) => {
+  return findUserByID(memberID) ? true : false
 }
 
 // delete DeleteConversation
@@ -349,27 +359,85 @@ const DeleteConversation = async (req, res) => {
 const PermissionDelConversation = async (tokenUser, idConversation) => {
   const createdByUser = getIdUserOfToken(tokenUser).userId
   const dataConversation = await dataService.findConversationByID(idConversation)
-  const result = await dataConversation.member.find(value => value.id == createdByUser)// check conversation
+  const result = await dataConversation.members.find(value => value.id == createdByUser)// check conversation
   const checkPermission = result.type == 1 ? true : false
   return checkPermission
 }
 
-//hide hide conversation 
+//hidden conversation
 const HideConversation = async (req, res) => {
   const { conversationId, pin } = req.body
-  const ConversationHidden = { pin }
-  dataService.hideConversation(conversationId, ConversationHidden)
-  return res.status(200).json({ message: 'succes' })
+  const tokenUser = req.headers.authorization
+  const IdUser = getIdUserOfToken(tokenUser).userId
+  const result = await dataService.addHideConversationfiled(conversationId, pin, IdUser)
+  return res.status(200).json({ message: result.message })
 }
-//hide hide conversation 
+//hide  conversation
 const UnHideConversation = async (req, res) => {
-  const {conversationId} = req.body
-  return res.status(200).json({ message: 'succes' })
-  
+  const { conversationId } = req.body
+  const tokenUser = req.headers.authorization
+  const IdUser = getIdUserOfToken(tokenUser).userId
+  const result = await dataService.UnHiddenConversation(conversationId, IdUser)
+  return res.status(200).json({ message: result.message })
 }
 
 const PinConversation = async (req, res) => {
+  const { action, conversationId } = req.params
 
+  if (action == 'pin') {
+    const result = await dataService.PinConversationfunc(conversationId)
+    return res.status(200).json({ message: result.message })
+  }
+  else return res.status(404).json({ error: 'error' })
+}
+
+const GrantMember = async (req, res) => {
+  const { conversationId } = req.params
+  const { user_id, role } = req.body
+  const tokenUser = req.headers.authorization
+  const idOwnerCheck = getIdUserOfToken(tokenUser).userId
+
+  // check type of user id in conversation
+  const checkData = await dataService.checkTypeofUserConversation(conversationId, idOwnerCheck)
+  if (checkData == true) {
+    const data = await dataService.checkUserInConversation(conversationId, user_id)
+    if (data == true) {
+      await dataService.UpdateRoleMember(conversationId, role, user_id)
+      return res.status(200).json({ message: 'grant role success' })
+    }
+    return res.status(200).json({ message: 'oke' })
+  }
+  return res.status(200).json({ message: 'No permission' })
+}
+
+const DisBandGroup = async (req, res) => {
+  const { conversationId } = req.params
+  await dataService.disbandGroupfunc(conversationId)
+}
+
+const GetGroupByInviteld = async (req, res) => {
+  const { inviteld } = req.params
+  const data = await dataService.getConversationByInviteld(inviteld)
+  const obj = {
+    avartar: data.avartar,
+    name: data.name,
+    reviewMember: true
+  }
+  return res.status(200).json({ message: 'oke', data: obj })
+}
+
+const PreventJoin = async (req, res) => {
+  const { conversationId } = req.params
+  const { userId } = req.body
+  await dataService.PreventJoinMember(conversationId, userId)
+  return res.status(200).json({ message: 'oke' })
+}
+
+const UnPreventJoin = async (req, res) => {
+  const { preventId } = req.body
+  const { conversationId } = req.params
+  await dataService.UnPeventJoinMember(conversationId, preventId)
+  return res.status(200).json({ message: 'oke' })
 }
 
 export default
@@ -384,5 +452,10 @@ export default
     HideConversation,
     UnHideConversation,
     PinConversation,
-    JoinGroupByInviteId
+    GrantMember,
+    GetGroupByInviteld,
+    JoinGroupByInviteld,
+    PreventJoin,
+    UnPreventJoin,
+    DisBandGroup
   }

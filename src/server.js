@@ -19,7 +19,6 @@ app.use((req, res, next) => {
 
 app.use(cookieparser())
 app.use(bodyParserMiddleware)
-app.use('/api/auth', authRoutes)
 
 // init api routes
 initAPIRoute(app)

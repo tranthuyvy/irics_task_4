@@ -1,18 +1,14 @@
-import express from 'express'
 import { loginUser, registerUser, getPublicKey, getPasswordLogin, refreshToken, logoutUser, changePassword, forgotPassword, resetPassword, userProfile } from '../../controllers/authController'
-import authenticateToken from '../../middlewares/authenticateToken'
 
-const router = express.Router()
+export const RouterAuth = (path, router) =>
+    router.post(path+'/register', registerUser)
+        .post(path+'/login', loginUser)
+        .get(path+'/publicKey', getPublicKey)
+        .get(path+'/profile', userProfile)
+        .get(path+'/passwordLogin', getPasswordLogin)
+        .post(path+'/refresh', refreshToken)
+        .post(path+'/logout', logoutUser)
+        .post(path+'/change-password', changePassword)
+        .post(path+'/forgot-password', forgotPassword)
+        .post(path+'/reset-password', resetPassword)
 
-router.post('/register', registerUser)
-router.post('/login', loginUser)
-router.get('/publicKey', getPublicKey)
-router.get('/profile', userProfile)
-router.get('/passwordLogin', getPasswordLogin)
-router.post('/refresh', refreshToken)
-router.post('/logout', logoutUser)
-router.post('/change-password', changePassword)
-router.post('/forgot-password', forgotPassword)
-router.post('/reset-password', resetPassword)
-
-export default router
