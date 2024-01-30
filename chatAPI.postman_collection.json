@@ -1,0 +1,422 @@
+{
+	"info": {
+		"_postman_id": "81922e45-41ac-4dfa-a537-51f7a3b0088f",
+		"name": "Task4Irics",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29945662"
+	},
+	"item": [
+		{
+			"name": "vote",
+			"item": [
+				{
+					"name": "CreateVote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY0MzA5NDUsImV4cCI6MTcwNjQzMjc0NX0.YWAfuLpgFxrUsImSej4f9ysMfofE_O5ExqKpG-ExgwA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isPinned\" : false,\r\n    \"question\": \"test api question\",\r\n    \"options\": [\"solution 1\", \"solution 2\", \"solution 3\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/conversations/vote/:conversationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"conversations",
+								"vote",
+								":conversationId"
+							],
+							"variable": [
+								{
+									"key": "conversationId",
+									"value": "2fcfdbeb8f2e402318c6448a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add option vote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY0MzY1NDUsImV4cCI6MTcwNjQzODM0NX0.BU3epWxLMziDALzrAInBuXSmgL7Agi0GyDM5N6B81MY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"option\": [\"Add new vote 4\", \"Add new vote 5\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/conversations/vote/:voteId/:action",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"conversations",
+								"vote",
+								":voteId",
+								":action"
+							],
+							"variable": [
+								{
+									"key": "voteId",
+									"value": "95f7fc6831df34c67efa0ab3"
+								},
+								{
+									"key": "action",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pin/unpin or close vote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY2MjEzMjMsImV4cCI6MTcwNjYyMzEyM30.b7dHzx37gQAVggLoMmsiCkK6ux2cv1ub_gu4wgCbQFc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/conversations/vote/:voteId/:action",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"conversations",
+								"vote",
+								":voteId",
+								":action"
+							],
+							"variable": [
+								{
+									"key": "voteId",
+									"value": "95f7fc6831df34c67efa0ab3"
+								},
+								{
+									"key": "action",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "note",
+			"item": [
+				{
+					"name": "CreateNote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDYzNTk4MzAsImV4cCI6MTcwNjM2MTYzMH0.YXSfRMVtvKB96U-ophrQ2k2X6GTYkXIWpFvnlHGQQpU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isPinned\": false,\r\n    \"content\": \"note test api task 4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/conversations/note/:conversationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"conversations",
+								"note",
+								":conversationId"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "conversationId",
+									"value": "2fcfdbeb8f2e402318c6448a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update vote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDY2MjEzMjMsImV4cCI6MTcwNjYyMzEyM30.b7dHzx37gQAVggLoMmsiCkK6ux2cv1ub_gu4wgCbQFc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isPinned\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/conversations/note/:noteId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"conversations",
+								"note",
+								":noteId"
+							],
+							"variable": [
+								{
+									"key": "noteId",
+									"value": "aa4bb25b04c69c1c8fa092eb"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usernameoremail\": \"huy269\",\r\n    \"password\": \"DEwZXMGTn7raOk7DMj0tZRI4+jU4331C4DZc89bs24ghovAjWDnjKvQ8SnFWKQdLHlJNnxOmteb6eos2Je7ZdCZKNmnT9h0xpmWp9Pho/6LlWauppSUY0v87Rtb5LCRyNNUZjP2XFYRW5f0keKCgy5kaB02z6+0RWl2YMHO7kqrJZ5TMbEiQd8EQVmQP7CKlj80mmJmPPcq/tev6RuNxM15AkLeHEGILS2ImYhsZHs1dQiTsgpk0vnxGRSGmXcq1m0tHATG7U4LlkTnjTInZxVoHR41BXgKTutsc9+uRn+JbbLVQLvFvSuQKAspNK1SnJSf4tJP2ksMAnJThq1PmpCHHiwdsVp2sMKC5oHxQICc6yzuPmphq2t0hOpCW25YGFjb6M4u3mHqQZrb/oLZlb+Tw7XR4cUGFDaRWZXa/mucATCM3eIUa7GKUVG89VhFRyY14bpy8Ul6nH4slREZX68UjKN8KVhTr5BL2S8M81ehG87L+ZEbx49OgN8BJ27jTSgH9V7VryEbTHnW3b6Unc135+KF/2tAPrAE415gabND7+srmHjBWQrfZI7Tcr3OefnrzGUAImULMKeqBOqr6lqi5K7ZL267oFKXNmjEqmgK9kAq8IBoOh0dxsq7zBS9bXAdycuHYVvlXM7CEkI+1xq+Zbqgtnyifb/CTdAjKjQ0=\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"huy\",\r\n    \"username\": \"huy269\",\r\n    \"email\": \"huy@gmail.com\",\r\n    \"password\": \"Huy123456!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPublicKey",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usernameoremail\": \"huy269\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/publicKey",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"publicKey"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPasswordLogin",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usernameoremail\": \"huy269\",\r\n    \"text\": \"Huy123456!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/passwordLogin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"passwordLogin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateGroupChat",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkOGY1YmU1ZC1kY2IwLTRiMWUtYmRkMC04YjVjNTkyM2Y5MTkiLCJpYXQiOjE3MDYyODU1NTEsImV4cCI6MTcwNjI4NzM1MX0.X0LdTHI8SQNpJ3jax9jp-uXMr6GCXxJnYz0QPoGJlUs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"2\",\r\n    \"name\": \"Group chat test\",\r\n    \"memberIds\":[\"7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc\", \"edb8f56a-99a0-47f4-9022-ad03c456ebee\", \"d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/conversations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"conversations"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
