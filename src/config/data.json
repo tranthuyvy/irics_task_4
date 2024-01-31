@@ -154,7 +154,12 @@
       "isPinned": true,
       "notePinned": [],
       "votePinned": [],
-      "IsPrevent": []
+      "IsPrevent": [
+        {
+          "preventId": "777ba6ebcaa9406b9eb6ce34885e0b5f",
+          "idUser": "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919"
+        }
+      ]
     },
     {
       "id": "8060a56d5472af93093ba2a6",

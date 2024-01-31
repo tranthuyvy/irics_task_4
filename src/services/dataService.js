@@ -132,9 +132,6 @@ const deleteConversation = async (Idconversation) => {// update  field isdelete 
   try {
     const data = readData()
     const index = await findIndexConversation(data, Idconversation)
-
-    checkPermissionDel(index,)
-
     data.Conversation[index].isDeleted = true
     writeData(data)
   } catch (error) {
@@ -212,11 +209,11 @@ const findIndexUserInConversation = async (data, userId, indexConversation) => {
   return index
 }
 
-const PreventJoinMember = async (idConversation, UserID) => {
+const PreventJoinMember = async (idConversation, UserID ,userPermission) => {
   const data = readData()
   const index = await findIndexConversation(data, idConversation)
   const idPrevent = uuidv4().replace(/-/g, '')
-
+  checkPermissionPreventJoinMember(idConversation,userPermission)
   if (!data.Conversation[index].IsPrevent) {
     data.Conversation[index].IsPrevent = []
   }
@@ -302,19 +299,24 @@ const PermissiontoDecideConvers = async (conversationID, Iduser) => {
   return permission
 }
 
-const checkPermissionDel = async (index, Iduser) => {
-  const data = readData();
-  let result = true
-  const checkTypeConvers = data.Conversation[0].status === 2 ? true : false
-  
-  if (checkTypeConvers === true)
-    result = data.Conversation[0].members.find(member => member.id === Iduser) ? true : false
-  else
-    result = data.Conversation[0].directUser.find(member => member.id === Iduser) ? true : false
-
-  
+const checktypeOfConversation = async (conversationID) =>{
+  const data = findConversationByID(conversationID)
+  const result = data.Conversation.status
+  return result
 }
-const checkPreventJoinMember = async () => { }
+
+const checkPermissionPreventJoinMember = async (conversationID, userPermission) => {
+  const data = readData()
+  const typeConversation = await checktypeOfConversation(conversationID)
+  if (typeConversation === 2 ){
+    const checkuser = findConversationByID(conversationID)
+    const data1 = checkuser.members.find(member => member.id === userPermission)
+    console.log(data1)
+    return true
+  }
+  else return { message : 'can not Prevent invisual chat' }
+}
+
 const checkUnPreventJoinMember = async () => { }
 
 export default

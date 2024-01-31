@@ -350,6 +350,7 @@ const checkMember = (memberID) => {
 const DeleteConversation = async (req, res) => {
   const idConversation = req.params.id
   const tokenUser = req.headers.authorization
+  const Iduser = getIdUserOfToken(tokenUser).userId// get id user from token
 
   const checkType = await dataService.findConversationByID(idConversation)
 
@@ -358,19 +359,17 @@ const DeleteConversation = async (req, res) => {
   }
   else {
     // check permissions member of gr chat
-    const checkPermission = await PermissionDelConversation(tokenUser, idConversation)
+    const checkPermission = await PermissionDelConversation(Iduser, idConversation)
     if (checkPermission == true) {
       await dataService.deleteConversation(idConversation)
     }
   }
-  return res.status(200).json({ message: 'succes' })
 }
 
 //check permissions to delete conversation
-const PermissionDelConversation = async (tokenUser, idConversation) => {
-  const createdByUser = getIdUserOfToken(tokenUser).userId
+const PermissionDelConversation = async (Iduser, idConversation) => {
   const dataConversation = await dataService.findConversationByID(idConversation)
-  const result = await dataConversation.members.find(value => value.id == createdByUser)// check conversation
+  const result = await dataConversation.members.find(value => value.id == Iduser)// check conversation
   const checkPermission = result.type == 1 ? true : false
   return checkPermission
 }
@@ -440,7 +439,9 @@ const GetGroupByInviteld = async (req, res) => {
 const PreventJoin = async (req, res) => {
   const { conversationId } = req.params
   const { userId } = req.body
-  await dataService.PreventJoinMember(conversationId, userId)
+  const tokenUser = req.headers.authorization
+  const userPermission = getIdUserOfToken(tokenUser).userId
+  await dataService.PreventJoinMember(conversationId, userId, userPermission)
   return res.status(200).json({ message: 'oke' })
 }
 
