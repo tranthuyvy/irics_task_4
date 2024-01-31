@@ -63,10 +63,6 @@
 					"name": "Conversation",
 					"item": [
 						{
-							"name": "New Folder",
-							"item": []
-						},
-						{
 							"name": "list conversation belong to user",
 							"request": {
 								"auth": {
@@ -179,7 +175,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"type\": 2,\r\n    \"name\": \"choi game choi game\",\r\n    \"memberIds\": [\"de92b51d-050f-4a60-91cf-6970a5a317d4\",\"d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919\"]\r\n}",
+									"raw": "{\r\n    \"type\": 2,\r\n    \"name\": \"choi game choi game 123\",\r\n    \"memberIds\": [\"de92b51d-050f-4a60-91cf-6970a5a317d4\",\"d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919\"]\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -187,9 +183,27 @@
 									}
 								},
 								"url": {
-									"raw": "{{Base_URL}}conversations",
+									"raw": "{{Base_URL}}conversations?offset=1&limit=10&search=&status=2",
 									"host": [
 										"{{Base_URL}}conversations"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "search",
+											"value": ""
+										},
+										{
+											"key": "status",
+											"value": "2"
+										}
 									]
 								}
 							},
@@ -301,6 +315,78 @@
 									"path": [
 										"8060a56d5472af93093ba2a6",
 										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create conversation Invisual",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ToKentest}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"type\": 1,\r\n    \"memberIds\": [\"de92b51d-050f-4a60-91cf-6970a5a317d4\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{Base_URL}}conversations",
+									"host": [
+										"{{Base_URL}}conversations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "decide conversation request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ToKentest}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{Base_URL}}conversations/:conversationId/decide/:status",
+									"host": [
+										"{{Base_URL}}conversations"
+									],
+									"path": [
+										":conversationId",
+										"decide",
+										":status"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "eb8544077d97ce00c22067f1"
+										},
+										{
+											"key": "status",
+											"value": "1"
+										}
 									]
 								}
 							},
@@ -639,6 +725,16 @@
 				{
 					"name": "Join group by inviteld",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ToKentest}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"url": {
@@ -654,7 +750,7 @@
 							"variable": [
 								{
 									"key": "inviteId",
-									"value": ""
+									"value": "3fce7ad671514f348bebdc8b91268e5b"
 								}
 							]
 						}
@@ -666,11 +762,21 @@
 		{
 			"name": "login test",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ToKentest}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n     \"usernameoremail\": \"duyvottt\",\r\n    \"password\": \"Minh3001!\"\r\n}",
+					"raw": "{\r\n    \"usernameoremail\": \"duyvottt\",\r\n    \"password\": \"Minh3001!\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
