@@ -3,6 +3,7 @@ import {
     findConversationById,
     findVoteByConversationId,
     findVoteById,
+    findVoteByVoteOptionId,
     updateVoteById,
 } from '~/models/chat';
 import { updateConversationById } from '~/models/conversation.model';
@@ -44,10 +45,10 @@ const createNewVote = async (req, res) => {
                         lastLogin: '2024-01 - 13T06: 34: 44.341Z',
                     };
                     // Tạo mảng options với mỗi option chứa id và giá trị
-                    const generateOptionId = await generateService.generateID();
-                    const optionsWithId = options.map((option) => ({
-                        id: generateOptionId,
+                    const optionsWithId = options.map((option, index) => ({
+                        id: `${conversationId}_${index + 1}`,
                         value: option,
+                        voters: [],
                     }));
                     const vote = {
                         conversationId,
@@ -89,6 +90,7 @@ const updateVote = async (req, res) => {
         if (!isMember) {
             return res.status(403).json({ message: 'You are not a member of this conversation' });
         }
+        const generateID = await generateService.generateID();
         const actionType = parseInt(action);
         switch (actionType) {
             case 1: //pin vote
@@ -128,8 +130,8 @@ const updateVote = async (req, res) => {
                 }
                 
                 // eslint-disable-next-line no-case-declarations
-                const optionsWithId = await Promise.all(option.map(async (value) => ({
-                    id: await generateService.generateID(),
+                const optionsWithId = await Promise.all(option.map(async (value, index) => ({
+                    id: `${generateID}_${index}`,
                     value: value
                 })));
             
@@ -192,31 +194,44 @@ const getListVote = async (req, res) => {
 const answerVote = async (req, res) => {
     try {
         const { userId } = req.user;
-        const { voteId } = req.params;
-        const { answer } = req.body;
+        const { voteOptionId } = req.body;
 
-        // Kiểm tra xem vote có tồn tại không
-        const vote = await findVoteById(voteId);
+        // Kiểm tra voteOptionId có tồn tại không
+        if (!voteOptionId) {
+            return res.status(400).json({ message: 'Vote option ID is required' });
+        }
+
+        // Lấy thông tin voteOptionId từ cơ sở dữ liệu
+        const vote = await findVoteByVoteOptionId(voteOptionId);
+
         if (!vote) {
             return res.status(404).json({ message: 'Vote not found' });
         }
 
-        // Kiểm tra xem cuộc trò chuyện có cho phép thay đổi câu trả lời không
-        const allowChangeAnswers = vote.allowChangeAnswers || false;
-        const createdByUserId = vote.createdByUser?.id;
-        if (!allowChangeAnswers && userId !== createdByUserId) {
-            return res.status(403).json({ message: 'You are not allowed to change your answer for this vote' });
+        // Kiểm tra xem người dùng đã tham gia bình chọn chưa
+        const hasAnswered = vote.options.some(
+            (option) => option.id === voteOptionId && option?.voters?.includes(userId),
+        );
+
+        if (hasAnswered) {
+            return res.status(400).json({ message: 'You have already answered this vote' });
         }
 
-        // Kiểm tra xem câu trả lời có hợp lệ không
-        const isValidAnswer = vote.options.some((option) => option === answer);
-        if (!isValidAnswer) {
-            return res.status(400).json({ message: 'Invalid answer' });
-        }
+        // Thêm userId vào danh sách người đã bình chọn cho option đó
+        const updatedVote = {
+            ...vote,
+            options: vote.options.map((option) =>
+                option.id === voteOptionId
+                    ? {
+                          ...option,
+                          voters: [...option.voters, userId],
+                      }
+                    : option,
+            ),
+        };
 
-        // Cập nhật câu trả lời cho vote
-        const updatedVote = { ...vote, answer };
-        await updateVoteById(voteId, updatedVote);
+        // Cập nhật thông tin vote vào cơ sở dữ liệu
+        await updateVoteById(vote.id, updatedVote);
 
         return res.status(200).json({ message: 'Answer vote success' });
     } catch (error) {
