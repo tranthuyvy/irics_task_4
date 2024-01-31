@@ -132,7 +132,8 @@ const updateVote = async (req, res) => {
                 // eslint-disable-next-line no-case-declarations
                 const optionsWithId = await Promise.all(option.map(async (value, index) => ({
                     id: `${generateID}_${index}`,
-                    value: value
+                    value: value,
+                    voters: [],
                 })));
             
                 // Cập nhật vote với các option mới có ID và giá trị
