@@ -49,6 +49,7 @@ const deleteMemberChat = (MemberID, conversationID) => {
   try {
     const data = readData()
     const index = findIndexConversation(data, conversationID)
+
     data.Conversation[index].members = data.Conversation[index].members.filter(item => item.id != MemberID)
     writeData(data)
   } catch (error) {
@@ -73,7 +74,7 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
         type: value.status
       }
     })
-   
+
     await datatest.map(value => {// check condition of query
       value.members.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
     })
@@ -131,6 +132,9 @@ const deleteConversation = async (Idconversation) => {// update  field isdelete 
   try {
     const data = readData()
     const index = await findIndexConversation(data, Idconversation)
+
+    checkPermissionDel(index,)
+
     data.Conversation[index].isDeleted = true
     writeData(data)
   } catch (error) {
@@ -234,13 +238,13 @@ const UnPeventJoinMember = async (idConversation, IDprevent) => {
   writeData(data)
 }
 
-const disbandGroupfunc = async (idConversation) =>{
+const disbandGroupfunc = async (idConversation) => {
   const data = readData()
   data.Conversation = data.Conversation.filter(item => item.id != idConversation)
   writeData(data)
 }
 
-const getConversationByInviteld = async (invite)=>{
+const getConversationByInviteld = async (invite) => {
   const data = readData()
   try {
     return await data.Conversation.find(conversation => conversation.inviteld === invite)
@@ -252,7 +256,7 @@ const getConversationByInviteld = async (invite)=>{
 const getNotesByConversationId = (conversationId) => {
   const matchingNotes = []
   const data = readData()
-  
+
   for (const note of data.notes) {
     if (note.conversationId === conversationId) {
       matchingNotes.push(note)
@@ -265,7 +269,7 @@ const getNotesByConversationId = (conversationId) => {
 const getVotesByConversationId = (conversationId) => {
   const matchingVotes = []
   const data = readData()
-  
+
   for (const vote of data.votes) {
     if (vote.conversationId === conversationId) {
       matchingVotes.push(vote)
@@ -275,18 +279,18 @@ const getVotesByConversationId = (conversationId) => {
   return matchingVotes
 }
 
-const decideConversationfunc = async (conversationID, Iduser ) => {
+const decideConversationfunc = async (conversationID, Iduser) => {
   try {
     const data = readData()
     const permission = await PermissiontoDecideConvers(conversationID, Iduser)
-    if (permission === true ){
+    if (permission === true) {
       const index = await findIndexConversation(data, conversationID)
       console.log(index)
       data.Conversation[index].directUser[0].type = 3
       writeData(data)
       return { message: 'The decide was accepted' }
     }
-    else return { message : 'permission is require' }
+    else return { message: 'permission is require' }
   } catch (error) {
     return { message: error }
   }
@@ -298,7 +302,18 @@ const PermissiontoDecideConvers = async (conversationID, Iduser) => {
   return permission
 }
 
-const checkPermissionDel = async () => { }
+const checkPermissionDel = async (index, Iduser) => {
+  const data = readData();
+  let result = true
+  const checkTypeConvers = data.Conversation[0].status === 2 ? true : false
+  
+  if (checkTypeConvers === true)
+    result = data.Conversation[0].members.find(member => member.id === Iduser) ? true : false
+  else
+    result = data.Conversation[0].directUser.find(member => member.id === Iduser) ? true : false
+
+  
+}
 const checkPreventJoinMember = async () => { }
 const checkUnPreventJoinMember = async () => { }
 
