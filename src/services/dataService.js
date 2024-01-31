@@ -50,7 +50,7 @@ const deleteMemberChat = (MemberID, conversationID) => {
     const data = readData()
     const index = findIndexConversation(data, conversationID)
     data.Conversation[index].members = data.Conversation[index].members.filter(item => item.id != MemberID)
-    // writeData(data)
+    writeData(data)
   } catch (error) {
     return { message: error }
   }
@@ -271,6 +271,30 @@ const JoinConversationByInviteld = async (invite)=>{
 
   //   return { message: 'success' }
 }
+
+const decideConversationfunc = async (conversationID, Iduser ) => {
+  try {
+    const data = readData()
+    const permission = await PermissiontoDecideConvers(conversationID, Iduser)
+    if (permission === false ){
+      const index = await findIndexConversation(data, conversationID)
+      console.log(index)
+      data.Conversation[index].directUser[0].type = 3
+      writeData(data)
+      return { message: 'The decide was accepted' }
+    }
+    else return { message : 'permission is require' }
+  } catch (error) {
+    return { message: error }
+  }
+}
+
+const PermissiontoDecideConvers = async (conversationID, Iduser) => {
+  const data = await findConversationByID(conversationID)
+  const permission = await data.directUser.find(member => member.id === Iduser) ? true : false
+  return permission
+}
+
 const checkPermissionDel = async () => { }
 const checkPreventJoinMember = async () => { }
 const checkUnPreventJoinMember = async () => { }
@@ -296,5 +320,6 @@ export default
     disbandGroupfunc,
     getConversationByInviteld,
     JoinConversationByInviteld,
-    findConversationByInviteldId
+    findConversationByInviteldId,
+    decideConversationfunc
   }

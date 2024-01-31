@@ -20,4 +20,4 @@ export const RouterConversation = (router) =>
         .get('/conversations/group/invite/:inviteId', authenticateToken, GroupChat.GetGroupByInviteld)
         .post('/conversations/group/invite/:inviteId', authenticateToken, GroupChat.JoinGroupByInviteld)
         .put('/conversations/:conversationId/decide/:status', authenticateToken, GroupChat.DecideConversations)
-        .post('/conversations', authenticateToken, GroupChat.CreateIndivisualConversations)
+        // .post('/conversations/:action/:conversationId', authenticateToken, GroupChat.CreateIndivisualConversations)
