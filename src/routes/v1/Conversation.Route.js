@@ -19,3 +19,5 @@ export const RouterConversation = (router) =>
         .delete('/conversations/group/disband/:conversationId', authenticateToken, GroupChat.DisBandGroup)
         .get('/conversations/group/invite/:inviteId', authenticateToken, GroupChat.GetGroupByInviteld)
         .post('/conversations/group/invite/:inviteId', authenticateToken, GroupChat.JoinGroupByInviteld)
+        .put('/conversations/:conversationId/decide/:status', authenticateToken, GroupChat.DecideConversations)
+        .post('/conversations', authenticateToken, GroupChat.CreateIndivisualConversations)

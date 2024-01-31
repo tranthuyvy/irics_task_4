@@ -441,6 +441,15 @@ const UnPreventJoin = async (req, res) => {
   return res.status(200).json({ message: 'oke' })
 }
 
+const DecideConversations = async (req, res) => { 
+  
+  return res.status(200).json({ message: 'oke' })
+}
+
+const CreateIndivisualConversations = async (req, res) => { 
+  return res.status(200).json({ message: 'oke' })
+}
+
 export default
   {
     CreateGroupChat,
@@ -458,5 +467,7 @@ export default
     JoinGroupByInviteld,
     PreventJoin,
     UnPreventJoin,
-    DisBandGroup
+    DisBandGroup,
+    DecideConversations,
+    CreateIndivisualConversations
   }
