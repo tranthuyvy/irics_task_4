@@ -120,7 +120,7 @@ const CreateGroupChat = async (req, res) => {
         }
       ],
       userOffStatusMsg: [],
-      inviteld: inviteld,//generated ID invited,
+      inviteId: inviteld,//generated ID invited,
       messagePinCount: 0,
       isPinned: false,
       notePinned: [],
@@ -251,12 +251,12 @@ const CrObjFunc = async (memberID, arrInfoMember) => {
 
 const JoinGroupByInviteld = async (req, res) => {
   try {
-    const inviteId = req.params.inviteId
-
+    const { inviteId } = req.params
+    console.log(inviteId)
     const data = dataService.readData()
 
     const dataConversation = await dataService.findConversationByInviteldId(inviteId)
-
+    console.log(dataConversation)
     if (!dataConversation) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'Invalid InviteId', success: false })
     }
@@ -277,13 +277,14 @@ const JoinGroupByInviteld = async (req, res) => {
     if (!userInProgram) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: 'User not found', success: false })
     }
-    const userInMember = dataConversation.member.find(user => user.id === userId)
+
+    const userInMember = dataConversation.members.find(user => user.id === userId)
 
     if (userInMember){
       return res.status(StatusCodes.CONFLICT).json({ message: 'User already exists in conversation', success: false })
     }
 
-    dataConversation.member.push({
+    dataConversation.members.push({
       type: 1,
       id: userId,
       ownerAccepted: true,
@@ -416,8 +417,8 @@ const DisBandGroup = async (req, res) => {
 }
 
 const GetGroupByInviteld = async (req, res) => {
-  const { inviteld } = req.params
-  const data = await dataService.getConversationByInviteld(inviteld)
+  const { inviteId } = req.params
+  const data = await dataService.getConversationByInviteld(inviteId)
   const obj = {
     avartar: data.avartar,
     name: data.name,
@@ -440,6 +441,15 @@ const UnPreventJoin = async (req, res) => {
   return res.status(200).json({ message: 'oke' })
 }
 
+const DecideConversations = async (req, res) => { 
+  
+  return res.status(200).json({ message: 'oke' })
+}
+
+const CreateIndivisualConversations = async (req, res) => { 
+  return res.status(200).json({ message: 'oke' })
+}
+
 export default
   {
     CreateGroupChat,
@@ -457,5 +467,7 @@ export default
     JoinGroupByInviteld,
     PreventJoin,
     UnPreventJoin,
-    DisBandGroup
+    DisBandGroup,
+    DecideConversations,
+    CreateIndivisualConversations
   }

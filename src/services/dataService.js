@@ -66,14 +66,14 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
     let arrConver = []
     let result = []
 
-    const datatest = await data?.Conversation?.map(value => {// create array of conversation
+    const datatest = data?.Conversation?.map(value => {// create array of conversation
       return {
         members: value?.members?.map(index => index.id == UserID ? true : false),
         id: value.id,
         type: value.status
       }
     })
-
+   
     await datatest.map(value => {// check condition of query
       value.members.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
     })
@@ -96,9 +96,12 @@ const findIndexConversation = async (data, Idconversation) => {
 }
 //find conversation by invitedId
 const findConversationByInviteldId = async (invitedId) => {
-  const data = await readData()
+  console.log(invitedId)
+  const data = readData()
   try {
-    return await data.Conversation.find(conversation => conversation.inviteId === invitedId)
+    const test = data.Conversation.find(conversation => conversation.inviteId == invitedId)
+    console.log(await test)
+    return test
   } catch (error) {
     return { message: error.message }
   }
