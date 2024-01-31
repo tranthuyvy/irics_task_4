@@ -263,16 +263,16 @@ const getNotesByConversationId = (conversationId) => {
 }
 
 const getVotesByConversationId = (conversationId) => {
-  const matchingNotes = []
+  const matchingVotes = []
   const data = readData()
   
-  for (const note of data.votes) {
-    if (note.conversationId === conversationId) {
-      matchingNotes.push(note)
+  for (const vote of data.votes) {
+    if (vote.conversationId === conversationId) {
+      matchingVotes.push(vote)
     }
   }
 
-  return matchingNotes
+  return matchingVotes
 }
 
 const JoinConversationByInviteld = async (invite)=>{

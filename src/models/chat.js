@@ -37,7 +37,7 @@ export const createVote = async (vote) => {
     const data = dataService.readData()
     const generateVoteId = await generateService.generateID()
 
-    const newVote = { id: generateVoteId, ...vote}
+    const newVote = { id: generateVoteId, ...vote }
     data.votes.push(newVote)
     dataService.writeData(data)
 }
