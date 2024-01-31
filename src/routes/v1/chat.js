@@ -10,3 +10,4 @@ export const RouterChat = (router) =>
         .post('/conversations/vote/:conversationId', verifyToken, Vote.createNewVote)
         .put('/conversations/vote/:voteId/:action', verifyToken, Vote.updateVote)
         .get('/conversations/vote/:conversationId', verifyToken, Vote.getListVote)
+        .post('/conversations/answers-vote', verifyToken, Vote.answerVote);
