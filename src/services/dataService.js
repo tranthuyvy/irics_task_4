@@ -248,6 +248,33 @@ const getConversationByInviteld = async (invite)=>{
     return { message: error.message }
   }
 }
+
+const getNotesByConversationId = (conversationId) => {
+  const matchingNotes = []
+  const data = readData()
+  
+  for (const note of data.notes) {
+    if (note.conversationId === conversationId) {
+      matchingNotes.push(note)
+    }
+  }
+
+  return matchingNotes
+}
+
+const getVotesByConversationId = (conversationId) => {
+  const matchingVotes = []
+  const data = readData()
+  
+  for (const vote of data.votes) {
+    if (vote.conversationId === conversationId) {
+      matchingVotes.push(vote)
+    }
+  }
+
+  return matchingVotes
+}
+
 const JoinConversationByInviteld = async (invite)=>{
   // const data = readData()
   //   const index = await data.Conversation.find(conversation => conversation.inviteld === invite)
@@ -276,7 +303,7 @@ const decideConversationfunc = async (conversationID, Iduser ) => {
   try {
     const data = readData()
     const permission = await PermissiontoDecideConvers(conversationID, Iduser)
-    if (permission === false ){
+    if (permission === true ){
       const index = await findIndexConversation(data, conversationID)
       console.log(index)
       data.Conversation[index].directUser[0].type = 3
@@ -321,5 +348,7 @@ export default
     getConversationByInviteld,
     JoinConversationByInviteld,
     findConversationByInviteldId,
-    decideConversationfunc
+    decideConversationfunc,
+    getNotesByConversationId,
+    getVotesByConversationId
   }

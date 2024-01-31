@@ -1066,45 +1066,55 @@
       "votePinned": []
     },
     {
-      "id": "4b5a4937c0d015d647bd01f0",
-      "status": 1,
+      "id": "2f77f0bbceee66c48dbb8696",
+      "status": 2,
       "avartar": "https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png",
-      "createdBy": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
-      "lastMessageCreated": 1706674531414,
+      "createdBy": "2250c89d-321e-4a06-a580-cc3e762bbd0b",
+      "name": "testgroup2",
+      "lastMessageCreated": 1706625248111,
       "isDeleted": false,
-      "createdAt": 1706674531414,
-      "updatedAt": 1706674531414,
+      "createdAt": 1706625248111,
+      "updatedAt": 1706625248111,
       "latestMessage": [],
       "createdByUser": {
-        "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
-        "username": "duyvottt",
-        "email": "duyvo3002@gmail.com",
+        "id": "2250c89d-321e-4a06-a580-cc3e762bbd0b",
+        "username": "tranthuyvy",
+        "email": "tranthuyvy686868@gmail.com",
         "background_img": "https://test3.stechvn.org/api/file/3504639c8-8a24-11ee-9529-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.svg",
         "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
         "status": 0,
         "isActiveMember": false,
         "isBlockStranger": false,
         "blockUserIds": [],
-        "lastLogin": 1706674531414,
-        "createdAt": 1706674531414,
-        "updatedAt": 1706674531414
+        "lastLogin": 1706625248111,
+        "createdAt": 1706625248111,
+        "updatedAt": 1706625248111
       },
       "unSeenMessageTotal": 0,
-      "directUser": [
+      "members": [
         {
-          "type": 3,
+          "type": 1,
+          "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+          "ownerAccepted": true,
+          "username": "duyvottt",
+          "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+        },
+        {
+          "type": 1,
           "id": "de92b51d-050f-4a60-91cf-6970a5a317d4",
           "ownerAccepted": true,
           "username": "KhanhNguyen312",
           "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
-          "background_img": "https://test3.stechvn.org/api/file/3504639c8-8a24-11ee-9529-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.svg",
-          "status": 0,
-          "isActiveMember": false,
-          "isBlockStranger": false,
-          "blockUserIds": [],
-          "lastLogin": "2024-01-21T08:33:08.391Z",
-          "createdAt": "2024-01-21T08:33:08.394Z",
-          "updatedAt": "2024-01-21T08:33:08.394Z"
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+        },
+        {
+          "type": 1,
+          "id": "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919",
+          "ownerAccepted": true,
+          "username": "huy269",
+          "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
         }
       ],
       "messagePin": [],
@@ -1143,7 +1153,101 @@
         }
       ],
       "userOffStatusMsg": [],
-      "inviteId": "30c2ab3e73d94263846548cd7d41cb5e",
+      "inviteld": "088189da3ebe48498efe02a74c7a07c0",
+      "messagePinCount": 0,
+      "isPinned": false,
+      "notePinned": [],
+      "votePinned": []
+    },
+    {
+      "id": "f198bd069158553f07fae12a",
+      "status": 2,
+      "avartar": "https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png",
+      "createdBy": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
+      "name": "groupnew1",
+      "lastMessageCreated": 1706627417693,
+      "isDeleted": false,
+      "createdAt": 1706627417693,
+      "updatedAt": 1706627417693,
+      "latestMessage": [],
+      "createdByUser": {
+        "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
+        "username": "ttvtest1",
+        "email": "ttvtest1@gmail.com",
+        "background_img": "https://test3.stechvn.org/api/file/3504639c8-8a24-11ee-9529-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.svg",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "status": 0,
+        "isActiveMember": false,
+        "isBlockStranger": false,
+        "blockUserIds": [],
+        "lastLogin": 1706627417693,
+        "createdAt": 1706627417693,
+        "updatedAt": 1706627417693
+      },
+      "unSeenMessageTotal": 0,
+      "members": [
+        {
+          "type": 1,
+          "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+          "ownerAccepted": true,
+          "username": "duyvottt",
+          "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+        },
+        {
+          "type": 1,
+          "id": "de92b51d-050f-4a60-91cf-6970a5a317d4",
+          "ownerAccepted": true,
+          "username": "KhanhNguyen312",
+          "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+        },
+        {
+          "type": 1,
+          "id": "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919",
+          "ownerAccepted": true,
+          "username": "huy269",
+          "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+          "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+        }
+      ],
+      "messagePin": [],
+      "conversationSetting": [
+        {
+          "type": 3,
+          "value": true
+        },
+        {
+          "type": 4,
+          "value": true
+        },
+        {
+          "type": 7,
+          "value": true
+        },
+        {
+          "type": 6,
+          "value": true
+        },
+        {
+          "type": 5,
+          "value": true
+        },
+        {
+          "type": 9,
+          "value": false
+        },
+        {
+          "type": 1,
+          "value": 1700656327650
+        },
+        {
+          "type": 8,
+          "value": []
+        }
+      ],
+      "userOffStatusMsg": [],
+      "inviteld": "4151feb18a2e4c198b522e2d03844e32",
       "messagePinCount": 0,
       "isPinned": false,
       "notePinned": [],
@@ -1175,6 +1279,20 @@
         "id": "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919",
         "ownerAccepted": true,
         "username": "huy269",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+      }
+    },
+    {
+      "id": "6c8b707545b3fb9855929358",
+      "conversationId": "2fcfdbeb8f2e402318c6448a",
+      "isPinned": false,
+      "content": "NOTE_TEST",
+      "createdByUser": {
+        "type": 1,
+        "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
+        "ownerAccepted": true,
+        "username": "ttvtest1",
         "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
         "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
       }
@@ -1236,6 +1354,14 @@
         {
           "id": "93396ff3581f2e7cbef9f848",
           "value": "solution 4"
+        },
+        {
+          "id": "1ccefdba70ea27fe5f226e1f",
+          "value": "Add new vote 6"
+        },
+        {
+          "id": "e912e85e26558830f154aecd",
+          "value": "Add new vote 5"
         }
       ],
       "allowMultipleAnswers": true,
@@ -1248,6 +1374,40 @@
         "id": "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919",
         "ownerAccepted": true,
         "username": "huy269",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+      },
+      "isClosed": false
+    },
+    {
+      "id": "444d570f8787ed1d54eef5e0",
+      "conversationId": "2fcfdbeb8f2e402318c6448a",
+      "isPinned": false,
+      "question": "test api question",
+      "options": [
+        {
+          "id": "f007b459a8b8678e92d19626",
+          "value": "solution 1"
+        },
+        {
+          "id": "f007b459a8b8678e92d19626",
+          "value": "solution 2"
+        },
+        {
+          "id": "f007b459a8b8678e92d19626",
+          "value": "solution 3"
+        }
+      ],
+      "allowMultipleAnswers": true,
+      "allowAddOption": true,
+      "hideResultBeforeAnswers": true,
+      "hideMemberAnswers": false,
+      "allowChangeAnswers": true,
+      "createdByUser": {
+        "type": 1,
+        "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
+        "ownerAccepted": true,
+        "username": "ttvtest1",
         "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
         "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
       },
