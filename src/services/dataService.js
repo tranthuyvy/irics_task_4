@@ -248,6 +248,33 @@ const getConversationByInviteld = async (invite)=>{
     return { message: error.message }
   }
 }
+
+const getNotesByConversationId = (conversationId) => {
+  const matchingNotes = []
+  const data = readData()
+  
+  for (const note of data.notes) {
+    if (note.conversationId === conversationId) {
+      matchingNotes.push(note)
+    }
+  }
+
+  return matchingNotes
+}
+
+const getVotesByConversationId = (conversationId) => {
+  const matchingNotes = []
+  const data = readData()
+  
+  for (const note of data.votes) {
+    if (note.conversationId === conversationId) {
+      matchingNotes.push(note)
+    }
+  }
+
+  return matchingNotes
+}
+
 const JoinConversationByInviteld = async (invite)=>{
   // const data = readData()
   //   const index = await data.Conversation.find(conversation => conversation.inviteld === invite)
@@ -296,5 +323,7 @@ export default
     disbandGroupfunc,
     getConversationByInviteld,
     JoinConversationByInviteld,
-    findConversationByInviteldId
+    findConversationByInviteldId,
+    getNotesByConversationId,
+    getVotesByConversationId
   }

@@ -1282,6 +1282,20 @@
         "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
         "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
       }
+    },
+    {
+      "id": "6c8b707545b3fb9855929358",
+      "conversationId": "2fcfdbeb8f2e402318c6448a",
+      "isPinned": false,
+      "content": "NOTE_TEST",
+      "createdByUser": {
+        "type": 1,
+        "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
+        "ownerAccepted": true,
+        "username": "ttvtest1",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+      }
     }
   ],
   "votes": [

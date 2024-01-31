@@ -5,7 +5,7 @@ export const createNote = async (note) => {
     const data = dataService.readData()
     const generateNoteId = await generateService.generateID()
 
-    const newNote = { id: generateNoteId, ...note}
+    const newNote = { id: generateNoteId, ...note }
     data.notes.push(newNote)
     dataService.writeData(data)
 }

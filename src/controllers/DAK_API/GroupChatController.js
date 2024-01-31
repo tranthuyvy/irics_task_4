@@ -180,10 +180,20 @@ const GetConversationBelongUser = async (req, res) => {
 const GetConversationDetail = async (req, res) => {
   const ConversationID = req.params.id
   const data = await dataService.findConversationByID(ConversationID)
-  if (data !== undefined) {
-    return res.status(200).json({ message: 'succes', data })
+  
+  if (data === undefined) {
+    return res.status(404).json({ message: 'no conversation' })
+    
+  } else {
+    const notes = dataService.getNotesByConversationId(ConversationID)
+    const votes = dataService.getVotesByConversationId(ConversationID)
+    const detailedConversationData = {
+      conversation: data,
+      notes: notes,
+      votes: votes
+    }
+    return res.status(200).json({ message: 'success', data: detailedConversationData })
   }
-  else return res.status(404).json({ message: 'no conversation' })
 }
 
 const getUser = async (memberIds) => {
