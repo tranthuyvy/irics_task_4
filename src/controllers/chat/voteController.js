@@ -8,6 +8,7 @@ import {
 } from '~/models/chat';
 import { updateConversationById } from '~/models/conversation.model';
 import { findUserByID } from '~/models/user';
+import generateService from '~/services/generateID';
 
 const createNewVote = async (req, res) => {
     try {
