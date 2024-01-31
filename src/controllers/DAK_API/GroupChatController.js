@@ -20,7 +20,7 @@ const CreateGroupChat = async (req, res) => {
     if (type == 2) {
       for (let i = 0; i < user.length; i++) {
         userarr.push({
-          type: 1,
+          type: 5,
           id: user[i]?.id,
           ownerAccepted: true,
           username: user[i]?.username,
@@ -32,7 +32,7 @@ const CreateGroupChat = async (req, res) => {
     else {
       for (let i = 0; i < user.length; i++) {
         userarr.push({
-          type: 5,
+          type: 3,
           id: user[i]?.id,
           ownerAccepted: true,
           username: user[i]?.username,
@@ -180,20 +180,10 @@ const GetConversationBelongUser = async (req, res) => {
 const GetConversationDetail = async (req, res) => {
   const ConversationID = req.params.id
   const data = await dataService.findConversationByID(ConversationID)
-  
-  if (data === undefined) {
-    return res.status(404).json({ message: 'no conversation' })
-    
-  } else {
-    const notes = dataService.getNotesByConversationId(ConversationID)
-    const votes = dataService.getVotesByConversationId(ConversationID)
-    const detailedConversationData = {
-      conversation: data,
-      notes: notes,
-      votes: votes
-    }
-    return res.status(200).json({ message: 'success', data: detailedConversationData })
+  if (data !== undefined) {
+    return res.status(200).json({ message: 'succes', data })
   }
+  else return res.status(404).json({ message: 'no conversation' })
 }
 
 const getUser = async (memberIds) => {
@@ -290,7 +280,7 @@ const JoinGroupByInviteld = async (req, res) => {
 
     const userInMember = dataConversation.members.find(user => user.id === userId)
 
-    if (userInMember) {
+    if (userInMember){
       return res.status(StatusCodes.CONFLICT).json({ message: 'User already exists in conversation', success: false })
     }
 
@@ -313,18 +303,18 @@ const JoinGroupByInviteld = async (req, res) => {
 
 const RemoveMemberToGroupChat = async (req, res) => {
   try {
-    const conversationId = req.params.conversationId
-    const memberID = req.body.ids
-    const tokenUser = req.headers.authorization
-    const UserId = getIdUserOfToken(tokenUser).userId
+  const conversationId = req.params.conversationId
+  const memberID = req.body.ids
+  const tokenUser = req.headers.authorization
+  const UserId = getIdUserOfToken(tokenUser).userId
 
-    const _check = await PermissionDelMember(UserId, conversationId)
-    if (_check == true) {
-      dataService.deleteMemberChat(memberID, conversationId)
-      return res.status(200).json({ message: 'remove member succes' })
-    }
-    else
-      return res.status(200).json({ message: 'no permission' })
+  const _check = await PermissionDelMember(UserId, conversationId)
+  if (_check == true) {
+    dataService.deleteMemberChat(memberID, conversationId)
+    return res.status(200).json({ message: 'remove member succes' })
+  }
+  else
+    return res.status(200).json({ message: 'no permission' })
   } catch (error) {
     return res.status(200).json({ message: error })
   }
@@ -434,24 +424,24 @@ const GetGroupByInviteld = async (req, res) => {
     name: data.name,
     reviewMember: true
   }
-  return res.status(200).json({ message: 'oke', data: obj })
+  return res.status(200).json({ message: 'success', data: obj })
 }
 
 const PreventJoin = async (req, res) => {
   const { conversationId } = req.params
   const { userId } = req.body
   await dataService.PreventJoinMember(conversationId, userId)
-  return res.status(200).json({ message: 'oke' })
+  return res.status(200).json({ message: 'success' })
 }
 
 const UnPreventJoin = async (req, res) => {
   const { preventId } = req.body
   const { conversationId } = req.params
   await dataService.UnPeventJoinMember(conversationId, preventId)
-  return res.status(200).json({ message: 'oke' })
+  return res.status(200).json({ message: 'success' })
 }
 
-const DecideConversations = async (req, res) => {
+const DecideConversations = async (req, res) => { 
   const { conversationId, status } = req.params
   const tokenUser = req.headers.authorization
   const Iduser = getIdUserOfToken(tokenUser).userId
@@ -459,6 +449,9 @@ const DecideConversations = async (req, res) => {
   return res.status(200).json({ message: result.message })
 }
 
+const CreateIndivisualConversations = async (req, res) => { 
+
+}
 
 export default
   {
@@ -479,5 +472,5 @@ export default
     UnPreventJoin,
     DisBandGroup,
     DecideConversations,
-    // CreateIndivisualConversations
+    CreateIndivisualConversations
   }

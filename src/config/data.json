@@ -1286,6 +1286,20 @@
         "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
         "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
       }
+    },
+    {
+      "id": "12d759d84e3432b3284ca05e",
+      "conversationId": "f20cd91d8b83291449274b9a",
+      "isPinned": false,
+      "content": "note test 2 api task 4",
+      "createdByUser": {
+        "type": 1,
+        "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
+        "ownerAccepted": true,
+        "username": "duyvottt",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+      }
     }
   ],
   "votes": [

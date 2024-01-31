@@ -100,7 +100,6 @@ const findConversationByInviteldId = async (invitedId) => {
   const data = readData()
   try {
     const test = data.Conversation.find(conversation => conversation.inviteId == invitedId)
-    console.log(await test)
     return test
   } catch (error) {
     return { message: error.message }
@@ -240,10 +239,10 @@ const disbandGroupfunc = async (idConversation) =>{
   writeData(data)
 }
 
-const getConversationByInviteld = async (invite)=>{
+const getConversationByInviteld = async (invite) => {
   const data = readData()
   try {
-    return await data.Conversation.find(conversation => conversation.inviteld === invite)
+    return await data.Conversation.find(conversation => conversation.inviteId === invite)
   } catch (error) {
     return { message: error.message }
   }
