@@ -1340,6 +1340,14 @@
         {
           "id": "93396ff3581f2e7cbef9f848",
           "value": "solution 4"
+        },
+        {
+          "id": "1ccefdba70ea27fe5f226e1f",
+          "value": "Add new vote 6"
+        },
+        {
+          "id": "e912e85e26558830f154aecd",
+          "value": "Add new vote 5"
         }
       ],
       "allowMultipleAnswers": true,
@@ -1352,6 +1360,40 @@
         "id": "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919",
         "ownerAccepted": true,
         "username": "huy269",
+        "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
+        "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
+      },
+      "isClosed": false
+    },
+    {
+      "id": "444d570f8787ed1d54eef5e0",
+      "conversationId": "2fcfdbeb8f2e402318c6448a",
+      "isPinned": false,
+      "question": "test api question",
+      "options": [
+        {
+          "id": "f007b459a8b8678e92d19626",
+          "value": "solution 1"
+        },
+        {
+          "id": "f007b459a8b8678e92d19626",
+          "value": "solution 2"
+        },
+        {
+          "id": "f007b459a8b8678e92d19626",
+          "value": "solution 3"
+        }
+      ],
+      "allowMultipleAnswers": true,
+      "allowAddOption": true,
+      "hideResultBeforeAnswers": true,
+      "hideMemberAnswers": false,
+      "allowChangeAnswers": true,
+      "createdByUser": {
+        "type": 1,
+        "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
+        "ownerAccepted": true,
+        "username": "ttvtest1",
         "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
         "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
       },

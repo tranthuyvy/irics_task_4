@@ -126,11 +126,21 @@ const updateVote = async (req, res) => {
                 if (validateOption(option) === false) {
                     return res.status(400).json({ error: 'Invalid option data' });
                 }
+                
+                // eslint-disable-next-line no-case-declarations
+                const optionsWithId = await Promise.all(option.map(async (value) => ({
+                    id: await generateService.generateID(),
+                    value: value
+                })));
+            
+                // Cập nhật vote với các option mới có ID và giá trị
+                await updateVoteById(voteId, { options: [...vote.options, ...optionsWithId] });
                 //cập nhật vote
                 // await updateVoteById(voteId, { options: [...vote.options, option] });
-                await updateVoteById(voteId, { options: vote.options.concat(option) });
 
-                return res.status(200).json({ message: 'add new option success' });
+                // await updateVoteById(voteId, { options: vote.options.concat(option) });
+
+                return res.status(200).json({ message: 'success' });
 
             default:
                 return res.status(400).json({ message: 'Invalid type' });
