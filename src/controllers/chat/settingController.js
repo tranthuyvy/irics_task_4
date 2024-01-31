@@ -17,7 +17,7 @@ const PinNoteVoteMsg = (req, res) => {
     const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
     const userId = decodedToken.userId
 
-    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userInDirectUser = conversation.members.find(user => user.id === userId)
     const userOwned = conversation.createdBy
 
     if (userInDirectUser) {
@@ -58,7 +58,7 @@ const AllowVote = (req, res) => {
     const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
     const userId = decodedToken.userId
 
-    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userInDirectUser = conversation.members.find(user => user.id === userId)
     const userOwned = conversation.createdBy
 
     if (userInDirectUser) {
@@ -99,7 +99,7 @@ const AllowNote = (req, res) => {
     const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
     const userId = decodedToken.userId
 
-    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userInDirectUser = conversation.members.find(user => user.id === userId)
     const userOwned = conversation.createdBy
 
     if (userInDirectUser) {
@@ -140,7 +140,7 @@ const AllowSendMsg = (req, res) => {
     const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
     const userId = decodedToken.userId
 
-    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userInDirectUser = conversation.members.find(user => user.id === userId)
     const userOwned = conversation.createdBy
 
     if (userInDirectUser) {
@@ -181,7 +181,7 @@ const AllowReviewMember = (req, res) => {
     const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
     const userId = decodedToken.userId
 
-    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userInDirectUser = conversation.members.find(user => user.id === userId)
     const userOwned = conversation.createdBy
 
     if (userInDirectUser) {
@@ -223,7 +223,8 @@ const AllowJoinLinkInvite = (req, res) => {
     const decodedToken = JWT.verify(token, process.env.JWT_SECRET_KEY)
     const userId = decodedToken.userId
 
-    const userInDirectUser = conversation.directUser.find(user => user.id === userId)
+    const userInDirectUser = conversation.members.find(user => user.id === userId)
+
     const userOwned = conversation.createdBy
 
     if (userInDirectUser) {
