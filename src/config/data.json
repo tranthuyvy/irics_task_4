@@ -1257,7 +1257,7 @@
         "avatar": "https://test3.stechvn.org/api/file/318323afa-8a24-11ee-a1eb-0242c0a83003.Circle_user.svg",
         "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
       },
-      "content": "note test"
+      "content": "test api note task 4"
     },
     {
       "id": "689be29c84c8e610ca4d589b",
@@ -1330,6 +1330,13 @@
           "id": "2fcfdbeb8f2e402318c6448a_4",
           "value": "solution 8",
           "voters": []
+        },
+        {
+          "id": "823c48ae4020d7a15aa62c5f_0",
+          "value": "Add new vote 9",
+          "voters": [
+            "d8f5be5d-dcb0-4b1e-bdd0-8b5c5923f919"
+          ]
         }
       ],
       "allowMultipleAnswers": true,

@@ -4,7 +4,7 @@ import { verifyToken } from '~/middlewares/verifyToken';
 export const RouterChat = (router) =>
     router
         .post('/conversations/note/:conversationId', verifyToken, Note.createNewNote)
-        .put('/conversations/note/:noteId', verifyToken, Note.updateNote)
+        .put('/conversations/note/update/:noteId', verifyToken, Note.updateNote)
         .get('/conversations/note/:conversationId', verifyToken, Note.getListNote)
         .delete('/conversations/note/:noteId', verifyToken, Note.deleteNote)
         .post('/conversations/vote/:conversationId', verifyToken, Vote.createNewVote)

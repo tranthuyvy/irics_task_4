@@ -90,6 +90,7 @@ const updateVote = async (req, res) => {
         if (!isMember) {
             return res.status(403).json({ message: 'You are not a member of this conversation' });
         }
+        const generateID = await generateService.generateID();
         const actionType = parseInt(action);
         switch (actionType) {
             case 1: //pin vote
@@ -129,9 +130,10 @@ const updateVote = async (req, res) => {
                 }
                 
                 // eslint-disable-next-line no-case-declarations
-                const optionsWithId = await Promise.all(option.map(async (value) => ({
-                    id: await generateService.generateID(),
-                    value: value
+                const optionsWithId = await Promise.all(option.map(async (value, index) => ({
+                    id: `${generateID}_${index}`,
+                    value: value,
+                    voters: [],
                 })));
             
                 // Cập nhật vote với các option mới có ID và giá trị

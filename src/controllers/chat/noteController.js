@@ -1,4 +1,10 @@
-import { findConversationById, createNote, updateNoteById, findNoteByConversationId, deleteNoteById } from '~/models/chat';
+import {
+    findConversationById,
+    createNote,
+    updateNoteById,
+    findNoteByConversationId,
+    deleteNoteById,
+} from '~/models/chat';
 import { findUserByID } from '~/models/user';
 
 const createNewNote = async (req, res) => {
@@ -36,10 +42,17 @@ const createNewNote = async (req, res) => {
 const updateNote = async (req, res) => {
     try {
         const { noteId } = req.params;
+        if (!noteId) {
+            return res.status(400).json({ message: 'noteId is empty' });
+        }
+        if (!req.body) {
+            return res.status(400).json({ message: 'body is empty' });
+        }
         await updateNoteById(noteId, req.body);
         return res.status(200).json({ message: 'update note success' });
     } catch (error) {
         console.error(error);
+        throw new Error('Error updating note');
     }
 };
 
@@ -90,6 +103,6 @@ const deleteNote = async (req, res) => {
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 export default { createNewNote, updateNote, getListNote, deleteNote };

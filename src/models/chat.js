@@ -39,7 +39,6 @@ export const createVote = async (vote) => {
     dataService.writeData(data);
 };
 
-
 export const findVoteById = async (voteId) => {
     const data = dataService.readData();
     return await data.votes.find((vote) => vote.id === voteId);
