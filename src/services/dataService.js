@@ -275,30 +275,6 @@ const getVotesByConversationId = (conversationId) => {
   return matchingVotes
 }
 
-const JoinConversationByInviteld = async (invite)=>{
-  // const data = readData()
-  //   const index = await data.Conversation.find(conversation => conversation.inviteld === invite)
-  //   let user = {
-  //     type: 1,
-  //     id: user[i]?.id,
-  //     ownerAccepted: true,
-  //     username: user[i]?.username,
-  //     avatar: user[i]?.avatar,
-  //     background_img: user[i]?.background_img,
-  //     status: 0,
-  //     isActiveMember: false,
-  //     isBlockStranger: false,
-  //     blockUserIds: [],
-  //     lastLogin: '2024-01-21T08:33:08.391Z',
-  //     createdAt: '2024-01-21T08:33:08.394Z',
-  //     updatedAt: '2024-01-21T08:33:08.394Z'
-  //   }
-  //   await data.Conversation[index].members.push(informationMember)
-  //   writeData(data)
-
-  //   return { message: 'success' }
-}
-
 const decideConversationfunc = async (conversationID, Iduser ) => {
   try {
     const data = readData()
@@ -346,7 +322,6 @@ export default
     UnPeventJoinMember,
     disbandGroupfunc,
     getConversationByInviteld,
-    JoinConversationByInviteld,
     findConversationByInviteldId,
     decideConversationfunc,
     getNotesByConversationId,
