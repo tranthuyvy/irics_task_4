@@ -13,6 +13,33 @@ const CreateGroupChat = async (req, res) => {
     const typeConversation = type == 2 ? 'members' : 'directUser'// type of conversation
     const timeCreated = new Date().getTime()
 
+     //get information of Createduser
+     const createUser = await getUser(createdByUser)
+
+     let objCreatedbyUser = {
+       id: createUser.id,
+       username: createUser.username,
+       email: createUser.email,
+       background_img: createUser.background_img,
+       avatar: createUser.avatar,
+       status: 0,
+       isActiveMember: false,
+       isBlockStranger: false,
+       blockUserIds: [],
+       lastLogin: timeCreated,
+       createdAt: timeCreated,
+       updatedAt: timeCreated
+     }
+
+     let objOwner = {
+      type: 1,
+      id: createUser.id,
+      ownerAccepted: true,
+      username: createUser.username,
+      avatar: createUser.avatar,
+      lastLogin: timeCreated,
+     }
+
     //get information of userid
     const _users = memberIds.map((index) => getUser(index))
     const user = await Promise.all(_users)
@@ -20,7 +47,7 @@ const CreateGroupChat = async (req, res) => {
     if (type == 2) {
       for (let i = 0; i < user.length; i++) {
         userarr.push({
-          type: 5,
+          type: 3,
           id: user[i]?.id,
           ownerAccepted: true,
           username: user[i]?.username,
@@ -28,11 +55,12 @@ const CreateGroupChat = async (req, res) => {
           lastLogin: '2024-01 - 13T06: 34: 44.341Z',
         })
       }
+      userarr.push(objOwner)
     }
     else {
       for (let i = 0; i < user.length; i++) {
         userarr.push({
-          type: 3,
+          type: 5,
           id: user[i]?.id,
           ownerAccepted: true,
           username: user[i]?.username,
@@ -47,24 +75,6 @@ const CreateGroupChat = async (req, res) => {
           updatedAt: '2024-01-21T08:33:08.394Z'
         })
       }
-    }
-    //
-    //get information of Createduser
-    const createUser = await getUser(createdByUser)
-
-    let objCreatedbyUser = {
-      id: createUser.id,
-      username: createUser.username,
-      email: createUser.email,
-      background_img: createUser.background_img,
-      avatar: createUser.avatar,
-      status: 0,
-      isActiveMember: false,
-      isBlockStranger: false,
-      blockUserIds: [],
-      lastLogin: timeCreated,
-      createdAt: timeCreated,
-      updatedAt: timeCreated
     }
 
     // craete inviteld 
