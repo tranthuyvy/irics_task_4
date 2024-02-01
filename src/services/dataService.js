@@ -191,10 +191,11 @@ const checkTypeofUserConversation = async (idConversation, userId) => {
 const checkUserInConversation = async (idConversation, userId) => {
   const datacheck = await findConversationByID(idConversation)
   const result = await datacheck.members.find(member => member.id == userId)
-  return await result ? true : false
+  return result ? true : false
 }
 
 const UpdateRoleMember = async (idConversation, role, userId) => {
+  console.log(idConversation, role, userId)
   const data = readData()
   const indexConversation = await findIndexConversation(data, idConversation)
   const indexUser = await findIndexUserInConversation(data, userId, indexConversation)

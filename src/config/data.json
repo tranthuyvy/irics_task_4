@@ -98,7 +98,7 @@
       "unSeenMessageTotal": 0,
       "members": [
         {
-          "type": 1,
+          "type": 2,
           "id": "edb8f56a-99a0-47f4-9022-ad03c456ebee",
           "ownerAccepted": true,
           "username": "duyvottt",
@@ -106,7 +106,7 @@
           "lastLogin": "2024-01 - 13T06: 34: 44.341Z"
         },
         {
-          "type": 3,
+          "type": 1,
           "id": "7d2a0d40-85e8-43bb-9461-6b69c6c2c2fc",
           "ownerAccepted": true,
           "username": "ttvtest1",

@@ -280,7 +280,7 @@ const JoinGroupByInviteld = async (req, res) => {
 
     const userInMember = dataConversation.members.find(user => user.id === userId)
 
-    if (userInMember){
+    if (userInMember) {
       return res.status(StatusCodes.CONFLICT).json({ message: 'User already exists in conversation', success: false })
     }
 
@@ -303,18 +303,18 @@ const JoinGroupByInviteld = async (req, res) => {
 
 const RemoveMemberToGroupChat = async (req, res) => {
   try {
-  const conversationId = req.params.conversationId
-  const memberID = req.body.ids
-  const tokenUser = req.headers.authorization
-  const UserId = getIdUserOfToken(tokenUser).userId
+    const conversationId = req.params.conversationId
+    const memberID = req.body.ids
+    const tokenUser = req.headers.authorization
+    const UserId = getIdUserOfToken(tokenUser).userId
 
-  const _check = await PermissionDelMember(UserId, conversationId)
-  if (_check == true) {
-    dataService.deleteMemberChat(memberID, conversationId)
-    return res.status(200).json({ message: 'remove member succes' })
-  }
-  else
-    return res.status(200).json({ message: 'no permission' })
+    const _check = await PermissionDelMember(UserId, conversationId)
+    if (_check == true) {
+      dataService.deleteMemberChat(memberID, conversationId)
+      return res.status(200).json({ message: 'remove member succes' })
+    }
+    else
+      return res.status(200).json({ message: 'no permission' })
   } catch (error) {
     return res.status(200).json({ message: error })
   }
@@ -394,21 +394,28 @@ const PinConversation = async (req, res) => {
 
 const GrantMember = async (req, res) => {
   const { conversationId } = req.params
-  const { user_id, role } = req.body
+  const { userId, role } = req.body
   const tokenUser = req.headers.authorization
   const idOwnerCheck = getIdUserOfToken(tokenUser).userId
 
   // check type of user id in conversation
-  const checkData = await dataService.checkTypeofUserConversation(conversationId, idOwnerCheck)
+  const checkData = await dataService.checkTypeofUserConversation(conversationId, idOwnerCheck)// kiem tra user duoc phan quyen k 
   if (checkData == true) {
-    const data = await dataService.checkUserInConversation(conversationId, user_id)
-    if (data == true) {
-      await dataService.UpdateRoleMember(conversationId, role, user_id)
-      return res.status(200).json({ message: 'grant role success' })
+    const data = await dataService.checkUserInConversation(conversationId, userId)// kiem tra user co trong he thong khong
+    if (data === true) {
+      if (role == 1) {
+        await dataService.UpdateRoleMember(conversationId, 2, idOwnerCheck)// phan quyen owner thanh admin 
+        await dataService.UpdateRoleMember(conversationId, +role, userId)// phan quyen owner thanh admin 
+        return res.status(200).json({ message: 'grant role success ' })
+      }
+      else {
+        await dataService.UpdateRoleMember(conversationId, role, userId)
+        return res.status(200).json({ message: 'grant role success' })
+      }
     }
-    return res.status(200).json({ message: 'oke' })
+    return res.status(200).json({ message: 'user is not in the group' })
   }
-  return res.status(200).json({ message: 'No permission' })
+  return res.status(200).json({ message: 'Authorless' })
 }
 
 const DisBandGroup = async (req, res) => {
@@ -441,7 +448,7 @@ const UnPreventJoin = async (req, res) => {
   return res.status(200).json({ message: 'success' })
 }
 
-const DecideConversations = async (req, res) => { 
+const DecideConversations = async (req, res) => {
   const { conversationId, status } = req.params
   const tokenUser = req.headers.authorization
   const Iduser = getIdUserOfToken(tokenUser).userId
@@ -449,7 +456,7 @@ const DecideConversations = async (req, res) => {
   return res.status(200).json({ message: result.message })
 }
 
-const CreateIndivisualConversations = async (req, res) => { 
+const CreateIndivisualConversations = async (req, res) => {
 
 }
 
