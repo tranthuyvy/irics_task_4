@@ -13,6 +13,33 @@ const CreateGroupChat = async (req, res) => {
     const typeConversation = type == 2 ? 'members' : 'directUser'// type of conversation
     const timeCreated = new Date().getTime()
 
+     //get information of Createduser
+     const createUser = await getUser(createdByUser)
+
+     let objCreatedbyUser = {
+       id: createUser.id,
+       username: createUser.username,
+       email: createUser.email,
+       background_img: createUser.background_img,
+       avatar: createUser.avatar,
+       status: 0,
+       isActiveMember: false,
+       isBlockStranger: false,
+       blockUserIds: [],
+       lastLogin: timeCreated,
+       createdAt: timeCreated,
+       updatedAt: timeCreated
+     }
+
+     let objOwner = {
+      type: 1,
+      id: createUser.id,
+      ownerAccepted: true,
+      username: createUser.username,
+      avatar: createUser.avatar,
+      lastLogin: timeCreated,
+     }
+
     //get information of userid
     const _users = memberIds.map((index) => getUser(index))
     const user = await Promise.all(_users)
@@ -20,7 +47,7 @@ const CreateGroupChat = async (req, res) => {
     if (type == 2) {
       for (let i = 0; i < user.length; i++) {
         userarr.push({
-          type: 5,
+          type: 3,
           id: user[i]?.id,
           ownerAccepted: true,
           username: user[i]?.username,
@@ -28,11 +55,12 @@ const CreateGroupChat = async (req, res) => {
           lastLogin: '2024-01 - 13T06: 34: 44.341Z',
         })
       }
+      userarr.push(objOwner)
     }
     else {
       for (let i = 0; i < user.length; i++) {
         userarr.push({
-          type: 3,
+          type: 5,
           id: user[i]?.id,
           ownerAccepted: true,
           username: user[i]?.username,
@@ -47,24 +75,6 @@ const CreateGroupChat = async (req, res) => {
           updatedAt: '2024-01-21T08:33:08.394Z'
         })
       }
-    }
-    //
-    //get information of Createduser
-    const createUser = await getUser(createdByUser)
-
-    let objCreatedbyUser = {
-      id: createUser.id,
-      username: createUser.username,
-      email: createUser.email,
-      background_img: createUser.background_img,
-      avatar: createUser.avatar,
-      status: 0,
-      isActiveMember: false,
-      isBlockStranger: false,
-      blockUserIds: [],
-      lastLogin: timeCreated,
-      createdAt: timeCreated,
-      updatedAt: timeCreated
     }
 
     // craete inviteld 
@@ -280,7 +290,7 @@ const JoinGroupByInviteld = async (req, res) => {
 
     const userInMember = dataConversation.members.find(user => user.id === userId)
 
-    if (userInMember){
+    if (userInMember) {
       return res.status(StatusCodes.CONFLICT).json({ message: 'User already exists in conversation', success: false })
     }
 
@@ -303,18 +313,18 @@ const JoinGroupByInviteld = async (req, res) => {
 
 const RemoveMemberToGroupChat = async (req, res) => {
   try {
-  const conversationId = req.params.conversationId
-  const memberID = req.body.ids
-  const tokenUser = req.headers.authorization
-  const UserId = getIdUserOfToken(tokenUser).userId
+    const conversationId = req.params.conversationId
+    const memberID = req.body.ids
+    const tokenUser = req.headers.authorization
+    const UserId = getIdUserOfToken(tokenUser).userId
 
-  const _check = await PermissionDelMember(UserId, conversationId)
-  if (_check == true) {
-    dataService.deleteMemberChat(memberID, conversationId)
-    return res.status(200).json({ message: 'remove member succes' })
-  }
-  else
-    return res.status(200).json({ message: 'no permission' })
+    const _check = await PermissionDelMember(UserId, conversationId)
+    if (_check == true) {
+      dataService.deleteMemberChat(memberID, conversationId)
+      return res.status(200).json({ message: 'remove member succes' })
+    }
+    else
+      return res.status(200).json({ message: 'no permission' })
   } catch (error) {
     return res.status(200).json({ message: error })
   }
@@ -394,21 +404,28 @@ const PinConversation = async (req, res) => {
 
 const GrantMember = async (req, res) => {
   const { conversationId } = req.params
-  const { user_id, role } = req.body
+  const { userId, role } = req.body
   const tokenUser = req.headers.authorization
   const idOwnerCheck = getIdUserOfToken(tokenUser).userId
 
   // check type of user id in conversation
-  const checkData = await dataService.checkTypeofUserConversation(conversationId, idOwnerCheck)
+  const checkData = await dataService.checkTypeofUserConversation(conversationId, idOwnerCheck)// kiem tra user duoc phan quyen k 
   if (checkData == true) {
-    const data = await dataService.checkUserInConversation(conversationId, user_id)
-    if (data == true) {
-      await dataService.UpdateRoleMember(conversationId, role, user_id)
-      return res.status(200).json({ message: 'grant role success' })
+    const data = await dataService.checkUserInConversation(conversationId, userId)// kiem tra user co trong he thong khong
+    if (data === true) {
+      if (role == 1) {
+        await dataService.UpdateRoleMember(conversationId, 2, idOwnerCheck)// phan quyen owner thanh admin 
+        await dataService.UpdateRoleMember(conversationId, +role, userId)// phan quyen owner thanh admin 
+        return res.status(200).json({ message: 'grant role success ' })
+      }
+      else {
+        await dataService.UpdateRoleMember(conversationId, role, userId)
+        return res.status(200).json({ message: 'grant role success' })
+      }
     }
-    return res.status(200).json({ message: 'oke' })
+    return res.status(200).json({ message: 'user is not in the group' })
   }
-  return res.status(200).json({ message: 'No permission' })
+  return res.status(200).json({ message: 'Authorless' })
 }
 
 const DisBandGroup = async (req, res) => {
@@ -441,7 +458,7 @@ const UnPreventJoin = async (req, res) => {
   return res.status(200).json({ message: 'success' })
 }
 
-const DecideConversations = async (req, res) => { 
+const DecideConversations = async (req, res) => {
   const { conversationId, status } = req.params
   const tokenUser = req.headers.authorization
   const Iduser = getIdUserOfToken(tokenUser).userId
@@ -449,7 +466,7 @@ const DecideConversations = async (req, res) => {
   return res.status(200).json({ message: result.message })
 }
 
-const CreateIndivisualConversations = async (req, res) => { 
+const CreateIndivisualConversations = async (req, res) => {
 
 }
 
