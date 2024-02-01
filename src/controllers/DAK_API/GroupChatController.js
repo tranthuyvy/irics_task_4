@@ -177,12 +177,15 @@ const UpdateNameGroupChat = async (req, res) => {
 const GetConversationBelongUser = async (req, res) => {
   try {
     const { offset, limit, search, status } = req.query
+    console.log( limit, search, status)
     const tokenUser = req.headers.authorization
     const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
+    console.log(createdByUser)
     let result = await dataService.getConversationofUser(createdByUser, limit, search, status)
+    console.log(await result)
     return res.status(200).json({ message: 'update name succes', data: result })
   } catch (error) {
-    return res.status(400).json({ message: 'error' })
+    return res.status(400).json({ message: error.message })
 
   }
 }
@@ -406,7 +409,7 @@ const GrantMember = async (req, res) => {
   const { conversationId } = req.params
   const { userId, role } = req.body
   const tokenUser = req.headers.authorization
-  const idOwnerCheck = getIdUserOfToken(tokenUser).userId
+  const idOwnerCheck = getIdUserOfToken(tokenUser).userId 
 
   // check type of user id in conversation
   const checkData = await dataService.checkTypeofUserConversation(conversationId, idOwnerCheck)// kiem tra user duoc phan quyen k 

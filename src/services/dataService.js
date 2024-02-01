@@ -84,7 +84,7 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
         result.push(dataresult)
       }
     }
-
+    console.log(result)
     return result
   }
 }
@@ -234,11 +234,12 @@ const UnPeventJoinMember = async (idConversation, IDprevent) => {
   writeData(data)
 }
 
-const disbandGroupfunc = async (idConversation) =>{
+const disbandGroupfunc = async (idConversation) => {
   const data = readData()
   data.Conversation = data.Conversation.filter(item => item.id != idConversation)
   writeData(data)
 }
+
 
 const getConversationByInviteld = async (invite) => {
   const data = readData()
