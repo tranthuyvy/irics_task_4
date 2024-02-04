@@ -120,7 +120,7 @@ const findConversationByID = async (id) => {
 const findUserByID = async (id) => {
   const data = await readData()
   try {
-    return await data.users.find(user => user.id === id)
+    return await data.users.find(user => user.id == id)
   } catch (error) {
     return { message: error.message }
   }
@@ -326,5 +326,6 @@ export default
     findConversationByInviteldId,
     decideConversationfunc,
     getNotesByConversationId,
-    getVotesByConversationId
+    getVotesByConversationId,
+    findUserByID
   }

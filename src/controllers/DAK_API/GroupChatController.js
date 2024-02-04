@@ -1,159 +1,200 @@
 import { CreateGroupChatModel } from '~/models/conversation.model'
-import dataService from '~/services/dataService'
 import { findUserByID } from '~/models/user'
 import { v4 as uuidv4 } from 'uuid'
-import JWT from 'jsonwebtoken'
 import { StatusCodes } from 'http-status-codes'
+import { CheckSpecialInputCharacter } from '~/services/CheckData'
+import dataService from '~/services/dataService'
+import JWT from 'jsonwebtoken'
 // create conversation type = 2
-const CreateGroupChat = async (req, res) => {
-  try {
-    const { type, name, memberIds } = req.body
-    const tokenUser = req.headers.authorization
-    const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
-    const typeConversation = type == 2 ? 'members' : 'directUser'// type of conversation
-    const timeCreated = new Date().getTime()
 
-     //get information of Createduser
-     const createUser = await getUser(createdByUser)
+const checkInputCreateGR = async (type, name, memberIds) => {// check Input createGR
+  // check user have exsit || return true if does not exist special input
+  const checkMembers = async (memberIds) => {
+    let checkExsitMember = true
+    let checkSpecialInput = true
+    memberIds.map(id => checkSpecialInput = CheckSpecialInputCharacter(id))
 
-     let objCreatedbyUser = {
-       id: createUser.id,
-       username: createUser.username,
-       email: createUser.email,
-       background_img: createUser.background_img,
-       avatar: createUser.avatar,
-       status: 0,
-       isActiveMember: false,
-       isBlockStranger: false,
-       blockUserIds: [],
-       lastLogin: timeCreated,
-       createdAt: timeCreated,
-       updatedAt: timeCreated
-     }
-
-     let objOwner = {
-      type: 1,
-      id: createUser.id,
-      ownerAccepted: true,
-      username: createUser.username,
-      avatar: createUser.avatar,
-      lastLogin: timeCreated,
-     }
-
-    //get information of userid
-    const _users = memberIds.map((index) => getUser(index))
-    const user = await Promise.all(_users)
-    let userarr = []
-    if (type == 2) {
-      for (let i = 0; i < user.length; i++) {
-        userarr.push({
-          type: 3,
-          id: user[i]?.id,
-          ownerAccepted: true,
-          username: user[i]?.username,
-          avatar: user[i]?.avatar,
-          lastLogin: '2024-01 - 13T06: 34: 44.341Z',
-        })
-      }
-      userarr.push(objOwner)
-    }
-    else {
-      for (let i = 0; i < user.length; i++) {
-        userarr.push({
-          type: 5,
-          id: user[i]?.id,
-          ownerAccepted: true,
-          username: user[i]?.username,
-          avatar: user[i]?.avatar,
-          background_img: user[i]?.background_img,
-          status: 0,
-          isActiveMember: false,
-          isBlockStranger: false,
-          blockUserIds: [],
-          lastLogin: '2024-01-21T08:33:08.391Z',
-          createdAt: '2024-01-21T08:33:08.394Z',
-          updatedAt: '2024-01-21T08:33:08.394Z'
-        })
-      }
-    }
-
-    // craete inviteld 
-    const inviteld = uuidv4().replace(/-/g, '')
-
-    //create data to import database
-    const conversation = {
-      status: +type,
-      avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
-      createdBy: createdByUser,
-      name,
-      lastMessageCreated: timeCreated,
-      isDeleted: false,
-      createdAt: timeCreated,
-      updatedAt: timeCreated,
-      latestMessage: [],
-      createdByUser: objCreatedbyUser,
-      unSeenMessageTotal: 0,
-      [typeConversation]: userarr,// get user from member ID
-      messagePin: [],
-      conversationSetting: [
-        {
-          type: 3,
-          value: true
-        },
-        {
-          type: 4,
-          value: true
-        },
-        {
-          type: 7,
-          value: true
-        },
-        {
-          type: 6,
-          value: true
-        },
-        {
-          type: 5,
-          value: true
-        },
-        {
-          type: 9,
-          value: true
-        },
-        {
-          type: 1,
-          value: 1700656327650
-        },
-        {
-          type: 8,
-          value: []
+    if (checkSpecialInput == false) {
+      Promise.all(memberIds.map(async id => {
+        if (await dataService.findUserByID(id) == undefined) {
+          checkExsitMember = false
         }
-      ],
-      userOffStatusMsg: [],
-      inviteId: inviteld,//generated ID invited,
-      messagePinCount: 0,
-      isPinned: false,
-      notePinned: [],
-      votePinned: []
+        else 
+          checkExsitMember = true
+      }))
+      return checkExsitMember
     }
-    const result = await CreateGroupChatModel(conversation)
-
-    const returnData = {
-      type,
-      avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
-      createdBy: createdByUser,
-      name: name,
-      lastMessageCreated: new Date().getTime(),
-      isDeleted: false,
-      _id: result.id,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt
-    }
-    //add data to database
-    return res.status(200).json({ message: 'create group chat success', data: returnData })
-  } catch (error) {
-    return res.status(400).json({ message: 'failed', error: error })
+    else
+      return checkExsitMember
   }
+  console.log('checkMember', await checkMembers(memberIds))
+
+  //check special input Type gr || return true if does not exist special input
+  const checktypeCreateGR = async (type) => await type == 1 || type == 2 ? true : false
+
+  console.log('checktypeCreateGR', await checktypeCreateGR(type))
+  //check special input Name gr  || return true if does not exist special input
+  const checkNameGr = (name) => CheckSpecialInputCharacter(name)
+
+  console.log('checkNameGr', checkNameGr(name))
+  // return await checkMembers(memberIds) == true && await checktypeCreateGR(type) == true && checkNameGr(name) == false ? true : false
+  return await checktypeCreateGR(type) == true && checkNameGr(name) == false ? true : false
+}
+
+const CreateGroupChat = async (req, res) => {
+  const { type, name, memberIds } = req.body
+  const check = await checkInputCreateGR(type, name, memberIds)
+  if (check == true) {
+    try {
+      console.log('oke')
+      console.log('-------------------------------------------')
+      // const tokenUser = req.headers.authorization
+      // const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
+      // const typeConversation = type == 2 ? 'members' : 'directUser'// type of conversation
+      // const timeCreated = new Date().getTime()
+      // //get information of Createduser
+      // const createUser = await getUser(createdByUser)
+
+      // let objCreatedbyUser = {
+      //   id: createUser.id,
+      //   username: createUser.username,
+      //   email: createUser.email,
+      //   background_img: createUser.background_img,
+      //   avatar: createUser.avatar,
+      //   status: 0,
+      //   isActiveMember: false,
+      //   isBlockStranger: false,
+      //   blockUserIds: [],
+      //   lastLogin: timeCreated,
+      //   createdAt: timeCreated,
+      //   updatedAt: timeCreated
+      // }
+
+      // let objOwner = {
+      //   type: 1,
+      //   id: createUser.id,
+      //   ownerAccepted: true,
+      //   username: createUser.username,
+      //   avatar: createUser.avatar,
+      //   lastLogin: timeCreated,
+      // }
+
+      // //get information of userid
+      // const _users = memberIds.map((index) => getUser(index))
+      // const user = await Promise.all(_users)
+      // let userarr = []
+      // if (type == 2) {
+      //   for (let i = 0; i < user.length; i++) {
+      //     userarr.push({
+      //       type: 3,
+      //       id: user[i]?.id,
+      //       ownerAccepted: true,
+      //       username: user[i]?.username,
+      //       avatar: user[i]?.avatar,
+      //       lastLogin: timeCreated,
+      //     })
+      //   }
+      //   userarr.push(objOwner)
+      // }
+      // else {
+      //   for (let i = 0; i < user.length; i++) {
+      //     userarr.push({
+      //       type: 5,
+      //       id: user[i]?.id,
+      //       ownerAccepted: true,
+      //       username: user[i]?.username,
+      //       avatar: user[i]?.avatar,
+      //       background_img: user[i]?.background_img,
+      //       status: 0,
+      //       isActiveMember: false,
+      //       isBlockStranger: false,
+      //       blockUserIds: [],
+      //       lastLogin: timeCreated,
+      //       createdAt: timeCreated,
+      //       updatedAt: timeCreated
+      //     })
+      //   }
+      // }
+
+      // // craete inviteld 
+      // const inviteld = uuidv4().replace(/-/g, '')
+
+      // //create data to import database
+      // const conversation = {
+      //   status: +type,
+      //   avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
+      //   createdBy: createdByUser,
+      //   name,
+      //   lastMessageCreated: timeCreated,
+      //   isDeleted: false,
+      //   createdAt: timeCreated,
+      //   updatedAt: timeCreated,
+      //   latestMessage: [],
+      //   createdByUser: objCreatedbyUser,
+      //   unSeenMessageTotal: 0,
+      //   [typeConversation]: userarr,// get user from member ID
+      //   messagePin: [],
+      //   conversationSetting: [
+      //     {
+      //       type: 3,
+      //       value: true
+      //     },
+      //     {
+      //       type: 4,
+      //       value: true
+      //     },
+      //     {
+      //       type: 7,
+      //       value: true
+      //     },
+      //     {
+      //       type: 6,
+      //       value: true
+      //     },
+      //     {
+      //       type: 5,
+      //       value: true
+      //     },
+      //     {
+      //       type: 9,
+      //       value: true
+      //     },
+      //     {
+      //       type: 1,
+      //       value: 1700656327650
+      //     },
+      //     {
+      //       type: 8,
+      //       value: []
+      //     }
+      //   ],
+      //   userOffStatusMsg: [],
+      //   inviteId: inviteld,//generated ID invited,
+      //   messagePinCount: 0,
+      //   isPinned: false,
+      //   notePinned: [],
+      //   votePinned: []
+      // }
+      // const result = await CreateGroupChatModel(conversation)
+
+      // const returnData = {
+      //   type,
+      //   avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
+      //   createdBy: createdByUser,
+      //   name: name,
+      //   lastMessageCreated: new Date().getTime(),
+      //   isDeleted: false,
+      //   _id: result.id,
+      //   createdAt: result.createdAt,
+      //   updatedAt: result.updatedAt
+      // }
+      //add data to database
+      // return res.status(200).json({ message: 'create group chat success', data: returnData })
+    } catch (error) {
+      return res.status(400).json({ message: 'failed', error: error })
+    }
+  }
+  return res.status(500).json({ message: 'contains invalid characters' })
 }
 
 const UpdateNameGroupChat = async (req, res) => {
@@ -177,7 +218,7 @@ const UpdateNameGroupChat = async (req, res) => {
 const GetConversationBelongUser = async (req, res) => {
   try {
     const { offset, limit, search, status } = req.query
-    console.log( limit, search, status)
+    console.log(limit, search, status)
     const tokenUser = req.headers.authorization
     const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
     console.log(createdByUser)
@@ -409,7 +450,7 @@ const GrantMember = async (req, res) => {
   const { conversationId } = req.params
   const { userId, role } = req.body
   const tokenUser = req.headers.authorization
-  const idOwnerCheck = getIdUserOfToken(tokenUser).userId 
+  const idOwnerCheck = getIdUserOfToken(tokenUser).userId
 
   // check type of user id in conversation
   const checkData = await dataService.checkTypeofUserConversation(conversationId, idOwnerCheck)// kiem tra user duoc phan quyen k 
