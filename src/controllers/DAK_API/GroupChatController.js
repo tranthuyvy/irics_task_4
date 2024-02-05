@@ -5,191 +5,157 @@ import { StatusCodes } from 'http-status-codes'
 import { CheckSpecialInputCharacter } from '~/services/CheckData'
 import dataService from '~/services/dataService'
 import JWT from 'jsonwebtoken'
+import { checkInputCreateGR, checkMembersFunc } from '~/validations/validationConversation'
 // create conversation type = 2
-
-const checkInputCreateGR = async (type, name, memberIds) => {// check Input createGR
-  // check user have exsit || return true if does not exist special input
-  const checkMembers = async (memberIds) => {
-    let checkExsitMember = true
-    let checkSpecialInput = true
-    memberIds.map(id => checkSpecialInput = CheckSpecialInputCharacter(id))
-
-    if (checkSpecialInput == false) {
-      Promise.all(memberIds.map(async id => {
-        if (await dataService.findUserByID(id) == undefined) {
-          checkExsitMember = false
-        }
-        else 
-          checkExsitMember = true
-      }))
-      return checkExsitMember
-    }
-    else
-      return checkExsitMember
-  }
-  console.log('checkMember', await checkMembers(memberIds))
-
-  //check special input Type gr || return true if does not exist special input
-  const checktypeCreateGR = async (type) => await type == 1 || type == 2 ? true : false
-
-  console.log('checktypeCreateGR', await checktypeCreateGR(type))
-  //check special input Name gr  || return true if does not exist special input
-  const checkNameGr = (name) => CheckSpecialInputCharacter(name)
-
-  console.log('checkNameGr', checkNameGr(name))
-  // return await checkMembers(memberIds) == true && await checktypeCreateGR(type) == true && checkNameGr(name) == false ? true : false
-  return await checktypeCreateGR(type) == true && checkNameGr(name) == false ? true : false
-}
 
 const CreateGroupChat = async (req, res) => {
   const { type, name, memberIds } = req.body
   const check = await checkInputCreateGR(type, name, memberIds)
   if (check == true) {
     try {
-      console.log('oke')
-      console.log('-------------------------------------------')
-      // const tokenUser = req.headers.authorization
-      // const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
-      // const typeConversation = type == 2 ? 'members' : 'directUser'// type of conversation
-      // const timeCreated = new Date().getTime()
-      // //get information of Createduser
-      // const createUser = await getUser(createdByUser)
+      const tokenUser = req.headers.authorization
+      const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
+      const typeConversation = type == 2 ? 'members' : 'directUser'// type of conversation
+      const timeCreated = new Date().getTime()
+      //get information of Createduser
+      const createUser = await getUser(createdByUser)
 
-      // let objCreatedbyUser = {
-      //   id: createUser.id,
-      //   username: createUser.username,
-      //   email: createUser.email,
-      //   background_img: createUser.background_img,
-      //   avatar: createUser.avatar,
-      //   status: 0,
-      //   isActiveMember: false,
-      //   isBlockStranger: false,
-      //   blockUserIds: [],
-      //   lastLogin: timeCreated,
-      //   createdAt: timeCreated,
-      //   updatedAt: timeCreated
-      // }
+      let objCreatedbyUser = {
+        id: createUser.id,
+        username: createUser.username,
+        email: createUser.email,
+        background_img: createUser.background_img,
+        avatar: createUser.avatar,
+        status: 0,
+        isActiveMember: false,
+        isBlockStranger: false,
+        blockUserIds: [],
+        lastLogin: timeCreated,
+        createdAt: timeCreated,
+        updatedAt: timeCreated
+      }
 
-      // let objOwner = {
-      //   type: 1,
-      //   id: createUser.id,
-      //   ownerAccepted: true,
-      //   username: createUser.username,
-      //   avatar: createUser.avatar,
-      //   lastLogin: timeCreated,
-      // }
+      let objOwner = {
+        type: 1,
+        id: createUser.id,
+        ownerAccepted: true,
+        username: createUser.username,
+        avatar: createUser.avatar,
+        lastLogin: timeCreated,
+      }
 
-      // //get information of userid
-      // const _users = memberIds.map((index) => getUser(index))
-      // const user = await Promise.all(_users)
-      // let userarr = []
-      // if (type == 2) {
-      //   for (let i = 0; i < user.length; i++) {
-      //     userarr.push({
-      //       type: 3,
-      //       id: user[i]?.id,
-      //       ownerAccepted: true,
-      //       username: user[i]?.username,
-      //       avatar: user[i]?.avatar,
-      //       lastLogin: timeCreated,
-      //     })
-      //   }
-      //   userarr.push(objOwner)
-      // }
-      // else {
-      //   for (let i = 0; i < user.length; i++) {
-      //     userarr.push({
-      //       type: 5,
-      //       id: user[i]?.id,
-      //       ownerAccepted: true,
-      //       username: user[i]?.username,
-      //       avatar: user[i]?.avatar,
-      //       background_img: user[i]?.background_img,
-      //       status: 0,
-      //       isActiveMember: false,
-      //       isBlockStranger: false,
-      //       blockUserIds: [],
-      //       lastLogin: timeCreated,
-      //       createdAt: timeCreated,
-      //       updatedAt: timeCreated
-      //     })
-      //   }
-      // }
+      //get information of userid
+      const _users = memberIds.map((index) => getUser(index))
+      const user = await Promise.all(_users)
+      let userarr = []
+      if (type == 2) {
+        for (let i = 0; i < user.length; i++) {
+          userarr.push({
+            type: 3,
+            id: user[i]?.id,
+            ownerAccepted: true,
+            username: user[i]?.username,
+            avatar: user[i]?.avatar,
+            lastLogin: timeCreated,
+          })
+        }
+        userarr.push(objOwner)
+      }
+      else {
+        
+        for (let i = 0; i < user.length; i++) {
+          userarr.push({
+            type: 5,
+            id: user[i]?.id,
+            ownerAccepted: true,
+            username: user[i]?.username,
+            avatar: user[i]?.avatar,
+            background_img: user[i]?.background_img,
+            status: 0,
+            isActiveMember: false,
+            isBlockStranger: false,
+            blockUserIds: [],
+            lastLogin: timeCreated,
+            createdAt: timeCreated,
+            updatedAt: timeCreated
+          })
+        }
+      }
 
-      // // craete inviteld 
-      // const inviteld = uuidv4().replace(/-/g, '')
+      // craete inviteld 
+      const inviteld = uuidv4().replace(/-/g, '')
 
-      // //create data to import database
-      // const conversation = {
-      //   status: +type,
-      //   avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
-      //   createdBy: createdByUser,
-      //   name,
-      //   lastMessageCreated: timeCreated,
-      //   isDeleted: false,
-      //   createdAt: timeCreated,
-      //   updatedAt: timeCreated,
-      //   latestMessage: [],
-      //   createdByUser: objCreatedbyUser,
-      //   unSeenMessageTotal: 0,
-      //   [typeConversation]: userarr,// get user from member ID
-      //   messagePin: [],
-      //   conversationSetting: [
-      //     {
-      //       type: 3,
-      //       value: true
-      //     },
-      //     {
-      //       type: 4,
-      //       value: true
-      //     },
-      //     {
-      //       type: 7,
-      //       value: true
-      //     },
-      //     {
-      //       type: 6,
-      //       value: true
-      //     },
-      //     {
-      //       type: 5,
-      //       value: true
-      //     },
-      //     {
-      //       type: 9,
-      //       value: true
-      //     },
-      //     {
-      //       type: 1,
-      //       value: 1700656327650
-      //     },
-      //     {
-      //       type: 8,
-      //       value: []
-      //     }
-      //   ],
-      //   userOffStatusMsg: [],
-      //   inviteId: inviteld,//generated ID invited,
-      //   messagePinCount: 0,
-      //   isPinned: false,
-      //   notePinned: [],
-      //   votePinned: []
-      // }
-      // const result = await CreateGroupChatModel(conversation)
+      //create data to import database
+      const conversation = {
+        status: +type,
+        avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
+        createdBy: createdByUser,
+        name,
+        lastMessageCreated: timeCreated,
+        isDeleted: false,
+        createdAt: timeCreated,
+        updatedAt: timeCreated,
+        latestMessage: [],
+        createdByUser: objCreatedbyUser,
+        unSeenMessageTotal: 0,
+        [typeConversation]: userarr,// get user from member ID
+        messagePin: [],
+        conversationSetting: [
+          {
+            type: 3,
+            value: true
+          },
+          {
+            type: 4,
+            value: true
+          },
+          {
+            type: 7,
+            value: true
+          },
+          {
+            type: 6,
+            value: true
+          },
+          {
+            type: 5,
+            value: true
+          },
+          {
+            type: 9,
+            value: true
+          },
+          {
+            type: 1,
+            value: 1700656327650
+          },
+          {
+            type: 8,
+            value: []
+          }
+        ],
+        userOffStatusMsg: [],
+        inviteId: inviteld,//generated ID invited,
+        messagePinCount: 0,
+        isPinned: false,
+        notePinned: [],
+        votePinned: []
+      }
+      const result = await CreateGroupChatModel(conversation)
 
-      // const returnData = {
-      //   type,
-      //   avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
-      //   createdBy: createdByUser,
-      //   name: name,
-      //   lastMessageCreated: new Date().getTime(),
-      //   isDeleted: false,
-      //   _id: result.id,
-      //   createdAt: result.createdAt,
-      //   updatedAt: result.updatedAt
-      // }
-      //add data to database
-      // return res.status(200).json({ message: 'create group chat success', data: returnData })
+      const returnData = {
+        type,
+        avartar: 'https://test3.stechvn.org/api/image/2HD1c4cb1b8-9255-11ee-973a-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.png',
+        createdBy: createdByUser,
+        name: name,
+        lastMessageCreated: new Date().getTime(),
+        isDeleted: false,
+        _id: result.id,
+        createdAt: result.createdAt,
+        updatedAt: result.updatedAt
+      }
+      // add data to database
+      return res.status(200).json({ message: 'create group chat success', data: returnData })
     } catch (error) {
       return res.status(400).json({ message: 'failed', error: error })
     }
@@ -203,6 +169,9 @@ const UpdateNameGroupChat = async (req, res) => {
     const idMember = getIdUserOfToken(tokenUser).userId
 
     const idConversation = req.params.id
+    if (CheckSpecialInputCharacter(idConversation) == true) {
+      return res.status(500).json({ message: 'contains invalid characters' })
+    }
     const permission = await permissionMemberGroupChat(idMember, idConversation)
 
     if (permission !== undefined) {
@@ -218,21 +187,33 @@ const UpdateNameGroupChat = async (req, res) => {
 const GetConversationBelongUser = async (req, res) => {
   try {
     const { offset, limit, search, status } = req.query
-    console.log(limit, search, status)
+
+    if (CheckSpecialInputCharacter(search) == true) {
+      return res.status(500).json({ message: 'contains invalid characters' })
+    }
+    if (+status != 1 && +status != 2) {
+      return res.status(500).json({ message: 'erorr status' })
+    }
+    if (limit >= 20) {
+      return res.status(500).json({ message: 'limit is not greater than 20' })
+    }
     const tokenUser = req.headers.authorization
     const createdByUser = getIdUserOfToken(tokenUser).userId// get id user from token
-    console.log(createdByUser)
+
     let result = await dataService.getConversationofUser(createdByUser, limit, search, status)
-    console.log(await result)
+
     return res.status(200).json({ message: 'update name succes', data: result })
   } catch (error) {
-    return res.status(400).json({ message: error.message })
+    return res.status(500).json({ message: error.message })
 
   }
 }
 
 const GetConversationDetail = async (req, res) => {
   const ConversationID = req.params.id
+  if (CheckSpecialInputCharacter(ConversationID) == true) {
+    return res.status(500).json({ message: 'contains invalid characters' })
+  }
   const data = await dataService.findConversationByID(ConversationID)
   if (data !== undefined) {
     return res.status(200).json({ message: 'succes', data })
@@ -259,7 +240,12 @@ const permissionMemberGroupChat = async (idMember, idConversation) => {// check 
 const AddMemberToGroupChat = async (req, res) => {
   const conversationId = req.params.conversationId
   const memberID = req.body.ids
-
+  if (await checkMembersFunc([memberID]) == false) {
+    return res.status(500).json({ message: 'erorr userID' })
+  }
+  if (CheckSpecialInputCharacter(conversationId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversation Id' })
+  }
   let arrInfoMember = []
 
   // check Id
@@ -267,7 +253,9 @@ const AddMemberToGroupChat = async (req, res) => {
 
   // check exist member in conversation
   const dataConversation = await dataService.findConversationByID(conversationId)
-
+  if (dataConversation== undefined){
+    return res.status(500).json({ message: 'undefined conversation Id' })
+  }
   let _checkExistMember = await memberID.map(idMember => dataConversation.members.find(value => value.id == idMember) ? true : false)
 
   // create information member
@@ -277,10 +265,10 @@ const AddMemberToGroupChat = async (req, res) => {
         return res.status(200).json({ message: 'member already in conversation' })
       }
       await CrObjFunc(memberID, arrInfoMember)// update member to obj
-
-      await Promise.all(arrInfoMember.map(async data => // update member to data
-        await dataService.UpdateMemberGroupChat(conversationId, data)
-      ))
+      console.log(arrInfoMember[0])
+      for (let index = 0; index < arrInfoMember.length; index++) {
+        await dataService.UpdateMemberGroupChat(conversationId, arrInfoMember[index] )
+      }
       return res.status(200).json({ message: 'add member to group succes' })
     }
     else {
@@ -307,7 +295,7 @@ const JoinGroupByInviteld = async (req, res) => {
   try {
     const { inviteId } = req.params
     console.log(inviteId)
-    const data = dataService.readData()
+    const data = await dataService.readData()
 
     const dataConversation = await dataService.findConversationByInviteldId(inviteId)
     console.log(dataConversation)
@@ -347,7 +335,7 @@ const JoinGroupByInviteld = async (req, res) => {
       lastLogin: userInProgram.lastLogin
     })
 
-    dataService.writeData(data)
+    await dataService.writeData(data)
 
     return res.status(StatusCodes.OK).json({ message: 'Success', success: true, conversation: dataConversation })
   } catch (error) {
@@ -359,12 +347,21 @@ const RemoveMemberToGroupChat = async (req, res) => {
   try {
     const conversationId = req.params.conversationId
     const memberID = req.body.ids
+    if (CheckSpecialInputCharacter(conversationId) == true) {
+      return res.status(500).json({ message: 'contains invalid characters in conversaiton ID' })
+    }
+    if (CheckSpecialInputCharacter(memberID) == true) {
+      return res.status(500).json({ message: 'contains invalid characters in user ID' })
+    }
     const tokenUser = req.headers.authorization
     const UserId = getIdUserOfToken(tokenUser).userId
-
+    const checkMember = await dataService.findUserByID(memberID)
+    if (checkMember == undefined) {
+      return res.status(500).json({ message: 'invalid user' })
+    }
     const _check = await PermissionDelMember(UserId, conversationId)
     if (_check == true) {
-      dataService.deleteMemberChat(memberID, conversationId)
+      await dataService.deleteMemberChat(memberID, conversationId)
       return res.status(200).json({ message: 'remove member succes' })
     }
     else
@@ -393,10 +390,17 @@ const checkMember = (memberID) => {
 // delete DeleteConversation
 const DeleteConversation = async (req, res) => {
   const idConversation = req.params.id
+
+  if (CheckSpecialInputCharacter(idConversation) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversation' })
+  }
+
   const tokenUser = req.headers.authorization
 
   const checkType = await dataService.findConversationByID(idConversation)
-
+  if (checkType == undefined) {
+    return res.status(500).json({ message: 'erorr Id conversation' })
+  }
   if (checkType.status == 1) {
     await dataService.deleteConversation(idConversation)
   }
@@ -422,6 +426,9 @@ const PermissionDelConversation = async (tokenUser, idConversation) => {
 //hidden conversation
 const HideConversation = async (req, res) => {
   const { conversationId, pin } = req.body
+  if (CheckSpecialInputCharacter(conversationId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversation' })
+  }
   const tokenUser = req.headers.authorization
   const IdUser = getIdUserOfToken(tokenUser).userId
   const result = await dataService.addHideConversationfiled(conversationId, pin, IdUser)
@@ -430,6 +437,9 @@ const HideConversation = async (req, res) => {
 //hide  conversation
 const UnHideConversation = async (req, res) => {
   const { conversationId } = req.body
+  if (CheckSpecialInputCharacter(conversationId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversation' })
+  }
   const tokenUser = req.headers.authorization
   const IdUser = getIdUserOfToken(tokenUser).userId
   const result = await dataService.UnHiddenConversation(conversationId, IdUser)
@@ -438,7 +448,9 @@ const UnHideConversation = async (req, res) => {
 
 const PinConversation = async (req, res) => {
   const { action, conversationId } = req.params
-
+  if (CheckSpecialInputCharacter(conversationId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversation' })
+  }
   if (action == 'pin') {
     const result = await dataService.PinConversationfunc(conversationId)
     return res.status(200).json({ message: result.message })
@@ -449,9 +461,21 @@ const PinConversation = async (req, res) => {
 const GrantMember = async (req, res) => {
   const { conversationId } = req.params
   const { userId, role } = req.body
+  if (role !=1 && role !=2 && role !=3 ){
+    return res.status(500).json({ message: 'invalid role' })
+  }
   const tokenUser = req.headers.authorization
   const idOwnerCheck = getIdUserOfToken(tokenUser).userId
-
+  if (CheckSpecialInputCharacter(conversationId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversation' })
+  }
+  if (CheckSpecialInputCharacter(userId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in user ID' })
+  }
+  const checkUser = dataService.findUserByID(userId)
+  if (checkUser == undefined) {
+    return res.status(500).json({ message: 'invalid user ID' })
+  }
   // check type of user id in conversation
   const checkData = await dataService.checkTypeofUserConversation(conversationId, idOwnerCheck)// kiem tra user duoc phan quyen k 
   if (checkData == true) {
@@ -474,11 +498,21 @@ const GrantMember = async (req, res) => {
 
 const DisBandGroup = async (req, res) => {
   const { conversationId } = req.params
+  if (CheckSpecialInputCharacter(conversationId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversation' })
+  }
   await dataService.disbandGroupfunc(conversationId)
 }
 
 const GetGroupByInviteld = async (req, res) => {
   const { inviteId } = req.params
+  if (CheckSpecialInputCharacter(inviteId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in inviteId' })
+  }
+  const checkInvited = dataService.findInvitedByID(inviteId)
+  if (checkInvited == undefined){
+    return res.status(500).json({ message: 'undefined  inviteId' })
+  }
   const data = await dataService.getConversationByInviteld(inviteId)
   const obj = {
     avartar: data.avartar,
@@ -491,6 +525,16 @@ const GetGroupByInviteld = async (req, res) => {
 const PreventJoin = async (req, res) => {
   const { conversationId } = req.params
   const { userId } = req.body
+  if (CheckSpecialInputCharacter(conversationId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversationId' })
+  }
+  if (CheckSpecialInputCharacter(userId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in userId' })
+  }
+  const checkUser = await dataService.findUserByID(userId)
+  if (checkUser==undefined){
+    return res.status(500).json({ message: 'undefined userId' })
+  }
   await dataService.PreventJoinMember(conversationId, userId)
   return res.status(200).json({ message: 'success' })
 }
@@ -498,12 +542,29 @@ const PreventJoin = async (req, res) => {
 const UnPreventJoin = async (req, res) => {
   const { preventId } = req.body
   const { conversationId } = req.params
+  if (CheckSpecialInputCharacter(preventId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversationId' })
+  }
+  if (CheckSpecialInputCharacter(conversationId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversationId' })
+  }
+  let checkConversation = await dataService.findConversationByID(conversationId)
+  if (checkConversation == undefined){
+    return res.status(500).json({ message: 'undefined conversationId' })
+  }
   await dataService.UnPeventJoinMember(conversationId, preventId)
   return res.status(200).json({ message: 'success' })
 }
 
 const DecideConversations = async (req, res) => {
   const { conversationId, status } = req.params
+  if (CheckSpecialInputCharacter(conversationId) == true) {
+    return res.status(500).json({ message: 'contains invalid characters in conversationId' })
+  }
+  let checkConversation = await dataService.findConversationByID(conversationId)
+  if (checkConversation == undefined){
+    return res.status(500).json({ message: 'undefined conversationId' })
+  }
   const tokenUser = req.headers.authorization
   const Iduser = getIdUserOfToken(tokenUser).userId
   const result = await dataService.decideConversationfunc(conversationId, Iduser)

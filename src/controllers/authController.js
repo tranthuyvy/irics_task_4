@@ -3,6 +3,7 @@ import crypto from 'crypto'
 import HttpStatus from 'http-status-codes'
 import JWT from 'jsonwebtoken'
 import { validateRegistration } from '../validations/validation'
+import { validatePassword } from '~/validations/validationPass'
 import { addUser, findUserByUsernameOrEmailOrId, updatePassword, addUserData } from '../models/user'
 import { generateKeyPair, encryptWithRSA, decryptWithRSA } from '../utils/rsaCrypt'
 import nodemailer from 'nodemailer'
@@ -39,7 +40,7 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       createdAt: new Date().getTime(),
       background_img: 'https://test3.stechvn.org/api/file/3504639c8-8a24-11ee-9529-0242c0a83003.Grey_and_Brown_Modern_Beauty_Salon_Banner_20231024_124517_0000.svg',
-      isConversationHidden:[],
+      isConversationHidden: [],
       rsaPublicKey: publicKey,
       rsaPrivateKey: privateKey
     }
@@ -106,7 +107,7 @@ const loginUser = async (req, res) => {
     if (!result) {
       return res.status(HttpStatus.CONFLICT).json({ message: 'Wrong password', success: false })
     }
-   
+
     // const token = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
     const token = JWT.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: '30m' })
     JWT.decode()
@@ -133,7 +134,7 @@ const loginUser = async (req, res) => {
       message: 'Successful',
       success: true,
       token,
-      expired_at_token : tokenExpiration,
+      expired_at_token: tokenExpiration,
       token_chat,
       expired_at_token_chat: tokenChatExpiration,
       refreshToken,
@@ -193,6 +194,8 @@ const changePassword = async (req, res) => {
   try {
     const { newPassword } = req.body
 
+    const validationErrors = await validatePassword({ password : newPassword })
+
     const refreshToken = req.cookies?.JWT
 
     if (!refreshToken) {
@@ -215,9 +218,17 @@ const changePassword = async (req, res) => {
       return res.status(HttpStatus.NOT_FOUND).json({ message: 'User not found', success: false })
     }
 
-    const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, newPassword)
+    // const decryptedPassword = decryptWithRSA(user.rsaPrivateKey, newPassword) 
 
-    const hashedPassword = await bcrypt.hash(decryptedPassword, 10)
+    if (validationErrors.length > 0) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        message: 'Bad request!',
+        error_code: 'INVALID_INPUT',
+        success: false,
+        error: validationErrors
+      })
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
 
     updatePassword(userId, hashedPassword)
 
@@ -229,9 +240,9 @@ const changePassword = async (req, res) => {
 }
 
 const transporter = nodemailer.createTransport({
-  host:'smtp.forwardemail.net',
-  port:587,
-  secure:false,
+  host: 'smtp.forwardemail.net',
+  port: 587,
+  secure: false,
   // service: process.env.EMAIL_SERVICE,
   auth: {
     user: process.env.EMAIL_USER,
@@ -241,6 +252,7 @@ const transporter = nodemailer.createTransport({
     rejectUnauthorized: false
   }
 })
+
 
 const forgotPassword = async (req, res) => {
   try {

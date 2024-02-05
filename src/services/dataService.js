@@ -34,10 +34,8 @@ const UpdateMemberGroupChat = async (conversationID, informationMember) => {
   try {
     const data = readData()
     const index = await findIndexConversation(data, conversationID)
-
-    await data.Conversation[index].member.push(informationMember)
+    await data.Conversation[index].members.push(informationMember)
     writeData(data)
-
     return { message: 'success' }
   } catch (error) {
     return { message: error }
@@ -45,10 +43,10 @@ const UpdateMemberGroupChat = async (conversationID, informationMember) => {
 }
 
 //delete member in conversation
-const deleteMemberChat = (MemberID, conversationID) => {
+const deleteMemberChat = async (MemberID, conversationID) => {
   try {
     const data = readData()
-    const index = findIndexConversation(data, conversationID)
+    const index = await findIndexConversation(data, conversationID)
     data.Conversation[index].members = data.Conversation[index].members.filter(item => item.id != MemberID)
     writeData(data)
   } catch (error) {
@@ -66,14 +64,14 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
     let arrConver = []
     let result = []
     
-    const datatest = data?.Conversation?.map(value => {// create array of conversation
+    const datatest = data.Conversation.map(value => {// create array of conversation
       return {
-        members: value?.members?.map(index => index.id == UserID ? true : false),
+        members: value?.members?.map(index => index.id == UserID ? true : false) || value?.directUser?.map(index => index.id == UserID ? true : false),
         id: value.id,
         type: value.status
       }
     })
-   
+
     await datatest.map(value => {// check condition of query
       value.members.map(index => index == true && value.type == status ? arrConver.push(value.id) : 'none')
     })
@@ -84,7 +82,7 @@ const getConversationofUser = async (UserID, limit, conversationID, status) => {
         result.push(dataresult)
       }
     }
-    console.log(result)
+
     return result
   }
 }
@@ -121,6 +119,15 @@ const findUserByID = async (id) => {
   const data = await readData()
   try {
     return await data.users.find(user => user.id == id)
+  } catch (error) {
+    return { message: error.message }
+  }
+}
+//find user by ID 
+const findInvitedByID = async (id) => {
+  const data = await readData()
+  try {
+    return await data.Conversation.find(Invited => Invited.inviteId == id)
   } catch (error) {
     return { message: error.message }
   }
@@ -327,5 +334,6 @@ export default
     decideConversationfunc,
     getNotesByConversationId,
     getVotesByConversationId,
-    findUserByID
+    findUserByID,
+    findInvitedByID
   }
